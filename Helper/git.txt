@@ -1,0 +1,12 @@
+git branch <branch name>
+git branch (To check all current branch)
+git checkout <destination branch name>
+git pull
+Make change, commit
+Before merge, check current branch.Chnages will be apply to current branch
+git merge <branch name to merge>
+git push origin <branch name>
+
+For submission
+git remote add <submission name> <submission url>
+git push <submission name> <branch name>

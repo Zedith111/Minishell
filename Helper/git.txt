@@ -1,7 +1,7 @@
 git branch <branch name>
 git branch (To check all current branch)
 git checkout <destination branch name>
-git pull
+git pull origin  <branch to pull from> 
 Make change, commit
 Before merge, check current branch.Chnages will be apply to current branch
 git merge <branch name to merge>

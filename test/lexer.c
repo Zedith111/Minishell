@@ -65,5 +65,4 @@ int main()
 	{
 		remain = process_input(remain);
 	}
-	
 }

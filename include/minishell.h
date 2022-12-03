@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/11/29 21:09:12 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/03 14:04:23 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,13 @@ typedef struct s_token
 	char			*value;
 }	t_token;
 
+// Utility Function
 void	ms_success_exit(void);
+void	ms_error_exit(char *err_msg);
+
+//Signal Function
 void	ms_init_sig_handler(void);
+
+void	ms_process_input(char *input);
 
 #endif

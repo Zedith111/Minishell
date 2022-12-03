@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/11/28 15:15:23 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/03 14:19:41 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	main(int argc, char **argv)
 {
 	(void) argc;
 	(void) argv;
-
 	ms_init_sig_handler();
 	while (1)
 	{
@@ -32,14 +31,10 @@ static void read_input(void)
 
 	line = readline("minishell>");
 	if (line == NULL)
-	{
-		printf("exit");
-		exit (0);
-	}
-	if (*line != '\0')
+		ms_success_exit();
+	if (*line != '\0' && line != NULL)
 	{
 		add_history(line);
-		printf ("repeat\n");
-		printf ("%s\n", line);
-	}	
+		ms_process_input(line);
+	}
 }

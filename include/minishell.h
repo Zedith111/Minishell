@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/03 14:04:23 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/04 17:25:01 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ typedef enum s_token_type
 	TOKEN_PIPE
 }	t_token_type;
 
-typedef struct s_list
+typedef struct s_dlist
 {
-	char			*content;
-	struct s_list	*next;
-}	t_list;
+	void			*content;
+	struct s_dlist	*prev;
+	struct s_dlist	*next;
+}	t_dlist;
 
 typedef struct s_token
 {
@@ -48,10 +49,20 @@ typedef struct s_token
 // Utility Function
 void	ms_success_exit(void);
 void	ms_error_exit(char *err_msg);
+int		ms_is_empty_string(char *str);
+
+//Double Linked List Function
+t_dlist	*ft_dlist_new(void *content);
+void	ft_dlist_addback(t_dlist **list, t_dlist *node);
 
 //Signal Function
 void	ms_init_sig_handler(void);
 
+//Lexer and Expander
 void	ms_process_input(char *input);
+void	ms_tokenize(char *str, int stop, t_dlist **token_list);
+
+//Testing use Function, will be destroyed
+void	print_token_list(t_dlist **list);
 
 #endif

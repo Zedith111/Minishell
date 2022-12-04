@@ -6,13 +6,13 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/03 14:19:41 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/03 15:21:45 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	read_input (void);
+static void	read_input(void);
 
 int	main(int argc, char **argv)
 {
@@ -25,13 +25,15 @@ int	main(int argc, char **argv)
 	}
 }
 
-static void read_input(void)
+static void	read_input(void)
 {
 	char	*line;
 
 	line = readline("minishell>");
 	if (line == NULL)
 		ms_success_exit();
+	if (ms_is_empty_string(line))
+		return ;
 	if (*line != '\0' && line != NULL)
 	{
 		add_history(line);

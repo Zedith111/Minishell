@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2022/12/03 14:05:39 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/04 18:57:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 void	ms_success_exit(void)
 {
 	printf("exit\n");
+	// system ("leaks minishell");
 	exit (0);
 }
 
@@ -33,5 +34,20 @@ void	ms_error_exit(char *err_msg)
 {
 	perror (err_msg);
 	printf ("exiting\n");
+	// system ("leaks minishell");
 	exit (1);
+}
+
+int	ms_is_empty_string(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != 0)
+	{
+		if (str[i] != ' ' && str[i] != 9)
+			return (0);
+		i ++;
+	}
+	return (1);
 }

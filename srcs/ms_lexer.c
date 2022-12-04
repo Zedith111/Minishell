@@ -6,30 +6,31 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:26:19 by zah               #+#    #+#             */
-/*   Updated: 2022/12/03 14:13:49 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/04 17:23:58 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	get_enclosed_length(char *str, char quote);
-static char	*trim_input(char *str);
-static void	tokenize(char *str, int stop);
+static char	*trim_input(char *str, t_dlist **token_list);
 
 /**
  * @brief Main function of lexer, turn the string to smaller token
- * 
+ * and sent it to parser.
  * @param input The line return from readline
  */
 void	ms_process_input(char *input)
 {
 	char	*remain;
+	t_dlist	*head;
 
-	remain = trim_input(input);
+	remain = trim_input(input, &head);
 	while (remain != NULL)
 	{
-		remain = trim_input(remain);
+		remain = trim_input(remain, &head);
 	}
+	print_token_list(&head);
 }
 
 /**
@@ -37,9 +38,10 @@ void	ms_process_input(char *input)
  * Return the remaining string after separator.
  * Separator include space, tab, enclosed single and double quote
  * @param str The string to trim
- * @return char* The remaining string, NULL if end is reached
+ * @param token_list Address to the token linked list
+ * @return The remaining string, NULL if end is reached
  */
-static char	*trim_input(char *str)
+static char	*trim_input(char *str, t_dlist **token_list)
 {
 	int	i;
 
@@ -59,7 +61,7 @@ static char	*trim_input(char *str)
 	}
 	if (i == -1)
 		ms_error_exit("Quote is unclosed");
-	tokenize(str, i);
+	ms_tokenize(str, i, token_list);
 	if (str[i] == '\0')
 		return (NULL);
 	else
@@ -85,26 +87,4 @@ static	int	get_enclosed_length(char *str, char quote)
 		i ++;
 	}
 	return (-1);
-}
-
-/**
- * @brief Transform the string into individual token that
- * 
- * @param str 
- * @param stop 
- */
-static void	tokenize(char *str, int stop)
-{
-	char	*token;
-	int		i;
-
-	token = malloc (stop + 1);
-	i = 0;
-	while (i < stop)
-	{
-		token[i] = str[i];
-		i ++;
-	}
-	token[i] = '\0';
-	printf ("%s\n", token);
 }

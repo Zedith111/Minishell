@@ -26,6 +26,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean	:
 			make -C $(LIBFT) clean
+			$(RM) libft.a
 			$(RM) -r $(OBJ_DIR)
 
 fclean	:	clean

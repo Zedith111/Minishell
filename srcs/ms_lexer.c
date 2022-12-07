@@ -5,86 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 16:26:19 by zah               #+#    #+#             */
-/*   Updated: 2022/12/04 17:23:58 by zah              ###   ########.fr       */
+/*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
+/*   Updated: 2022/12/07 15:36:01 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_enclosed_length(char *str, char quote);
-static char	*trim_input(char *str, t_dlist **token_list);
+static t_lexer	*lexer_init(char *input);
+static t_token	*lexer_advance(t_lexer *lexer);
+int				ms_is_sep(char c);
 
 /**
- * @brief Main function of lexer, turn the string to smaller token
- * and sent it to parser.
+ * @brief Main function of lexer, turn the line into smaller token
+ * and add it to linked ist
  * @param input The line return from readline
  */
 void	ms_process_input(char *input)
 {
-	char	*remain;
+	t_lexer	*lexer;
+	t_token	*token;
 	t_dlist	*head;
 
-	remain = trim_input(input, &head);
-	while (remain != NULL)
+	lexer = lexer_init(input);
+	token = lexer_advance(lexer);
+	head = NULL;
+	while (token->type != TOKEN_END)
 	{
-		remain = trim_input(remain, &head);
+		if (token->type == TOKEN_ERR)
+		{
+			//Free list
+			ms_error_exit("Quote unclosed");
+		}
+		ms_dlist_addback(&head, ms_dlist_new(token));
+		token = lexer_advance(lexer);
 	}
 	print_token_list(&head);
 }
 
 /**
- * @brief Process the input until a separator is met.
- * Return the remaining string after separator.
- * Separator include space, tab, enclosed single and double quote
- * @param str The string to trim
- * @param token_list Address to the token linked list
- * @return The remaining string, NULL if end is reached
+ * @brief Initialize and return the lexer struct 
+ * @param input The input string pass from readline
  */
-static char	*trim_input(char *str, t_dlist **token_list)
+static t_lexer	*lexer_init(char *input)
 {
-	int	i;
+	t_lexer	*rtn;
 
-	while (*str == ' ' || *str == '\t')
-		str ++;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ' || str[i] == '\t')
-			break ;
-		else if (str[i] == 34 || str[i] == 39)
-		{
-			i = get_enclosed_length(str, str[i]);
-			break ;
-		}
-		i ++;
-	}
-	if (i == -1)
-		ms_error_exit("Quote is unclosed");
-	ms_tokenize(str, i, token_list);
-	if (str[i] == '\0')
-		return (NULL);
-	else
-		return (str + i);
+	rtn = malloc (sizeof(t_lexer));
+	rtn->input = input;
+	rtn->current = ft_strdup(input);
+	return (rtn);
 }
 
 /**
- * @brief Check whether a string open with quote is properly enclosed.
- * if yes, get the length of enclosed sting, inclusive of both open and end quote
- * @param str The input string
- * @param quote The character used to open the quote
- * @return int The length of enclosed quote. -1 if not enclosed
+ * @brief Read through the line and producing indiviudal token.
+ * Do this by reading through lexer, stop when the character is a separator
+ * and create token based on type of separator
+ * @return The token created
  */
-static	int	get_enclosed_length(char *str, char quote)
+static t_token	*lexer_advance(t_lexer *lexer)
 {
-	int	i;
+	while (ms_is_sep(*lexer->current) == 4)
+		lexer->current ++;
+	if (*lexer->current == '\0')
+		return (ms_create_token(TOKEN_END, NULL));
+	if (ms_is_sep(*lexer->current) == 1)
+		return (ms_create_quote_token(lexer));
+	if (ms_is_sep(*lexer->current) == 2 || ms_is_sep(*lexer->current) == 3)
+		return (ms_create_operator_token(lexer));
+	else
+		return (ms_create_word_token(lexer));
+}
 
-	i = 1;
-	while (str[i] != '\0')
-	{
-		if (str[i] == quote)
-			return (i + 1);
-		i ++;
-	}
-	return (-1);
+/**
+ * @brief Check whether a character is separator
+ * Return 0 if not, or the respective number
+ * @return 1 for single & double quote, 2 for |, 3 for < and >.
+ * 4 for space and tab , 0 for normal character
+ */
+int	ms_is_sep(char c)
+{
+	if (c == 34 || c == 39)
+		return (1);
+	if (c == '|')
+		return (2);
+	if (c == '<' || c == '>')
+		return (3);
+	if (c == ' ' || c == '\t')
+		return (4);
+	return (0);
 }

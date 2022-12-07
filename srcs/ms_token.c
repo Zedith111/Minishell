@@ -5,117 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 17:52:24 by zah               #+#    #+#             */
-/*   Updated: 2022/12/04 19:21:51 by zah              ###   ########.fr       */
+/*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
+/*   Updated: 2022/12/07 15:35:18 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token_type	get_token_type(char *str);
-static t_dlist		*create_word_token(char *str, int stop);
-static t_dlist		*create_spec_token(char *str, int stop, t_token *token);
+//Advamce
+/**
+ * @brief Check whether a string start with quote is properly end
+ * @param str The string to check for
+ * @param open The quote character
+ * @return The length of enclosed string, -1 if not enclosed properly
+ */
+static int	check_enclosed(char *str, char open)
+{
+	int	i;
+
+	i = 1;
+	while (str[i] != '\0')
+	{
+		if (str[i] == open)
+			return (i + 1);
+		i ++;
+	}
+	return (-1);
+}
 
 /**
- * @brief Transform the string into individual token that store both type and 
- * value. Also separate the operator out. |wc will be separate to | and "wc".
- * Add the newly create token to the token list
- * @param str The input string
- * @param stop The stopping position
- * @param token_list Address to the token linked list
+ * @brief Create and return a token based on type and value
  */
-void	ms_tokenize(char *str, int stop, t_dlist **token_list)
+t_token	*ms_create_token(t_token_type type, char *value)
 {
-	t_token			*token;
-	t_token_type	type;
+	t_token	*rtn;
 
-	type = get_token_type(str);
-	if (type == TOKEN_WORD)
-		ft_dlist_addback(token_list, create_word_token(str, stop));
+	rtn = malloc(sizeof(t_token));
+	rtn->type = type;
+	rtn->value = value;
+	return (rtn);
+}
+
+t_token	*ms_create_quote_token(t_lexer *lexer)
+{
+	char	sep;
+	char	*value;
+	int		i;
+
+	sep = *lexer->current;
+	i = check_enclosed(lexer->current, sep);
+	if (i == -1)
+		return (ms_create_token(TOKEN_ERR, NULL));
+	value = ft_substr(lexer->current, 0, i);
+	lexer->current += i;
+	return (ms_create_token(TOKEN_QUOTE, value));
+}
+
+t_token	*ms_create_word_token(t_lexer *lexer)
+{
+	int		i;
+	char	*value;
+
+	i = 0;
+	while (lexer->current[i] != '\0' && ms_is_sep(lexer->current[i]) == 0)
+		i++;
+	value = ft_substr(lexer->current, 0, i);
+	if (ms_is_empty_string(value))
+		return (ms_create_token(TOKEN_END, NULL));
+	lexer->current += i;
+	return (ms_create_token(TOKEN_WORD, value));
+}
+
+t_token	*ms_create_operator_token(t_lexer *lexer)
+{
+	if (*lexer->current == '|')
+	{
+		lexer->current += 1;
+		return (ms_create_token(TOKEN_PIPE, "|"));
+	}
+	else if (*lexer->current == '>')
+	{
+		lexer->current += 1;
+		if (*lexer->current == '>')
+		{
+			lexer->current += 1;
+			return (ms_create_token(TOKEN_AOUT, ">>"));
+		}
+		return (ms_create_token(TOKEN_OUT, ">"));
+	}
 	else
 	{
-		token = malloc (sizeof (t_token));
-		token->type = type;
-		ft_dlist_addback(token_list, create_spec_token(str, stop, token));
+		lexer->current += 1;
+		if (*lexer->current == '<')
+		{
+			lexer->current += 1;
+			return (ms_create_token(TOKEN_AOUT, "<<"));
+		}
+		return (ms_create_token(TOKEN_OUT, "<"));
 	}
-	//expand
-}
-
-/**
- * @brief Check the first character and return the respective token type
- * @param str The string to check
- * @return The respective token_type
- */
-static t_token_type	get_token_type(char *str)
-{
-	if (*str == 39 || *str == 34)
-		return (TOKEN_WORD);
-	else if (*str == '|')
-		return (TOKEN_PIPE);
-	else if (*str == '>')
-	{
-		if (*(str + 1) == '>')
-			return (TOKEN_AOUT);
-		return (TOKEN_OUT);
-	}
-	else if (*str == '<')
-	{
-		if (*(str + 1) == '<')
-			return (TOKEN_AIN);
-		return (TOKEN_IN);
-	}
-	return (TOKEN_WORD);
-}
-
-static t_dlist	*create_word_token(char *str, int stop)
-{
-	char	*value;
-	int		i;
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	token->type = TOKEN_WORD;
-	value = malloc(stop + 1);
-	i = 0;
-	while (i < stop)
-	{
-		value[i] = str[i];
-		i ++;
-	}
-	value[i] = '\0';
-	if (ms_is_empty_string(value))
-	{
-		free (value);
-		free (token);
-		return (NULL);
-	}
-	token->value = value;
-	return (ft_dlist_new(token));
-}
-
-static t_dlist	*create_spec_token(char *str, int stop, t_token *token)
-{
-	int		length;
-	char	*value;
-	int		i;
-	t_dlist	*node;
-
-	length = 1;
-	if (token->type == TOKEN_AIN || token->type == TOKEN_AOUT)
-		length = 2;
-	value = malloc(length + 1);
-	i = 0;
-	while (i < length)
-	{
-		value[i] = str[i];
-		i ++;
-	}
-	value[i] = '\0';
-	token->value = value;
-	node = ft_dlist_new(token);
-	if (stop != length)
-	{
-		ft_dlist_addback(&node, create_word_token(str + length, stop - length));
-	}
-	return (node);
 }

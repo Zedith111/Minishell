@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_main.c                                          :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:40:21 by zah              ###   ########.fr       */
+/*   Created: 2022/07/08 16:35:58 by zah               #+#    #+#             */
+/*   Updated: 2022/07/09 11:47:34 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	read_input(void);
-
-int	main(int argc, char **argv, char **envp)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	(void) argc;
-	(void) argv;
-	ms_init_sig_handler();
-	while (1)
+	if (lst == NULL || new == NULL)
+		return ((void) NULL);
+	if (*lst)
 	{
-		read_input();
+		new->next = *lst;
+		*lst = new;
 	}
-}
-
-static void	read_input(void)
-{
-	char	*line;
-
-	line = readline("minishell>");
-	if (line == NULL)
-		ms_success_exit();
-	if (ms_is_empty_string(line))
-		return ;
-	if (*line != '\0' && line != NULL)
+	else
 	{
-		add_history(line);
-		ms_process_input(line);
+		*lst = new;
 	}
 }

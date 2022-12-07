@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_main.c                                          :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:40:21 by zah              ###   ########.fr       */
+/*   Created: 2022/07/04 15:16:30 by zah               #+#    #+#             */
+/*   Updated: 2022/07/04 16:17:57 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	read_input(void);
-
-int	main(int argc, char **argv, char **envp)
+size_t	ft_strlcat(char *dest, const char *src, size_t n)
 {
-	(void) argc;
-	(void) argv;
-	ms_init_sig_handler();
-	while (1)
-	{
-		read_input();
-	}
-}
+	size_t	i;
+	size_t	j;
+	size_t	dest_len;
+	size_t	src_len;
 
-static void	read_input(void)
-{
-	char	*line;
-
-	line = readline("minishell>");
-	if (line == NULL)
-		ms_success_exit();
-	if (ms_is_empty_string(line))
-		return ;
-	if (*line != '\0' && line != NULL)
+	i = ft_strlen(dest);
+	j = 0;
+	dest_len = ft_strlen(dest);
+	src_len = ft_strlen(src);
+	if (n == 0 || n <= dest_len)
 	{
-		add_history(line);
-		ms_process_input(line);
+		return (src_len + n);
 	}
+	while (src[j] != '\0' && j < n - dest_len - 1)
+	{
+		dest[i] = src[j];
+		i ++;
+		j ++;
+	}
+	dest[i] = '\0';
+	return (dest_len + src_len);
 }

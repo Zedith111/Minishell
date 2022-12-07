@@ -1,45 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_list_utils.c                                    :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 21:10:02 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 14:30:58 by zah              ###   ########.fr       */
+/*   Created: 2022/07/08 14:12:38 by zah               #+#    #+#             */
+/*   Updated: 2022/07/08 16:34:18 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_dlist	*ms_dlist_new(void *content)
+t_list	*ft_lstnew(void *content)
 {
-	t_dlist	*node;
+	t_list	*node;
 
-	node = malloc (sizeof (t_dlist));
+	node = (t_list *)malloc (sizeof(t_list));
 	if (node == NULL)
 		return (NULL);
 	node->content = content;
 	node->next = NULL;
-	node->prev = NULL;
 	return (node);
 }
-
-void	ms_dlist_addback(t_dlist **list, t_dlist *node)
-{
-	t_dlist	*last;
-
-	if (list == NULL || node == NULL)
-		return ;
-	if ((*list) == NULL)
-		*list = node;
-	else
-	{
-		last = *list;
-		while (last->next != NULL)
-			last = last->next;
-		last->next = node;
-		node->prev = last;
-	}
-}
-

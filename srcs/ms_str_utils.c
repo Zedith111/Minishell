@@ -1,43 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_utility.c                                       :+:      :+:    :+:   */
+/*   ms_str_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2022/12/04 18:57:12 by zah              ###   ########.fr       */
+/*   Created: 2022/12/06 13:55:38 by zah               #+#    #+#             */
+/*   Updated: 2022/12/07 15:23:35 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Exit the program when ctrl + d is pressed.
- * Output exit message and free.
- * @todo : Add free function
+ * @brief Check that if a string is empty.Empty string contain space and 
+ * tab only
+ * @param str The string to check for 
+ * @return 0 if not empty, 1 if empty
  */
-void	ms_success_exit(void)
-{
-	printf("exit\n");
-	// system ("leaks minishell");
-	exit (0);
-}
-
-/**
- * @brief Exit program when error occur.
- * Output error message and free
- * @param str Error message to display
- * @todo : Add free function. Free previoulsy generated lexer list
- */
-void	ms_error_exit(char *err_msg)
-{
-	perror (err_msg);
-	printf ("exiting\n");
-	// system ("leaks minishell");
-	exit (1);
-}
-
 int	ms_is_empty_string(char *str)
 {
 	int	i;

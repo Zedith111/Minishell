@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_main.c                                          :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:40:21 by zah              ###   ########.fr       */
+/*   Created: 2022/07/08 12:26:47 by zah               #+#    #+#             */
+/*   Updated: 2022/07/08 12:47:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	read_input(void);
-
-int	main(int argc, char **argv, char **envp)
+void	ft_putnbr_fd(int n, int fd)
 {
-	(void) argc;
-	(void) argv;
-	ms_init_sig_handler();
-	while (1)
+	long	nbr;
+
+	nbr = n;
+	if (nbr < 0)
 	{
-		read_input();
+		ft_putchar_fd('-', fd);
+		nbr *= -1;
 	}
-}
-
-static void	read_input(void)
-{
-	char	*line;
-
-	line = readline("minishell>");
-	if (line == NULL)
-		ms_success_exit();
-	if (ms_is_empty_string(line))
-		return ;
-	if (*line != '\0' && line != NULL)
+	if (nbr <= 9)
+		ft_putchar_fd((nbr + '0'), fd);
+	else
 	{
-		add_history(line);
-		ms_process_input(line);
+		ft_putnbr_fd(nbr / 10, fd);
+		ft_putnbr_fd(nbr % 10, fd);
 	}
 }

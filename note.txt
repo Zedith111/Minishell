@@ -1,1 +1,6 @@
-not ignoring space in readline
+outfile without command will create new
+infile without command do nothing
+multilple infile read the last one
+	cat < Makefile < srcs/ms_exit.c | cat > out --> read ms_exit
+multilple outfile will write to last one 
+	cat < Makefile < srcs/ms_exit.c | cat > out >note2.txt -->write to note2

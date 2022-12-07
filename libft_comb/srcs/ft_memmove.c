@@ -1,42 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_main.c                                          :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:40:21 by zah              ###   ########.fr       */
+/*   Created: 2022/07/04 12:27:55 by zah               #+#    #+#             */
+/*   Updated: 2022/07/04 13:20:58 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	read_input(void);
-
-int	main(int argc, char **argv, char **envp)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	(void) argc;
-	(void) argv;
-	ms_init_sig_handler();
-	while (1)
-	{
-		read_input();
-	}
-}
+	unsigned char	*dest_c;
+	unsigned char	*src_c;
+	size_t			i;
 
-static void	read_input(void)
-{
-	char	*line;
-
-	line = readline("minishell>");
-	if (line == NULL)
-		ms_success_exit();
-	if (ms_is_empty_string(line))
-		return ;
-	if (*line != '\0' && line != NULL)
+	dest_c = (unsigned char *)dest;
+	src_c = (unsigned char *)src;
+	i = -1;
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	if (src_c < dest_c)
 	{
-		add_history(line);
-		ms_process_input(line);
+		while (n-- > 0)
+		{
+			dest_c[n] = src_c[n];
+		}
 	}
+	else
+	{
+		while (++i < n)
+			dest_c[i] = src_c[i];
+	}
+	return (dest_c);
 }

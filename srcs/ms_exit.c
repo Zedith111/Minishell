@@ -6,21 +6,21 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:39:40 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/12 15:11:01 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Exit the program when ctrl + d is pressed.
+ * @brief Exit the program when ctrl + d or exit detected.
  * Output exit message and free.
  * @todo : Add free function
  */
 void	ms_success_exit(void)
 {
 	printf("exit\n");
-	system ("leaks minishell");
+	// system ("leaks minishell");
 	exit (0);
 }
 
@@ -34,15 +34,15 @@ void	ms_error_exit(char *err_msg)
 {
 	perror (err_msg);
 	printf ("exiting\n");
-	system ("leaks minishell");
+	// system ("leaks minishell");
 	exit (1);
 }
 
 /**
  * @brief Built in exit function
  */
-void	ms_builtin_exit(void)
+void	ms_cmd_exit(void)
 {
 	printf("exit");
-	exit (0);
+	ms_success_exit();
 }

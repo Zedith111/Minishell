@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:26:47 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/12 14:31:46 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_token
 
 /**
  * @brief The lexer struct. 
- * Store two parameter, the original string as input
+ * Contain the original string as input
  * and pointer to the unprocess string as current
  */
 typedef struct s_lexer
@@ -61,6 +61,27 @@ typedef struct s_lexer
 	char	*input;
 	char	*current;
 }	t_lexer;
+
+/**
+ * @brief The struct used to store encironment variable.
+ * Contain two string, key the variable name, and the variable value.
+ */
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}	t_env;
+
+/**
+ * @brief 
+ * Store a linked list of environment struct which will be updata whenever
+ * a variable has been exported
+ */
+typedef struct s_main
+{
+	t_dlist		*list;
+}	t_main;
+
 
 //Exit Function
 void	ms_success_exit(void);
@@ -72,6 +93,7 @@ int		ms_is_empty_string(char *str);
 //Double Linked List Function
 t_dlist	*ms_dlist_new(void *content);
 void	ms_dlist_addback(t_dlist **list, t_dlist *node);
+void	ms_dlist_clear(t_dlist **lst, void (*del)(void *));
 
 //Signal Function
 void	ms_init_sig_handler(void);
@@ -83,9 +105,13 @@ t_token	*ms_create_token(t_token_type type, char *value);
 t_token	*ms_create_quote_token(t_lexer *lexer);
 t_token	*ms_create_word_token(t_lexer *lexer);
 t_token	*ms_create_operator_token(t_lexer *lexer);
+void	ms_token_free(void *token);
 
 //Testing use Function, will be destroyed
 void	print_token(t_token *token);
 void	print_token_list(t_dlist **list);
+
+//Built in command function
+void	ms_cmd_exit(void);
 
 #endif

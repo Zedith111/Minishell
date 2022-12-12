@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 21:10:02 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 14:30:58 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/12 14:51:58 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,18 @@ void	ms_dlist_addback(t_dlist **list, t_dlist *node)
 	}
 }
 
+void	ms_dlist_clear(t_dlist **lst, void (*del)(void *))
+{
+	t_dlist	*temp;
+
+	if (lst == NULL || del == NULL)
+		return ;
+	while ((*lst) != NULL)
+	{
+		temp = *lst;
+		*lst = (*lst)->next;
+		(*del)(temp->content);
+		free (temp);
+	}
+	*lst = NULL;
+}

@@ -3,7 +3,8 @@ INCLUDE	=	./include/
 SRC_DIR	=	./srcs
 OBJ_DIR	=	./obj
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror 
+CFLAGS	+=	-g3 -fsanitize=address
 LIBFT	=	./libft_comb
 RL_INC	=	-I/usr/local/opt/readline/include
 RL_LIB	=	-lreadline -L/usr/local/opt/readline/lib

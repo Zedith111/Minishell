@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:35:18 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/12 15:09:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_token	*ms_create_operator_token(t_lexer *lexer)
 	if (*lexer->current == '|')
 	{
 		lexer->current += 1;
-		return (ms_create_token(TOKEN_PIPE, "|"));
+		return (ms_create_token(TOKEN_PIPE, NULL));
 	}
 	else if (*lexer->current == '>')
 	{
@@ -89,9 +89,9 @@ t_token	*ms_create_operator_token(t_lexer *lexer)
 		if (*lexer->current == '>')
 		{
 			lexer->current += 1;
-			return (ms_create_token(TOKEN_AOUT, ">>"));
+			return (ms_create_token(TOKEN_AOUT, NULL));
 		}
-		return (ms_create_token(TOKEN_OUT, ">"));
+		return (ms_create_token(TOKEN_OUT, NULL));
 	}
 	else
 	{
@@ -99,8 +99,8 @@ t_token	*ms_create_operator_token(t_lexer *lexer)
 		if (*lexer->current == '<')
 		{
 			lexer->current += 1;
-			return (ms_create_token(TOKEN_AOUT, "<<"));
+			return (ms_create_token(TOKEN_AOUT, NULL));
 		}
-		return (ms_create_token(TOKEN_OUT, "<"));
+		return (ms_create_token(TOKEN_OUT, NULL));
 	}
 }

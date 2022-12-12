@@ -4,3 +4,21 @@ multilple infile read the last one
 	cat < Makefile < srcs/ms_exit.c | cat > out --> read ms_exit
 multilple outfile will write to last one 
 	cat < Makefile < srcs/ms_exit.c | cat > out >note2.txt -->write to note2
+
+
+Double quote preserve the value unless for $ and '
+
+cd
+	when path is not provided, will set to HOME
+	if - is use, it will set to OLDPWD
+
+export will sort and add declare -x in front of name
+	export will not resort when new variable added, newly added will always be last
+
+env will show envirenment variable only, but not local variabe
+	env not show variable if not define. export a will not show, export a="hi" will show
+	when execute env, check whether the first character is '\0' indicating is empty. If is empty, dont print
+
+
+when expand a variable that is not present in environment, will return empty string
+if  only $ is used, treat is as the character only. echo $ print out $

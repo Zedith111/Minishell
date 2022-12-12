@@ -6,15 +6,16 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/07 15:36:01 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/12 15:10:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+#include <string.h>
+
 static t_lexer	*lexer_init(char *input);
 static t_token	*lexer_advance(t_lexer *lexer);
-int				ms_is_sep(char c);
 
 /**
  * @brief Main function of lexer, turn the line into smaller token
@@ -40,7 +41,12 @@ void	ms_process_input(char *input)
 		ms_dlist_addback(&head, ms_dlist_new(token));
 		token = lexer_advance(lexer);
 	}
+	//Pass to parser
 	print_token_list(&head);
+	//free token list at parser
+	ms_dlist_clear(&head, &ms_token_free);
+	free (lexer);
+	free (token);
 }
 
 /**
@@ -53,7 +59,7 @@ static t_lexer	*lexer_init(char *input)
 
 	rtn = malloc (sizeof(t_lexer));
 	rtn->input = input;
-	rtn->current = ft_strdup(input);
+	rtn->current = input;
 	return (rtn);
 }
 
@@ -94,4 +100,16 @@ int	ms_is_sep(char c)
 	if (c == ' ' || c == '\t')
 		return (4);
 	return (0);
+}
+
+/**
+ * @brief Free the token struct and the value in it
+ */
+void	ms_token_free(void *token)
+{
+	t_token	*target;
+
+	target = (t_token *)token;
+	free(target->value);
+	free(target);
 }

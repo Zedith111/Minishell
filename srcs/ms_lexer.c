@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/12 15:10:12 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/13 20:10:04 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static t_token	*lexer_advance(t_lexer *lexer);
 
 /**
  * @brief Main function of lexer, turn the line into smaller token
- * and add it to linked ist
+ * and store it in linked ist
  * @param input The line return from readline
  */
-void	ms_process_input(char *input)
+void	ms_process_input(char *input, t_main *main)
 {
 	t_lexer	*lexer;
 	t_token	*token;
@@ -35,13 +35,15 @@ void	ms_process_input(char *input)
 	{
 		if (token->type == TOKEN_ERR)
 		{
-			//Free list
-			ms_error_exit("Quote unclosed");
+			printf("Unenclosed quote detected\n");
+			break ;
 		}
 		ms_dlist_addback(&head, ms_dlist_new(token));
 		token = lexer_advance(lexer);
 	}
 	//Pass to parser
+	ms_trim_list(head);
+	ms_expand_list(head, main);
 	print_token_list(&head);
 	//free token list at parser
 	ms_dlist_clear(&head, &ms_token_free);
@@ -49,10 +51,6 @@ void	ms_process_input(char *input)
 	free (token);
 }
 
-/**
- * @brief Initialize and return the lexer struct 
- * @param input The input string pass from readline
- */
 static t_lexer	*lexer_init(char *input)
 {
 	t_lexer	*rtn;
@@ -102,9 +100,6 @@ int	ms_is_sep(char c)
 	return (0);
 }
 
-/**
- * @brief Free the token struct and the value in it
- */
 void	ms_token_free(void *token)
 {
 	t_token	*target;

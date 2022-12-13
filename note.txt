@@ -6,8 +6,6 @@ multilple outfile will write to last one
 	cat < Makefile < srcs/ms_exit.c | cat > out >note2.txt -->write to note2
 
 
-Double quote preserve the value unless for $ and '
-
 cd
 	when path is not provided, will set to HOME
 	if - is use, it will set to OLDPWD
@@ -22,3 +20,8 @@ env will show envirenment variable only, but not local variabe
 
 when expand a variable that is not present in environment, will return empty string
 if  only $ is used, treat is as the character only. echo $ print out $
+
+To do
+	expander 
+	parser
+	when expand, might need to add \ before special character

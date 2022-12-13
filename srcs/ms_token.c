@@ -6,13 +6,12 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/12 15:09:03 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/13 20:12:20 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Advamce
 /**
  * @brief Check whether a string start with quote is properly end
  * @param str The string to check for

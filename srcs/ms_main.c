@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 20:12:02 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/15 21:14:44 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	main = init_main(envp);
 	ms_init_sig_handler();
-	while (1)
-	{
-		read_input(main);
-	}
+	char *8
+	// while (1)
+	// {
+	// 	read_input(main);
+	// }
 }
 
 static void	read_input(t_main *main)

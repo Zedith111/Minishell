@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 18:14:27 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/15 20:52:22 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,26 @@ typedef struct s_env
 }	t_env;
 
 /**
+ * @brief The struct used to store commands after parsing.
+ * Contain commands saved in **full_command, infile & outfile name, fopen type.
+ */
+typedef struct s_command
+{
+	char	**full_command;
+	char	*infile;
+	char	*outfile;
+	char	type;
+}	t_command;
+
+/**
  * @brief 
- * Store a linked list of environment struct which will be updata whenever
+ * Store a linked list of environment struct which will be updated whenever
  * a variable has been exported
  */
 typedef struct s_main
 {
 	t_dlist		*env_list;
+	char		**envp;
 }	t_main;
 
 void	ms_free_main(t_main *main);

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 18:14:27 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/15 20:32:55 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,20 @@ typedef struct s_env
 }	t_env;
 
 /**
+ * @brief The struct used to store info to allow program to be execute.
+ * Have a double array storing all command including arguement. A character 
+ * named file type to check for whether should be Append (A) or Trunc (T)
+ * Two string infile and outfile which is the name of infile and outfile
+ */
+typedef struct s_command
+{
+	char		**full_command;
+	char		file_type;
+	char		*infile;
+	char		*outfile;
+}	t_command;
+
+/**
  * @brief 
  * Store a linked list of environment struct which will be updata whenever
  * a variable has been exported
@@ -80,9 +94,9 @@ typedef struct s_env
 typedef struct s_main
 {
 	t_dlist		*env_list;
+	char		**envp;
 }	t_main;
 
-void	ms_free_main(t_main *main);
 
 //Exit Function
 void	ms_success_exit(t_main *main);
@@ -97,6 +111,8 @@ int		ms_strcmp(char *s1, char *s2);
 t_dlist	*ms_dlist_new(void *content);
 void	ms_dlist_addback(t_dlist **list, t_dlist *node);
 void	ms_dlist_clear(t_dlist **lst, void (*del)(void *));
+void	ms_dlist_del_front(t_dlist **lst, void (*del)(void *));
+int		ms_dlist_size(t_dlist *head);
 
 //Signal Function
 void	ms_init_sig_handler(void);
@@ -108,17 +124,23 @@ t_token	*ms_create_token(t_token_type type, char *value);
 t_token	*ms_create_quote_token(t_lexer *lexer);
 t_token	*ms_create_word_token(t_lexer *lexer);
 t_token	*ms_create_operator_token(t_lexer *lexer);
-void	ms_token_free(void *token);
 void	ms_trim_list(t_dlist *head);
 void	ms_expand_list(t_dlist *head, t_main *main);
+
+//Parser
+void	ms_parse_input(t_dlist *token_list, t_main *main);
 
 //Built in command function
 t_dlist	*ms_dup_env(char **envp);
 void	ms_env_free(void *env);
 void	ms_cmd_exit(void);
 
+//Free function
+void	ms_token_free(void *token);
+void	ms_free_main(t_main *main);
+
 //Testing use Function, will be destroyed
-void	print_token(t_token *token);
+void	print_token_node(t_dlist *node);
 void	print_token_list(t_dlist **list);
 void	print_env_list(t_dlist **lst);
 

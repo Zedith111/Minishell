@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 19:03:47 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/15 14:00:10 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ static void	expand_token(void *content, t_main *main)
 	token = (t_token *)content;
 	if (token->type == TOKEN_WORD)
 	{
-		if (token->value[0] == '$' && token->value[1] != '\0')
+		if (token->value[0] == '$' && token->value[1] == '?' && token->value[2] == '\0')
+		{
+			printf("exit status here\n");
+		}
+		else if (token->value[0] == '$' && token->value[1] != '\0')
 		{
 			temp = token->value;
 			token->value = expand_variable(token->value, main);
@@ -57,6 +61,7 @@ static char	*expand_variable(char *value, t_main *main)
 {
 	t_dlist	*current_env;
 	t_env	*env;
+	char	*rtn;
 
 	current_env = main->env_list;
 	while (current_env != NULL)
@@ -66,5 +71,7 @@ static char	*expand_variable(char *value, t_main *main)
 			return (ft_strdup(env->value));
 		current_env = current_env->next;
 	}
-	return ("");
+	rtn = malloc(1);
+	rtn[0] = '\0';
+	return (rtn);
 }

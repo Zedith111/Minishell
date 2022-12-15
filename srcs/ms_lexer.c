@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 20:10:04 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/15 20:57:29 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,20 @@ void	ms_process_input(char *input, t_main *main)
 	{
 		if (token->type == TOKEN_ERR)
 		{
-			printf("Unenclosed quote detected\n");
-			break ;
+			printf("Unclosed quote detected\n");
+			ms_dlist_clear(&head, &ms_token_free);
+			free (lexer);
+			free (token);
+			return ;
 		}
 		ms_dlist_addback(&head, ms_dlist_new(token));
 		token = lexer_advance(lexer);
 	}
-	//Pass to parser
 	ms_trim_list(head);
 	ms_expand_list(head, main);
-	print_token_list(&head);
-	//free token list at parser
-	ms_dlist_clear(&head, &ms_token_free);
+	//Test print token list
+	// print_token_list(&head);
+	ms_parse_input(head, main);
 	free (lexer);
 	free (token);
 }
@@ -98,13 +100,4 @@ int	ms_is_sep(char c)
 	if (c == ' ' || c == '\t')
 		return (4);
 	return (0);
-}
-
-void	ms_token_free(void *token)
-{
-	t_token	*target;
-
-	target = (t_token *)token;
-	free(target->value);
-	free(target);
 }

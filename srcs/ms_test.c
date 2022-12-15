@@ -57,3 +57,37 @@ void	print_env_list(t_dlist **lst)
 	}
 }
 
+void	print_command_node(void *content)
+{
+	t_command *cmd;
+	int size;
+	int i;
+
+	cmd = (t_command *)content;
+	size = 0;
+	while (cmd->full_command[size] != NULL)
+		size ++;
+	printf("Length of double array is %d\n", size);
+	i = 0;
+	while (i < size)
+	{
+		printf("%s\n", cmd->full_command[i]);
+		i ++;
+	}
+	printf("infile is %d\n", cmd->infile);
+	printf("outfile id %d\n", cmd->outfile);
+}
+
+void print_command_list(t_dlist **list)
+{
+	t_dlist *current;
+
+	current = *list;
+	while (current->next != NULL)
+	{
+		print_command_node(current->content);
+		current =current->next;
+	}
+	
+}
+

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 20:12:20 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/14 16:10:51 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,11 @@ t_token	*ms_create_word_token(t_lexer *lexer)
 		i++;
 	value = ft_substr(lexer->current, 0, i);
 	if (ms_is_empty_string(value))
-		return (ms_create_token(TOKEN_END, NULL));
+	{
+		value = malloc(1);
+		return (ms_create_token(TOKEN_END, value));
+	}
+		
 	lexer->current += i;
 	return (ms_create_token(TOKEN_WORD, value));
 }

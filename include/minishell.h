@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/15 20:32:55 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/18 12:21:14 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,27 @@ typedef struct s_env
 }	t_env;
 
 /**
+ * @brief The struct used to store file information. 
+ * File type is used to check ifthe file should be Append (A) or Trunc (T). 
+ * Default file name is set as STDIN and STDOUT for infile and outfile. 
+ */
+typedef struct s_file
+{
+	char	file_type;
+	char	*fine_name;
+	int		fd;
+}	t_file;
+
+/**
  * @brief The struct used to store info to allow program to be execute.
- * Have a double array storing all command including arguement. A character 
- * named file type to check for whether should be Append (A) or Trunc (T)
- * Two string infile and outfile which is the name of infile and outfile
+ * Have a double array storing all command including arguement. Two double
+ * array of struct t_file storing infile and outfile information
  */
 typedef struct s_command
 {
 	char		**full_command;
-	char		file_type;
-	char		*infile;
-	char		*outfile;
+	t_file		**infile;
+	t_file		**outfile;
 }	t_command;
 
 /**

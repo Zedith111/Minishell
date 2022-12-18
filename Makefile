@@ -20,7 +20,7 @@ all	:
 $(NAME)	:	$(OBJS)
 		make -C $(LIBFT)
 		cp ./libft_comb/libft.a .
-		$(CC) $(CFLAGS) libft.a $(OBJS) $(RL_LIB) -o $(NAME)
+		$(CC) $(CFLAGS) $(OBJS) $(RL_LIB) libft.a -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(RL_INC) -c $< -o $@

@@ -5,6 +5,11 @@ void	print_token_node(t_dlist *node)
 {
 	t_token *token;
 
+	if (node == NULL)
+	{
+		printf ("empty list\n");
+		return;
+	}
 	token = (t_token *)node->content;
 	if (token->type == TOKEN_QUOTE)
 		printf("Quote\n");
@@ -20,6 +25,8 @@ void	print_token_node(t_dlist *node)
 		printf("Outfile\n");
 	else if (token->type == TOKEN_PIPE)
 		printf("Pipe\n");
+	else if (token->type == TOKEN_END)
+		printf("end\n");
 	printf ("%s\n", token->value);
 }
 
@@ -71,11 +78,12 @@ void	print_command_node(void *content)
 	i = 0;
 	while (i < size)
 	{
-		printf("%s\n", cmd->full_command[i]);
+		printf("%s, ", cmd->full_command[i]);
 		i ++;
 	}
-	printf("infile is %d\n", cmd->infile);
-	printf("outfile id %d\n", cmd->outfile);
+	printf("\n");
+	// printf("infile is %d\n", cmd->infile);
+	// printf("outfile id %d\n", cmd->outfile);
 }
 
 void print_command_list(t_dlist **list)
@@ -83,11 +91,10 @@ void print_command_list(t_dlist **list)
 	t_dlist *current;
 
 	current = *list;
-	while (current->next != NULL)
+	while (current != NULL)
 	{
 		print_command_node(current->content);
 		current =current->next;
 	}
-	
 }
 

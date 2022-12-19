@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 18:32:53 by zah               #+#    #+#             */
-/*   Updated: 2022/12/14 20:22:11 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/19 21:32:34 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief Called by the parser once all the token has been converted to command
  */
-void	ms_token_free(void *token)
+void	ms_free_token(void *token)
 {
 	t_token	*target;
 
@@ -30,14 +30,24 @@ void	ms_token_free(void *token)
 void	ms_free_command(void *content)
 {
 	t_command	*target;
-	int			i;
 
 	target = (t_command *)content;
+	ms_del_array(target->full_command);
+	ms_free_tfile_array(target->infile);
+	ms_free_tfile_array(target->outfile);
+	free (target);
+}
+
+void	ms_free_tfile_array(t_file **files)
+{
+	int	i;
+
 	i = 0;
-	while (target->full_command[i] != NULL)
+	while (files[i] != NULL)
 	{
-		free(target->full_command[i]);
-		i++;
+		free(files[i]->fine_name);
+		free (files[i]);
+		i ++;
 	}
-	free(target->full_command);
+	free (files);
 }

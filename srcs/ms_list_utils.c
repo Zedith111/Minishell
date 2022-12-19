@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 21:10:02 by zah               #+#    #+#             */
-/*   Updated: 2022/12/14 16:26:52 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/18 17:14:05 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ms_dlist_addback(t_dlist **list, t_dlist *node)
 	}
 }
 
-void	ms_dlist_del_front(t_dlist **lst, void (*del)(void *))
+void	ms_dlist_del_first(t_dlist **lst, void (*del)(void *))
 {
 	t_dlist	*temp;
 
@@ -63,6 +63,29 @@ void	ms_dlist_del_front(t_dlist **lst, void (*del)(void *))
 	free (temp);
 }
 
+void	ms_dlst_del_last(t_dlist **lst, void (*del)(void *))
+{
+	t_dlist	*prev;
+	t_dlist	*current;
+
+	if ((*lst) == NULL || del == NULL)
+		return ;
+	current = *lst;
+	while (current->next != NULL)
+		current = current->next;
+	prev = current->prev;
+	if (prev == NULL)
+	{
+		(*del)((*lst)->content);
+		free (*lst);
+		*lst = NULL;
+		return ;
+	}
+	prev->next = NULL;
+	(*del)(current->content);
+	free (current);
+}
+
 void	ms_dlist_clear(t_dlist **lst, void (*del)(void *))
 {
 	t_dlist	*temp;
@@ -77,22 +100,4 @@ void	ms_dlist_clear(t_dlist **lst, void (*del)(void *))
 		free (temp);
 	}
 	*lst = NULL;
-}
-
-//Not sure required
-int	ms_dlist_size(t_dlist *head)
-{
-	t_dlist	*current;
-	int		size;
-
-	if (head == NULL)
-		return (0);
-	current = head;
-	size = 0;
-	while (current != NULL)
-	{
-		size ++;
-		current = current->next;
-	}
-	return (size);
 }

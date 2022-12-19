@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/18 12:21:14 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/19 21:05:21 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,49 +109,65 @@ typedef struct s_main
 
 
 //Exit Function
-void	ms_success_exit(t_main *main);
-void	ms_error_exit(char *err_msg);
+void		ms_success_exit(t_main *main);
+void		ms_error_exit(char *err_msg);
 
 //String Utility Finction
-int		ms_is_empty_string(char *str);
-int		ms_char_match(char *str, char c);
-int		ms_strcmp(char *s1, char *s2);
+int			ms_is_empty_string(char *str);
+int			ms_char_match(char *str, char c);
+int			ms_strcmp(char *s1, char *s2);
+
+//Array Utility Function
+char		**ms_array_append(char **arr, char *new);
+void		ms_del_array(char **arr);
 
 //Double Linked List Function
-t_dlist	*ms_dlist_new(void *content);
-void	ms_dlist_addback(t_dlist **list, t_dlist *node);
-void	ms_dlist_clear(t_dlist **lst, void (*del)(void *));
-void	ms_dlist_del_front(t_dlist **lst, void (*del)(void *));
-int		ms_dlist_size(t_dlist *head);
+t_dlist		*ms_dlist_new(void *content);
+void		ms_dlist_addback(t_dlist **list, t_dlist *node);
+void		ms_dlist_clear(t_dlist **lst, void (*del)(void *));
+void		ms_dlist_del_first(t_dlist **lst, void (*del)(void *));
+void		ms_dlst_del_last(t_dlist **lst, void (*del)(void *));
+void		ms_dlst_del_target(t_dlist **lst, t_dlist *target,
+				void (*del)(void *));
+int			ms_dlist_size(t_dlist *head);
+t_dlist		*ms_dlst_last(t_dlist *head);
 
 //Signal Function
-void	ms_init_sig_handler(void);
+void		ms_init_sig_handler(void);
 
 //Lexer and Expander
-void	ms_process_input(char *input, t_main *main);
-int		ms_is_sep(char c);
-t_token	*ms_create_token(t_token_type type, char *value);
-t_token	*ms_create_quote_token(t_lexer *lexer);
-t_token	*ms_create_word_token(t_lexer *lexer);
-t_token	*ms_create_operator_token(t_lexer *lexer);
-void	ms_trim_list(t_dlist *head);
-void	ms_expand_list(t_dlist *head, t_main *main);
+void		ms_process_input(char *input, t_main *main);
+int			ms_is_sep(char c);
+t_token		*ms_create_token(t_token_type type, char *value);
+t_token		*ms_create_quote_token(t_lexer *lexer);
+t_token		*ms_create_word_token(t_lexer *lexer);
+t_token		*ms_create_operator_token(t_lexer *lexer);
+void		ms_trim_list(t_dlist *head);
+void		ms_expand_list(t_dlist *head, t_main *main);
 
 //Parser
-void	ms_parse_input(t_dlist *token_list, t_main *main);
+void		ms_parse_input(t_dlist *token_list, t_main *main);
+t_file		*ms_init_tfile(void);
+void		ms_set_tfile(t_file *target, char type, char *file_name);
+t_file		**ms_append_tfile_array(t_file **files, char type, char *file_name);
+t_command	*ms_init_command(void);
+int			ms_get_command_length(t_dlist *token_list);
+char		**ms_get_command(t_dlist *token_list, int length);
 
 //Built in command function
-t_dlist	*ms_dup_env(char **envp);
-void	ms_env_free(void *env);
-void	ms_cmd_exit(void);
+t_dlist		*ms_dup_env(char **envp);
+void		ms_env_free(void *env);
+void		ms_cmd_exit(void);
 
 //Free function
-void	ms_token_free(void *token);
-void	ms_free_main(t_main *main);
+void		ms_free_token(void *token);
+void		ms_free_command(void *content);
+void		ms_free_tfile_array(t_file **files);
 
-//Testing use Function, will be destroyed
-void	print_token_node(t_dlist *node);
-void	print_token_list(t_dlist **list);
-void	print_env_list(t_dlist **lst);
+//Testing use Function, will be deleted
+void		print_token_node(t_dlist *node);
+void		print_token_list(t_dlist **list);
+void		print_env_list(t_dlist **lst);
+void 		print_command_list(t_dlist **list);
 
 #endif

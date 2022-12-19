@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/15 20:57:29 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/19 18:01:34 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,29 @@ void	ms_process_input(char *input, t_main *main)
 {
 	t_lexer	*lexer;
 	t_token	*token;
-	t_dlist	*head;
+	t_dlist	*token_list;
 
 	lexer = lexer_init(input);
 	token = lexer_advance(lexer);
-	head = NULL;
+	token_list = NULL;
 	while (token->type != TOKEN_END)
 	{
 		if (token->type == TOKEN_ERR)
 		{
 			printf("Unclosed quote detected\n");
-			ms_dlist_clear(&head, &ms_token_free);
+			ms_dlist_clear(&token_list, &ms_free_token);
 			free (lexer);
 			free (token);
 			return ;
 		}
-		ms_dlist_addback(&head, ms_dlist_new(token));
+		ms_dlist_addback(&token_list, ms_dlist_new(token));
 		token = lexer_advance(lexer);
 	}
-	ms_trim_list(head);
-	ms_expand_list(head, main);
+	ms_trim_list(token_list);
+	ms_expand_list(token_list, main);
 	//Test print token list
 	// print_token_list(&head);
-	ms_parse_input(head, main);
+	ms_parse_input(token_list, main);
 	free (lexer);
 	free (token);
 }

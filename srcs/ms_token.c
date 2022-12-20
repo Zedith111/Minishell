@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 14:14:20 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 18:04:10 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ t_token	*ms_create_quote_token(t_lexer *lexer)
 	sep = *lexer->current;
 	i = check_enclosed(lexer->current, sep);
 	if (i == -1)
+	{
+		printf("Unclosed quote detected\n");
 		return (ms_create_token(TOKEN_ERR, NULL));
+	}
 	value = ft_substr(lexer->current, 0, i);
 	lexer->current += i;
 	return (ms_create_token(TOKEN_QUOTE, value));

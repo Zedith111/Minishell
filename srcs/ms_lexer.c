@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 18:01:34 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 18:04:46 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	ms_process_input(char *input, t_main *main)
 	{
 		if (token->type == TOKEN_ERR)
 		{
-			printf("Unclosed quote detected\n");
 			ms_dlist_clear(&token_list, &ms_free_token);
 			free (lexer);
 			free (token);
@@ -46,8 +45,6 @@ void	ms_process_input(char *input, t_main *main)
 	}
 	ms_trim_list(token_list);
 	ms_expand_list(token_list, main);
-	//Test print token list
-	// print_token_list(&head);
 	ms_parse_input(token_list, main);
 	free (lexer);
 	free (token);

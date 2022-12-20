@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 12:32:31 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 15:40:34 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 16:36:24 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,37 @@ t_file	**ms_get_file_info(t_file **current, t_token *token)
 	{
 		new = ms_append_tfile_array(current, file_type, token->value);
 		return (new);
+	}
+}
+
+/**
+ * @brief Intepret the token list and create command based on it.
+ * First check the token type of the first node. If it is pipe,
+ * initalize new command struct and add it to the list. Otherwise, 
+ * just modify the command 
+ */
+void	create_command(t_dlist *command_list, t_dlist *token, int length)
+{
+	t_command	*new;
+	t_command	*current;
+	t_token		*head;
+	t_dlist		*last;
+
+	head = (t_token *)token->content;
+	if (head->type == TOKEN_PIPE)
+	{
+		new = ms_init_command();
+		ms_dlist_addback(&command_list, ms_dlist_new(new));
+	}
+	else
+	{
+		last = ms_dlst_last(command_list);
+		current = (t_command *)last->content;
+		if (head->type == TOKEN_WORD || head->type == TOKEN_QUOTE)
+			current->full_command = ms_get_command(current, token, length);
+		else if (head->type == TOKEN_AIN || head->type == TOKEN_IN)
+			current->infile = ms_get_file_info(current->infile, head);
+		else
+			current->outfile = ms_get_file_info(current->outfile, head);
 	}
 }

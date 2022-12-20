@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2022/12/15 14:00:10 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 18:02:32 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static void	expand_token(void *content, t_main *main)
 	token = (t_token *)content;
 	if (token->type == TOKEN_WORD)
 	{
-		if (token->value[0] == '$' && token->value[1] == '?' && token->value[2] == '\0')
+		if (token->value[0] == '$' && token->value[1] == '?'
+			&& token->value[2] == '\0')
 		{
 			printf("exit status here\n");
 		}

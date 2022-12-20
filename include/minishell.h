@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 15:24:01 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 16:36:09 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ t_file		*ms_init_tfile(void);
 void		ms_set_tfile(t_file *target, char type, char *file_name);
 t_file		**ms_append_tfile_array(t_file **files, char type, char *file_name);
 t_command	*ms_init_command(void);
+void		create_command(t_dlist *command_list, t_dlist *token, int length);
 int			ms_get_command_length(t_dlist *token_list);
 char		**ms_get_command(t_command *current, t_dlist *token_list,
 				int length);

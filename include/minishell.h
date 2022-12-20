@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 21:05:21 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:24:01 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_env
 typedef struct s_file
 {
 	char	file_type;
-	char	*fine_name;
+	char	*file_name;
 	int		fd;
 }	t_file;
 
@@ -120,6 +120,7 @@ int			ms_strcmp(char *s1, char *s2);
 //Array Utility Function
 char		**ms_array_append(char **arr, char *new);
 void		ms_del_array(char **arr);
+char		**ms_dup_array(char **arr);
 
 //Double Linked List Function
 t_dlist		*ms_dlist_new(void *content);
@@ -152,7 +153,9 @@ void		ms_set_tfile(t_file *target, char type, char *file_name);
 t_file		**ms_append_tfile_array(t_file **files, char type, char *file_name);
 t_command	*ms_init_command(void);
 int			ms_get_command_length(t_dlist *token_list);
-char		**ms_get_command(t_dlist *token_list, int length);
+char		**ms_get_command(t_command *current, t_dlist *token_list,
+				int length);
+t_file		**ms_get_file_info(t_file **current, t_token *token);
 
 //Built in command function
 t_dlist		*ms_dup_env(char **envp);

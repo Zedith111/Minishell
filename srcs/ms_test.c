@@ -74,26 +74,54 @@ void	print_command_node(void *content)
 	size = 0;
 	while (cmd->full_command[size] != NULL)
 		size ++;
-	printf("Length of double array is %d\n", size);
 	i = 0;
 	while (i < size)
 	{
-		printf("%s, ", cmd->full_command[i]);
+		printf("%s", cmd->full_command[i]);
+		if (i != size -1)
+			printf(" ,");
 		i ++;
 	}
 	printf("\n");
-	// printf("infile is %d\n", cmd->infile);
-	// printf("outfile id %d\n", cmd->outfile);
+	i = 0;
+	size = 0;
+	while (cmd->infile[size] != NULL)
+		size ++;
+	printf ("Infile :");
+	while (i < size)
+	{
+		printf("%s", cmd->infile[i]->file_name);
+		if (i != size -1)
+			printf(" ,");
+		i ++;
+	}
+	printf("\n");
+	i = 0;
+	size = 0;
+	while (cmd->outfile[size] != NULL)
+		size ++;
+	printf ("Outfile :");
+	while (i < size)
+	{
+		printf("%s", cmd->outfile[i]->file_name);
+		if (i != size -1)
+			printf(" , ");
+		i ++;
+	}
+	printf("\n");
 }
 
 void print_command_list(t_dlist **list)
 {
 	t_dlist *current;
+	int i = 0;
 
 	current = *list;
 	while (current != NULL)
 	{
+		printf ("Command %d : ", i);
 		print_command_node(current->content);
+		i ++;
 		current =current->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/14 16:10:51 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 14:14:20 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ t_token	*ms_create_word_token(t_lexer *lexer)
 		value = malloc(1);
 		return (ms_create_token(TOKEN_END, value));
 	}
-		
 	lexer->current += i;
 	return (ms_create_token(TOKEN_WORD, value));
 }
@@ -102,8 +101,8 @@ t_token	*ms_create_operator_token(t_lexer *lexer)
 		if (*lexer->current == '<')
 		{
 			lexer->current += 1;
-			return (ms_create_token(TOKEN_AOUT, NULL));
+			return (ms_create_token(TOKEN_AIN, NULL));
 		}
-		return (ms_create_token(TOKEN_OUT, NULL));
+		return (ms_create_token(TOKEN_IN, NULL));
 	}
 }

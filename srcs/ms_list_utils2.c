@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 20:30:13 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:53:13 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,22 @@ void	ms_dlst_del_target(t_dlist **lst, t_dlist *target, void (*del)(void *))
 {
 	t_dlist	*current;
 
+
 	if ((*lst) == NULL || del == NULL)
 		return ;
 	current = *lst;
-	while (current != NULL)
-	{
-		if (current == target)
-		{
-			if (current->prev == NULL)
-				ms_dlist_del_first(lst, del);
-			else if (current->next == NULL)
-				ms_dlst_del_last(lst, del);
-			else
-			{
-				current->prev->next = current->next;
-				current->next->prev = current->prev;
-				(*del)(current->content);
-				free (current);
-			}
-		}
+	while (current != NULL && current != target)
 		current = current->next;
+	if (current->prev == NULL)
+		ms_dlist_del_first(lst, del);
+	else if (current->next == NULL)
+		ms_dlst_del_last(lst, del);
+	else
+	{
+		current->prev->next = current->next;
+		current->next->prev = current->prev;
+		(*del)(current->content);
+		free (current);
 	}
 }
 

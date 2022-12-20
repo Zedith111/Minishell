@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 12:32:31 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 21:37:21 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:40:34 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ t_command	*ms_init_command(void)
 	t_command	*rtn;
 
 	rtn = malloc (sizeof (t_command));
-	// rtn->full_command = malloc(sizeof (char *));
-	// rtn->full_command[0] = NULL;
+	rtn->full_command = malloc(sizeof(char *));
+	rtn->full_command[0] = NULL;
 	rtn->infile = malloc (sizeof(t_file *) * 2);
 	rtn->infile[0] = ms_init_tfile();
 	rtn->infile[1] = NULL;
 	rtn->outfile = malloc (sizeof (t_file *) * 2);
-	rtn->infile[0] = ms_init_tfile();
+	rtn->outfile[0] = ms_init_tfile();
 	rtn->outfile[1] = NULL;
 	return (rtn);
 }
@@ -57,34 +57,50 @@ int	ms_get_command_length(t_dlist *token_list)
 	return (size);
 }
 
-char	**ms_get_command(t_dlist *token_list, int length)
+/**
+ * @brief Return an array of string that represent all the continuous word
+ */
+char	**ms_get_command(t_command *current, t_dlist *token_list, int length)
 {
 	char	**full_command;
 	int		i;
-	t_dlist	*current;
+	t_dlist	*current_token;
 	t_token	*token;
 
-	full_command = malloc(sizeof(char *) * (length + 1));
-	current = token_list;
+	full_command = ms_dup_array(current->full_command);
 	i = 0;
+	current_token = token_list;
 	while (i < length)
 	{
-		token = (t_token *)current->content;
-		full_command[i] = ft_strdup(token->value);
+		token = (t_token *)current_token->content;
+		full_command = ms_array_append(full_command, token->value);
 		i ++;
-		current = current->next;
+		current_token = current_token->next;
 	}
-	full_command[i] = 0;
 	return (full_command);
 }
 
+/**
+ * @brief Modify the infile and outfile of t_command struct.
+ * First check that the current file name, if is NULL just modify the file name.
+ * If is not NULL, append a new file to the double array
+ */
+t_file	**ms_get_file_info(t_file **current, t_token *token)
+{
+	char	file_type;
+	t_file	**new;
 
-// void	ms_parse_file(t_dlist *token_list,void	*cmd)
-// {
-// 	t_command	*current;
-// 	t_token		*token;
-
-// 	token = (t_token *)token_list->content;
-// 	current = (t_command *)cmd;
-	
-// }
+	file_type = 'T';
+	if (token->type == TOKEN_AIN || token->type == TOKEN_AOUT)
+		file_type = 'A';
+	if (current[0]->file_name == NULL)
+	{
+		ms_set_tfile(current[0], file_type, token->value);
+		return (current);
+	}
+	else
+	{
+		new = ms_append_tfile_array(current, file_type, token->value);
+		return (new);
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 18:32:53 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 21:32:34 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 14:12:00 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ms_free_tfile_array(t_file **files)
 	i = 0;
 	while (files[i] != NULL)
 	{
-		free(files[i]->fine_name);
+		free(files[i]->file_name);
 		free (files[i]);
 		i ++;
 	}

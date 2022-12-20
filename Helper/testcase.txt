@@ -1,0 +1,22 @@
+ls | wtf
+wtf | ls
+echo $$
+echo >out 1 >out 2
+cd ~
+cd -
+export PWD, then echo PWD
+unset PWD, then ls
+ls -l -a
+ls "-l -a"
+echo test tout
+echo test      tout
+echo -n test tout
+echo -n -n -n test tout
+echo $TEST
+echo "$USER"
+echo '$USER'
+cat < ls > ls
+| test
+echo > <
+echo | |
+exit 7654

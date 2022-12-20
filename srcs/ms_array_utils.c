@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:10:19 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 16:53:14 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:23:25 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,25 @@ char	**ms_array_append(char **arr, char *new)
 	}
 	rtn[i] = ft_strdup(new);
 	rtn[i + 1] = NULL;
+	free (arr);
+	return (rtn);
+}
+
+char	**ms_dup_array(char **arr)
+{
+	char	**rtn;
+	int		i;
+	int		size;
+
+	i = 0;
+	size = get_array_size(arr);
+	rtn = malloc (sizeof(char *) * (size + 1));
+	while (i < size)
+	{
+		rtn[i] = arr[i];
+		i ++;
+	}
+	rtn[i] = NULL;
 	free (arr);
 	return (rtn);
 }

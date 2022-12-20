@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2022/12/19 21:36:58 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:50:18 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 	//Remove this line
 	(void) main;
 	if (!check_logic(token_list))
-		printf("syntax error near unexpected token 'newline'\n");
+		printf("parser error\n");
 	else
 	{
 		current = token_list;
@@ -46,21 +46,20 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 			create_command(command_list, current, length);
 			current = parser_advance(current, length);
 		}
+		print_command_list(&command_list);
+		//Execute at here
+		//execute(t_dlist *command_list, main)
+		//Call this in executor, use to free command list
+		ms_dlist_clear(&command_list, &ms_free_command);
 	}
-	//print_command_list(&command_list);
-	//Execute at here
-	//execute(t_dlist *command_list, main)
 	ms_dlist_clear(&token_list, &ms_free_token);
-	//Call this in executor, use to free command list
-	ms_dlist_clear(&command_list, &ms_free_command);
-	free (current);
 }
 
 /**
- * @brief Check the logic of the token list. After a infile
- * or outfile token, should be a word or quote token.
- * If true, delete the word or quote token and add them as value
- * of infile or out file token
+ * @brief Check the logic of the token list.
+ * 1) Pipe character cannot be the first token
+ * 2)After a infile or outfile token, should be a word or quote token.
+ * If true, delete the word or quote token and add them as value of file token
  * @return 1 if ok, 0 when error 
  */
 static int	check_logic(t_dlist *token_list)
@@ -70,6 +69,8 @@ static int	check_logic(t_dlist *token_list)
 	t_token	*next;
 
 	current = token_list;
+	if (((t_token *)current->content)->type == TOKEN_PIPE)
+		return (0);
 	while (current != NULL)
 	{
 		token = (t_token *)current->content;
@@ -140,10 +141,15 @@ static void	create_command(t_dlist *command_list, t_dlist *token, int length)
 		new = ms_init_command();
 		ms_dlist_addback(&command_list, ms_dlist_new(new));
 	}
-	else if (head->type == TOKEN_WORD || head->type == TOKEN_QUOTE)
+	else
 	{
 		last = ms_dlst_last(command_list);
 		current = (t_command *)last->content;
-		current->full_command = ms_get_command(token, length);
+		if (head->type == TOKEN_WORD || head->type == TOKEN_QUOTE)
+			current->full_command = ms_get_command(current, token, length);
+		else if (head->type == TOKEN_AIN || head->type == TOKEN_IN)
+			current->infile = ms_get_file_info(current->infile, head);
+		else
+			current->outfile = ms_get_file_info(current->outfile, head);
 	}
 }

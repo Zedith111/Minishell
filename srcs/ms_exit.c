@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 18:29:56 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 15:54:56 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ms_success_exit(t_main *main)
 }
 
 /**
- * @brief Exit program when error occur.
- * Output error message and free
- * @param str Error message to display
+ * @brief Exit program and output error message when error occur.
+ * Caution : this function is not responsible for freeing, please free beforehand
+ * @param Error message to display
  */
 void	ms_error_exit(char *err_msg)
 {

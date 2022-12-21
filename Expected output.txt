@@ -1,0 +1,85 @@
+command : < try.txt cat | < hello.txt cat -e | ls | cat -e > outfile2 > outfile3 | cat -e > outfile6
+
+first process :
+if (infile.name == NULL)
+	infd = stdin
+else
+	change pipe infd to infile.name fd;
+
+1st
+**full_command = {"cat", NULL};
+infile.file_name = "try.txt";
+outfile.file_name = NULL;
+
+if (outfile == NULL)
+	change pipe outfd to pipefd
+else	
+	change pipefd to outfile.name fd;
+
+
+middle processes :
+if (infile.name == NULL)
+	infd = lastpipe fd;
+else
+	change pipe infd to infile.name fd;
+
+2nd
+**full_command = {"cat", "-e", NULL};
+infile.file_name = "hello.txt";
+outfile.file_name = NULL;
+3rd
+**full_command = {"ls", NULL};
+infile.file_name = "hello.txt";
+outfile.file_name = NULL;
+4th
+**full_command = {"cat", "-e", NULL};
+infile.file_name = NULL;
+outfile[0].file_name = "outfile2";
+outfile[1].file_name = "outfile3";
+
+if (outfile == NULL)
+	change pipe outfd to pipefd
+else	
+	change pipefd to outfile.name fd;
+
+last process :
+if (infile.name == NULL)
+	infd = lastpipe fd;
+else
+	change pipe infd to infile.name fd;
+
+5th
+**full_command = {"cat", "-e",  NULL};
+infile.file_name = NULL;
+outfile.file_name = "outfile6";
+
+if (outfile == NULL)
+	change pipe outfd to stdout
+else	
+	change pipefd to outfile.name fd;
+
+For infile : iterate thru **infile till it reaches the last infile name , set that to final_infile;
+
+For outfile :  iterate thru **outfile till it reaches the last outfile name , set that to final_oufile;
+				But need to create all the outfiles before final outfile.
+
+number of pipes needed = len(full_command) - 1;
+
+ < try.txt << END < note.txt cat -e > out > out2
+ infile1 : try.txt, 'T'
+ infile2 : END, 'A'
+ infile3 : note.txt, 'T'
+
+ outfile1 : out
+ outfile2 : out2
+
+ < try.txt << END cat -e > out > out2
+ infile1 : try.txt, 'T'
+ infile2 : END, 'A'
+
+ outfile1 : out
+ outfile2 : out2
+
+ < try.txt << END << END cat -e > out > out2
+
+ use Trunc for here_doc , whenever reach a here_doc file just write to the temp file.

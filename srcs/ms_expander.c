@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 18:02:32 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/20 19:13:13 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ void	ms_expand_list(t_dlist *head, t_main *main)
 		expand_token(current->content, main);
 		current = current->next;
 	}
+}
+
+/**
+ * @brief First expansion before tokenize.
+ * Only expand $ and non separate character inside double quote.
+ * The expanded value is append back to the original string. 
+ * This is require for situations below
+ * 1) A="ho"  ec"$A" hi and both ec$A hi should expand to echo hi  
+ * 2) "g"cc should expand to gcc, ls "-l" -a should work but 
+ * 
+ * if expand fail, dont expand
+ */
+void	ms_expand_first(char *line, t_main *main)
+{
+
 }
 
 static void	expand_token(void *content, t_main *main)

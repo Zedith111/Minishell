@@ -12,6 +12,7 @@ echo test tout
 echo test      tout
 echo -n test tout
 echo -n -n -n test tout
+echo -nnnnnnn test
 echo $TEST
 echo "$USER"
 echo '$USER'
@@ -20,6 +21,19 @@ cat < ls > ls
 echo > <
 echo | |
 exit 7654
+env test
+echo hello |>"out"
+echo hello >"out 1 2 3 4"
+echo hello |">out"
+echo hello "|>out"
+echo hello >|out
+echo "hello
+echo hello"
+
+
+"g"cc
+gc"c"
+ec"ho hi"
 
 /bin/ls
 empty command

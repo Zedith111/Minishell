@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 16:36:09 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/22 15:05:09 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ typedef struct s_main
 	char		**envp;
 }	t_main;
 
-
 //Exit Function
 void		ms_success_exit(t_main *main);
 void		ms_error_exit(char *err_msg);
@@ -116,6 +115,7 @@ void		ms_error_exit(char *err_msg);
 int			ms_is_empty_string(char *str);
 int			ms_char_match(char *str, char c);
 int			ms_strcmp(char *s1, char *s2);
+int			check_enclosed(char *str, char open);
 
 //Array Utility Function
 char		**ms_array_append(char **arr, char *new);
@@ -138,13 +138,16 @@ void		ms_init_sig_handler(void);
 
 //Lexer and Expander
 void		ms_process_input(char *input, t_main *main);
-int			ms_is_sep(char c);
 t_token		*ms_create_token(t_token_type type, char *value);
 t_token		*ms_create_quote_token(t_lexer *lexer);
 t_token		*ms_create_word_token(t_lexer *lexer);
 t_token		*ms_create_operator_token(t_lexer *lexer);
 void		ms_trim_list(t_dlist *head);
 void		ms_expand_list(t_dlist *head, t_main *main);
+
+
+int	get_split_length(t_lexer *lexer);
+int	ms_check_enclosed_length(char *str, char quote);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);

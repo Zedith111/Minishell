@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2022/12/22 04:29:25 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/24 13:35:25 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 			create_command(command_list, current, length);
 			current = parser_advance(current, length);
 		}
-		print_command_list(&command_list);
+		// print_command_list(&command_list);
 		//Execute at here
 		process(main, &command_list);
 		//Call this in executor, use to free command list

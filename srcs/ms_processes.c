@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/22 04:35:33 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/24 13:45:18 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,23 @@ void	ft_get_values(t_main *main, t_command *cmd)
 		{
 			if (cmd->infile[i]->file_type == 'A')
 				cmd->in_fd = open("temp", O_RDONLY);
-			else
+			else if (cmd->infile[i]->file_type == 'T')
 				cmd->in_fd = open(cmd->infile[i]->file_name, O_RDONLY);
+			else
+				cmd->in_fd = STDIN_FILENO;
 		}
+	}
+	i = -1;
+	while (cmd->outfile[++i] != NULL)
+	{
+		if (cmd->outfile[i]->file_type == 'A')
+			cmd->out_fd = open(cmd->outfile[i]->file_name,
+				 O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else
+			cmd->out_fd = open(cmd->outfile[i]->file_name,
+				 O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (cmd->outfile[i + 1] != NULL)
+			close(cmd->out_fd);
 	}
 }
 
@@ -47,12 +61,9 @@ void	first_process(t_main *main, t_command *cmd)
 	{
 		ft_get_values(main, cmd);
 		dup2(cmd->in_fd, STDIN_FILENO);
-		// dup2(info->pipe[1], STDOUT_FILENO);
-		// if (ft_strnstr(argv[1], "here_doc", 8))
-		// {
-		// 	if (unlink("temp") < 0)
-		// 		print_error("Unlink Failure");
-		// }
+		dup2(cmd->out_fd, STDOUT_FILENO);
+		if (unlink("temp") < 0)
+			printf("Unlink Failure");
 		close(main->pipe[0]);
 		close(main->pipe[1]);
 		ft_execve(main, cmd);
@@ -88,19 +99,7 @@ void	process(t_main *main, t_dlist **list)
 	lst = *list;
 	while (lst)
 	{
-		printf("hi\n");
 		ft_execute(main, (t_command *)lst->content);
 		lst = lst->next;
 	}
-	// int	i;
-
-	// i = 1;
-	// here_doc()
-	// first_process(info, argv, envp);
-	// while (++i < info->process)
-	// {
-	// 	info->no++;
-	// 	middle_process(info, i, argv, envp);
-	// }
-	// last_process(info, argc, argv, envp);
 }

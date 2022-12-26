@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/22 04:42:24 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/26 16:10:21 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ typedef struct s_main
 	t_dlist		*env_list;
 	char		**envp;
 
-	__pid_t		*pid;
+	pid_t		*pid;
 	int			pipe[2];
 }	t_main;
 

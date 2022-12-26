@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/24 13:45:18 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/26 16:45:11 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	ft_get_values(t_main *main, t_command *cmd)
 		{
 			if (cmd->infile[i]->file_type == 'A')
 				cmd->in_fd = open("temp", O_RDONLY);
-			else if (cmd->infile[i]->file_type == 'T')
-				cmd->in_fd = open(cmd->infile[i]->file_name, O_RDONLY);
 			else
-				cmd->in_fd = STDIN_FILENO;
+				cmd->in_fd = open(cmd->infile[i]->file_name, O_RDONLY);
+			if (cmd->infile[i + 1] != NULL)
+				close(cmd->in_fd);
 		}
 	}
 	i = -1;
@@ -41,10 +41,10 @@ void	ft_get_values(t_main *main, t_command *cmd)
 	{
 		if (cmd->outfile[i]->file_type == 'A')
 			cmd->out_fd = open(cmd->outfile[i]->file_name,
-				 O_WRONLY | O_APPEND | O_CREAT, 0644);
+				O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else
 			cmd->out_fd = open(cmd->outfile[i]->file_name,
-				 O_WRONLY | O_TRUNC | O_CREAT, 0644);
+				O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (cmd->outfile[i + 1] != NULL)
 			close(cmd->out_fd);
 	}
@@ -95,7 +95,7 @@ void	process(t_main *main, t_dlist **list)
 {
 	t_dlist	*lst;
 
-	main->pid = malloc(sizeof(__pid_t) * lst_len(*list));
+	main->pid = malloc(sizeof(pid_t) * lst_len(*list));
 	lst = *list;
 	while (lst)
 	{

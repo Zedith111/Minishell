@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:04:30 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/22 04:27:08 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/26 16:47:34 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	here_doc(t_command *cmd, char *limiter)
 	buf = get_next_line(0);
 	while (buf != NULL && compare(buf, limiter))
 	{
+		//Add format string function before writting into temp file
 		write(cmd->in_fd, buf, ft_strlen(buf));
 		free(buf);
 		ft_printf(">");

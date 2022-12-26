@@ -30,6 +30,8 @@ echo hello >|out
 echo "hello
 echo hello"
 
+echo "'$USER"
+
 
 "g"cc
 gc"c"

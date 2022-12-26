@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/22 15:05:09 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/25 10:32:08 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void		ms_expand_list(t_dlist *head, t_main *main);
 
 
 int	get_split_length(t_lexer *lexer);
-int	ms_check_enclosed_length(char *str, char quote);
+int	ms_check_enclosed_length(char *str);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);

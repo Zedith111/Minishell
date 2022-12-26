@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/22 14:41:36 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/25 10:27:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,19 @@ void	ms_process_input(char *input, t_main *main)
 
 	lexer = lexer_init(input);
 
-	// while (*lexer->current != '\0')
-	// {
-	// 	printf ("Length :%d\n", get_split_length(lexer));
-	// 	// printf("Before :%s\n", lexer->current);
-	// 	interpret_split(lexer->current, get_split_length(lexer));
-	// 	lexer->current += get_split_length(lexer);
-	// }
-	printf("%d\n",get_split_length(lexer));
+	while (*lexer->current != '\0')
+	{
+		if (get_split_length(lexer) == -1)
+		{
+			printf ("error\n");
+			break;
+		}
+		// printf ("Length :%d\n", get_split_length(lexer));
+		// printf("Before :%s\n", lexer->current);
+		interpret_split(lexer->current, get_split_length(lexer));
+		lexer->current += get_split_length(lexer);
+	}
+	// printf ("Length :%d\n", get_split_length(lexer));
 	// token = lexer_advance(lexer);
 	// token_list = NULL;
 	// while (token->type != TOKEN_END)

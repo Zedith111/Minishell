@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 21:38:50 by zah               #+#    #+#             */
-/*   Updated: 2022/12/22 15:08:14 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/25 15:56:37 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	get_split_length(t_lexer *lexer)
 	{
 		if (is_sep(lexer->current[i]) == 1)
 		{
-			if (ms_check_enclosed_length(lexer->current, lexer->current[i]) == -1)
+			if (ms_check_enclosed_length(lexer->current + i) == -1)
 				return (-1);
-			i += ms_check_enclosed_length(lexer->current, lexer->current[i]);
+			i += ms_check_enclosed_length(lexer->current + i);
 		}
 		if (is_sep(lexer->current[i]) == 2)
 		{
@@ -56,11 +56,13 @@ int	get_split_length(t_lexer *lexer)
  * Length is inclusive of open and close quote.
  * Return -1 if quote is not enclosed
  */
-int	ms_check_enclosed_length(char *str, char quote)
+int	ms_check_enclosed_length(char *str)
 {
 	int		i;
+	char	quote;
 
 	i = 1;
+	quote = str[0];
 	while (str[i] != '\0')
 	{
 		if (str[i] == quote)
@@ -81,6 +83,7 @@ static int	is_sep(char c)
 		return (1);
 	if (c == '<' || c == '>')
 		return (2);
+	
 	if (c == ' ' || c == '\t' || c == '|')
 		return (3);
 	return (0);

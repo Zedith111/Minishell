@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/30 00:06:17 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/31 01:09:27 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_get_values_middle(t_main *main, t_command *cmd)
 			here_doc(cmd, cmd->infile[i]->file_name);
 	}
 	if (cmd->infile[0]->file_name == NULL)
-		cmd->in_fd = STDIN_FILENO;
+		cmd->in_fd = main->last_pipe;
 	else
 	{
 		i = -1;
@@ -82,9 +82,9 @@ void	middle_process(t_main *main, t_command *cmd)
 	if (main->pid[main->counter] == 0)
 	{
 		ft_get_values_middle(main, cmd);
-		dup2(main->last_pipe, STDIN_FILENO);
+		dup2(cmd->in_fd, STDIN_FILENO);
 		close(main->last_pipe);
-		dup2(main->pipe[1], STDOUT_FILENO);
+		dup2(cmd->out_fd, STDOUT_FILENO);
 		close(main->pipe[0]);
 		close(main->pipe[1]);
 		ft_execve(main, cmd);

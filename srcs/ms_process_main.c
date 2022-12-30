@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/30 00:10:08 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/31 00:59:41 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ void	ft_execute(t_main *main, t_command *cmd, int len)
 	if (main->counter == 0)
 	{
 		first_process(main, cmd);
-		printf("first process\n");
+		// printf("first process\n");
 	}
 	else if (main->counter == len - 1)
 	{
 		last_process(main, cmd);
-		printf("last process\n");
+		// printf("last process\n");
 	}
 	else
 	{
 		middle_process(main, cmd);
-		printf("middle process\n");
+		// printf("middle process\n");
 	}
 }
 
@@ -74,16 +74,18 @@ void	process(t_main *main, t_dlist **list)
 	while (lst)
 	{
 		ft_execute(main, (t_command *)lst->content, len);
+		waitpid(main->pid[main->counter], NULL, 0);
 		lst = lst->next;
 		main->counter++;
 	}
+	main->counter = 0;
 	close(main->pipe[0]);
 	close(main->pipe[1]);
-	while (main->counter > 0)
-	{
-		waitpid(main->pid[main->counter - 1], NULL, 0);
-		main->counter--;
-	}
+	// while (main->counter > 0)
+	// {
+	// 	waitpid(main->pid[main->counter - 1], NULL, 0);
+	// 	main->counter--;
+	// }
 	free(main->pid);
 	free(main->pipe);
 }

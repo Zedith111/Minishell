@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/26 16:10:21 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:25:59 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ typedef struct s_main
 	char		**envp;
 
 	pid_t		*pid;
-	int			pipe[2];
+	int			*pipe;
+	int			last_pipe;
+	int			counter;
 }	t_main;
 
 //Exit Function
@@ -181,6 +183,12 @@ void 		print_command_list(t_dlist **list);
 //Execute functions
 char	*ft_pathsort(t_main	*main, t_command *cmd);
 void	ft_execve(t_main *main, t_command *cmd);
+
+//Processes
+void	print_error(char *str);
+void	first_process(t_main *main, t_command *cmd);
+void	middle_process(t_main *main, t_command *cmd);
+void	last_process(t_main *main, t_command *cmd);
 
 //Here_doc functions
 void	here_doc(t_command *cmd, char *limiter);

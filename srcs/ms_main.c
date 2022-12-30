@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2022/12/15 20:57:37 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/28 15:36:28 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static t_main	*init_main(char **envp)
 
 	rtn = malloc (sizeof(t_main));
 	rtn->env_list = ms_dup_env(envp);
+	rtn->counter = 0;
 	return (rtn);
 }
 

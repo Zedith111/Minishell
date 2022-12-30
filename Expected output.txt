@@ -83,3 +83,58 @@ number of pipes needed = len(full_command) - 1;
  < try.txt << END << END cat -e > out > out2
 
  use Trunc for here_doc , whenever reach a here_doc file just write to the temp file.
+
+ if (check whole infile.type array for 'A' types)
+ {
+	while (number of 'A' > 0)
+	{
+		ft_get_limiter
+		execute here_doc
+	}
+ }
+
+ process1()
+ {
+	get in and out fd .
+	iterate thru infile array till it reaches last , check if infile.type is 'A', if not ,
+	return the fd of that infile.
+	iterate thru outfile array till it reaches last , return the fd of outfile. ( but remember to create
+	the outfiles in the array except the last one )
+	ft_execute 
+ }
+
+ typedef struct s_file
+{
+	char	file_type;
+	char	*file_name;
+	int		fd;
+}	t_file;
+
+/**
+ * @brief The struct used to store commands after parsing.
+ * Contain commands saved in **full_command, infile & outfile name, fopen type.
+ */
+typedef struct s_command
+{
+	char	**full_command;
+	t_file	**infile;
+	t_file	**outfile;
+}	t_command;
+
+/**
+ * @brief 
+ * Store a linked list of environment struct which will be updated whenever
+ * a variable has been exported
+ */
+typedef struct s_main
+{
+	t_dlist		*env_list;
+	char		**envp;
+
+	__pid_t		*pid;
+	int			pipe[2];
+}	t_main;
+
+Errors
+1) when infile's name is like "Expected output.txt", the program only recognises infile as Expected"
+2) when we execute "<< END > out" , the **full_command array is not set to NULL

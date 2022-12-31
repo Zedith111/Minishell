@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/30 00:10:36 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/31 01:44:58 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void	ft_get_values_1(t_main *main, t_command *cmd)
 		}
 	}
 	if (cmd->outfile[0]->file_name == NULL)
-	{
-		printf("here\n");
 		cmd->out_fd = main->pipe[1];
-	}
 	else
 	{
 		i = -1;

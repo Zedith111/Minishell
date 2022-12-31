@@ -6,13 +6,12 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 15:53:13 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/27 14:24:40 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Not sure required
 int	ms_dlist_size(t_dlist *head)
 {
 	t_dlist	*current;
@@ -29,11 +28,12 @@ int	ms_dlist_size(t_dlist *head)
 	}
 	return (size);
 }
-
+/**
+ * @brief Delete a specific node in list
+ */
 void	ms_dlst_del_target(t_dlist **lst, t_dlist *target, void (*del)(void *))
 {
 	t_dlist	*current;
-
 
 	if ((*lst) == NULL || del == NULL)
 		return ;

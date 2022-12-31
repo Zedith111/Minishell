@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2022/12/25 10:32:08 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/30 15:43:21 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int			ms_is_empty_string(char *str);
 int			ms_char_match(char *str, char c);
 int			ms_strcmp(char *s1, char *s2);
 int			check_enclosed(char *str, char open);
+char		*ms_strdup_length(char *str, int length);
+char		*ms_create_empty_string(void);
 
 //Array Utility Function
 char		**ms_array_append(char **arr, char *new);
@@ -138,16 +140,12 @@ void		ms_init_sig_handler(void);
 
 //Lexer and Expander
 void		ms_process_input(char *input, t_main *main);
-t_token		*ms_create_token(t_token_type type, char *value);
-t_token		*ms_create_quote_token(t_lexer *lexer);
-t_token		*ms_create_word_token(t_lexer *lexer);
-t_token		*ms_create_operator_token(t_lexer *lexer);
-void		ms_trim_list(t_dlist *head);
-void		ms_expand_list(t_dlist *head, t_main *main);
+int			ms_get_split_length(t_lexer *lexer);
+int			ms_check_enclosed_length(char *str);
 
-
-int	get_split_length(t_lexer *lexer);
-int	ms_check_enclosed_length(char *str);
+char		*ms_expander(char *str, t_main *main);
+char		*ms_get_expander_key(char *str);
+int			ms_is_env_character(char c);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);

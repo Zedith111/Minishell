@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:56:21 by zah               #+#    #+#             */
-/*   Updated: 2022/12/03 14:25:29 by zah              ###   ########.fr       */
+/*   Updated: 2022/12/30 17:26:17 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	ms_init_sig_handler(void)
 	sa.sa_handler = handle_signal;
 	ignore.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &ignore, NULL);
+	//sigaction(SIGQUIT, &ignore, NULL);
 }

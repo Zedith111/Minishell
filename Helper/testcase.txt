@@ -29,13 +29,27 @@ echo hello "|>out"
 echo hello >|out
 echo "hello
 echo hello"
-
+echo ec$ho
 echo "'$USER"
+echo "$USER$PWD"
+echo >test  hello
+echo >test  a >test2  > b
 
-
-"g"cc
+"g"cc 
 gc"c"
 ec"ho hi"
+
+$"USER"
+echo $
+echo "$"
+$PWD"$USER"
+<< END
+<"A long file.txt"
+"$$$$$"$pwd
+echo this$USER"$PWD"
+"$USER"$PWD
+
+"'$USER'"
 
 /bin/ls
 empty command
@@ -47,6 +61,25 @@ only space or tab
 echo "cat lol.c | cat > lol.c"
 echo '    | >out'
  ls |exit
+
+
+echo $
+echo $$
+echo $$USER
+echo '$USER' 
+echo $USER$PWD
+echo "$USER$PWD"
+echo $"USER"
+echo $'USER'
+echo "$ "
+echo "$     USER"
+echo $"     USER"
+echo "$     USER$PWD"
+echo $"     USER$PWD"
+
+ A =ho hi
+ ec"$A"
+ ec$A
 
 echo hi
 echo 'hi
@@ -108,3 +141,9 @@ e'c'$B
 e"c"$B
 "ec"$B
 'ec'$B
+
+
+cd << END
+$HOME/$PWD
+END
+will cd to home directory

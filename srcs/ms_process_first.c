@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/31 01:44:58 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:27:08 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	ft_get_values_1(t_main *main, t_command *cmd)
 
 	i = -1;
 	(void)main;
-	// printf("infile fd is %s\n", cmd->infile[0]->file_name);
-	// printf("Outfile fd is %s\n", cmd->outfile[0]->file_name);
 	while (cmd->infile[++i] != NULL)
 	{
 		if (cmd->infile[i]->file_type == 'A')
@@ -49,7 +47,7 @@ void	ft_get_values_1(t_main *main, t_command *cmd)
 		}
 	}
 	if (cmd->outfile[0]->file_name == NULL)
-		cmd->out_fd = main->pipe[1];
+		cmd->out_fd = main->pipe[main->counter][1];
 	else
 	{
 		i = -1;
@@ -74,6 +72,7 @@ void	ft_get_values_1(t_main *main, t_command *cmd)
 
 void	first_process(t_main *main, t_command *cmd)
 {
+	printf("using pipe[%d]\n", main->counter);
 	main->pid[0] = fork();
 	if (main->pid[0] == -1)
 		exit(0);
@@ -84,8 +83,8 @@ void	first_process(t_main *main, t_command *cmd)
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		if (unlink("temp") < 0)
 			printf("Unlink Failure");
-		close(main->pipe[0]);
-		close(main->pipe[1]);
+		close(main->pipe[main->counter][0]);
+		close(main->pipe[main->counter][1]);
 		ft_execve(main, cmd);
 	}
 }

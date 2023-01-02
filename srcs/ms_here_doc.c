@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:04:30 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/28 14:38:16 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:20:09 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ void	here_doc(t_command *cmd, char *limiter)
 	char	*buf;
 
 	cmd->in_fd = open("temp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	ft_printf(">");
-	buf = get_next_line(0);
+	// ft_printf(">");
+	buf = readline(">");
 	while (buf != NULL && compare(buf, limiter))
 	{
 		//Add format string function before writting into temp file
 		write(cmd->in_fd, buf, ft_strlen(buf));
 		free(buf);
-		ft_printf(">");
-		buf = get_next_line(0);
+		// ft_printf(">");
+		buf = readline(">");
 	}
 	free(buf);
 	close(cmd->in_fd);

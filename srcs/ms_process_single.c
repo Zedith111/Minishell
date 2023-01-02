@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_process_middle.c                                :+:      :+:    :+:   */
+/*   ms_process_single.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/02 19:26:53 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/02 17:31:48 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_get_values_middle(t_main *main, t_command *cmd)
+void	ft_get_values_single(t_command *cmd)
 {
-	int	i;
+	int		i;
 
 	i = -1;
-	(void)main;
 	while (cmd->infile[++i] != NULL)
 	{
 		if (cmd->infile[i]->file_type == 'A')
 			here_doc(cmd, cmd->infile[i]->file_name);
 	}
 	if (cmd->infile[0]->file_name == NULL)
-		cmd->in_fd = main->pipe[main->counter - 1][0];
+		cmd->in_fd = STDIN_FILENO;
 	else
 	{
 		i = -1;
@@ -47,7 +46,7 @@ void	ft_get_values_middle(t_main *main, t_command *cmd)
 		}
 	}
 	if (cmd->outfile[0]->file_name == NULL)
-		cmd->out_fd = main->pipe[main->counter][1];
+		cmd->out_fd = STDOUT_FILENO;
 	else
 	{
 		i = -1;
@@ -68,25 +67,21 @@ void	ft_get_values_middle(t_main *main, t_command *cmd)
 				close(cmd->out_fd);
 		}
 	}
+
 }
 
-void	middle_process(t_main *main, t_command *cmd)
+void	single_process(t_main *main, t_command *cmd)
 {
-	printf("using pipe[%d]\n", main->counter);
-	close(main->pipe[main->counter - 1][1]);
-	if (pipe(main->pipe[main->counter]) == -1)
-		exit(0);
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
-		ft_get_values_middle(main, cmd);
+		ft_get_values_single(cmd);
 		dup2(cmd->in_fd, STDIN_FILENO);
-		close(main->pipe[main->counter - 1][0]);
 		dup2(cmd->out_fd, STDOUT_FILENO);
-		close(main->pipe[main->counter][0]);
-		close(main->pipe[main->counter][1]);
+		if (unlink("temp") < 0)
+			printf("Unlink Failure");
 		ft_execve(main, cmd);
 	}
 }

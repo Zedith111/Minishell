@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/31 02:06:52 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:27:03 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,14 @@ void	ft_get_values_last(t_main *main, t_command *cmd)
 
 	i = -1;
 	(void)main;
-	// printf("infile fd is %s\n", cmd->infile[0]->file_name);
-	// printf("Outfile fd is %s\n", cmd->outfile[0]->file_name);
+	printf("filename is %s\n", (cmd->infile[0]->file_name));
 	while (cmd->infile[++i] != NULL)
 	{
 		if (cmd->infile[i]->file_type == 'A')
 			here_doc(cmd, cmd->infile[i]->file_name);
 	}
 	if (cmd->infile[0]->file_name == NULL)
-		cmd->in_fd = main->pipe[0];
+		cmd->in_fd = main->pipe[main->counter - 1][0];
 	else
 	{
 		i = -1;
@@ -74,7 +73,9 @@ void	ft_get_values_last(t_main *main, t_command *cmd)
 
 void	last_process(t_main *main, t_command *cmd)
 {
+	printf("using pipe[%d]\n", main->counter - 1 );
 	main->pid[main->counter] = fork();
+	printf("pid1 is %d\n", main->pid[main->counter]);
 	if (main->pid[main->counter] == -1)
 		exit(0);
 	if (main->pid[main->counter] == 0)
@@ -84,8 +85,8 @@ void	last_process(t_main *main, t_command *cmd)
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		if (unlink("temp") < 0)
 			printf("Unlink Failure");
-		close(main->pipe[0]);
-		close(main->pipe[1]);
+		close(main->pipe[main->counter - 1][0]);
+		close(main->pipe[main->counter - 1][1]);
 		ft_execve(main, cmd);
 	}
 }

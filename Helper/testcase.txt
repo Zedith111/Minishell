@@ -42,12 +42,17 @@ ec"ho hi"
 $"USER"
 echo $
 echo "$"
+""
+"abc $USER def $PWD"
+echo $/
+echo $"USER"
 $PWD"$USER"
 << END
 <"A long file.txt"
 "$$$$$"$pwd
 echo this$USER"$PWD"
 "$USER"$PWD
+$USER-abc
 
 "'$USER'"
 
@@ -122,25 +127,6 @@ echo a $A "$A" $C "$C" $D "$C" a
 
 export A=$B
 echo $A
-
-export B="ho *"
-ec$B
-ec$B$B$B$B$B$B$B$B$B$B
-ec$B$A$C$D$C$B$A
-ec"$B"
-ec"$B$A$C$D$C$B$A"
-ec'$B'
-ec'$B$A$C$D$C$B$A'
-ec"$B"$A'$C'
-ec$B"$B"
-ec$B"42"
-ec'$B'$A"$C"
-ec''$B
-ec""$B
-e'c'$B
-e"c"$B
-"ec"$B
-'ec'$B
 
 
 cd << END

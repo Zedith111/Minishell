@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2022/12/30 16:34:45 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/03 15:46:43 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void		interpret_split(char *current, int length, t_main *main);
 void	ms_process_input(char *input, t_main *main)
 {
 	t_lexer	*lexer;
-	char	*current;
 
 	lexer = lexer_init(input);
 
@@ -57,7 +56,7 @@ static void	interpret_split(char *current, int length, t_main *main)
 {
 	int		i;
 	char	*base;
-	char 	*expand;
+	char	*expand;
 
 	i = 0;
 	if (length == 0)

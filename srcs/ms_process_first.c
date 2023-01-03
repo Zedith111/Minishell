@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/02 19:27:08 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/04 01:06:28 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,12 @@ void	first_process(t_main *main, t_command *cmd)
 		ft_get_values_1(main, cmd);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
-		if (unlink("temp") < 0)
-			printf("Unlink Failure");
+		// if (unlink("temp") < 0)
+		// 	write(cmd->out_fd, "Unlink failure\n", 15);
 		close(main->pipe[main->counter][0]);
 		close(main->pipe[main->counter][1]);
+		if (check_built_in(main, cmd))
+			exit(0);
 		ft_execve(main, cmd);
 	}
 }

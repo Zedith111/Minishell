@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/02 19:32:54 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/04 01:00:14 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,62 @@ void	print_error(char *str)
 	write(2, "\n", 1);
 }
 
+void	ft_echo(t_main *main, t_command *cmd)
+{
+	int	i;
+
+	i = 1;
+	(void)main;
+	if (ft_strncmp(cmd->full_command[i], "-n", 2) == 0)
+		i++;
+	while (cmd->full_command[i] != NULL)
+	{
+		write(cmd->out_fd, cmd->full_command[i], ft_strlen(cmd->full_command[i]));
+		write(cmd->out_fd, " ", 1);
+		i++;
+	}
+	if (!ft_strncmp(cmd->full_command[1], "-n", 2) == 0)
+		write(cmd->out_fd, "\n", 1);
+}
+
+int		check_built_in(t_main *main, t_command *cmd)
+{
+	(void)main;
+	if (cmd->full_command[0] == NULL)
+		return (0);
+	if (strncmp(cmd->full_command[0], "echo", 4) == 0)
+	{
+		ft_echo(main, cmd);
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_execute(t_main *main, t_command *cmd, int len)
 {
 	if (len == 1)
 	{
 		single_process(main, cmd);
-		// waitpid(main->pid[main->counter], NULL, 0);
+		waitpid(main->pid[main->counter], NULL, 0);
 		return ;
 	}
 	if (main->counter == 0)
 	{
 		printf("1\n");
 		first_process(main, cmd);
-		// waitpid(main->pid[main->counter], NULL, 0);
+		waitpid(main->pid[main->counter], NULL, 0);
 	}
 	else if (main->counter == len - 1)
 	{
 		printf("3\n");
 		last_process(main, cmd);
-		// waitpid(main->pid[main->counter], NULL, 0);
+		waitpid(main->pid[main->counter], NULL, 0);
 	}
 	else
 	{
 		printf("2\n");
 		middle_process(main, cmd);
-		// waitpid(main->pid[main->counter], NULL, 0);
+		waitpid(main->pid[main->counter], NULL, 0);
 	}
 }
 
@@ -87,7 +118,7 @@ void	process(t_main *main, t_dlist **list)
 		lst = lst->next;
 		main->counter++;
 	}
-	waitpid(main->pid[main->counter - 1], NULL, 0);
+	// waitpid(main->pid[main->counter - 1], NULL, 0);
 	main->counter = 0;
 	// while (main->counter < lst_len(*list))
 	// {

@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/02 17:25:11 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/04 00:44:40 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,5 +194,8 @@ void	single_process(t_main *main, t_command *cmd);
 //Here_doc functions
 void	here_doc(t_command *cmd, char *limiter);
 void	process(t_main *main, t_dlist **lst);
+
+//Check built in 
+int		check_built_in(t_main *main, t_command *cmd);
 
 #endif

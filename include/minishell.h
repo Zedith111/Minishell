@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/06 15:09:56 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:41:20 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	first_process(t_main *main, t_command *cmd);
 void	middle_process(t_main *main, t_command *cmd);
 void	last_process(t_main *main, t_command *cmd);
 void	single_process(t_main *main, t_command *cmd);
-void	ft_get_values(t_main *main, t_command *cmd, int in_fd, int out_fd);
+void	sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
 void	ft_execute(t_main *main, t_command *cmd, int len);
 
 //Here_doc functions
@@ -204,7 +204,8 @@ int		check(char *buf, char *limit, int len);
 void	process(t_main *main, t_dlist **lst);
 void	get_here_doc(t_dlist **list);
 
-//Check built in 
+//Built in Commands
 int		check_built_in(t_main *main, t_command *cmd);
+void	ft_echo(t_main *main, t_command *cmd);
 
 #endif

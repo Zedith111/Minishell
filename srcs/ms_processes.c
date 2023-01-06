@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/06 15:10:16 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:41:50 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	single_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
-		ft_get_values(main, cmd, STDIN_FILENO, STDOUT_FILENO);
+		sort_in_out(main, cmd, STDIN_FILENO, STDOUT_FILENO);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		// if (unlink("temp") < 0)
 		// 	write(cmd->out_fd, "Unlink failure\n", 15);
-		// if (check_built_in(main, cmd))
-		// 	exit(0);
+		if (check_built_in(main, cmd))
+			exit(0);
 		ft_execve(main, cmd);
 	}
 }
@@ -37,15 +37,15 @@ void	first_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[0] == 0)
 	{
-		ft_get_values(main, cmd, STDIN_FILENO, main->pipe[main->counter][1]);
+		sort_in_out(main, cmd, STDIN_FILENO, main->pipe[main->counter][1]);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		// if (unlink("temp") < 0)
 		// 	write(cmd->out_fd, "Unlink failure\n", 15);
 		close(main->pipe[main->counter][0]);
 		close(main->pipe[main->counter][1]);
-		// if (check_built_in(main, cmd))
-		// 	exit(0);
+		if (check_built_in(main, cmd))
+			exit(0);
 		ft_execve(main, cmd);
 	}
 }
@@ -60,7 +60,7 @@ void	middle_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
-		ft_get_values(main, cmd, main->pipe[main->counter - 1][0], main->pipe[main->counter][1]);
+		sort_in_out(main, cmd, main->pipe[main->counter - 1][0], main->pipe[main->counter][1]);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		close(main->pipe[main->counter - 1][0]);
 		dup2(cmd->out_fd, STDOUT_FILENO);
@@ -68,28 +68,31 @@ void	middle_process(t_main *main, t_command *cmd)
 		// 	write(cmd->out_fd, "Unlink failure\n", 15);
 		close(main->pipe[main->counter][0]);
 		close(main->pipe[main->counter][1]);
-		// if (check_built_in(main, cmd))
-		// 	exit(0);
+		if (check_built_in(main, cmd))
+			exit(0);
 		ft_execve(main, cmd);
 	}
 }
 
 void	last_process(t_main *main, t_command *cmd)
 {
+	char buf[20];
+
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
-		ft_get_values(main, cmd, main->pipe[main->counter - 1][0], STDOUT_FILENO);
+		sort_in_out(main, cmd, main->pipe[main->counter - 1][0], STDOUT_FILENO);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		// if (unlink("temp") < 0)
 		// 	write(cmd->out_fd, "Unlink failure\n", 15);
+		read(main->pipe[main->counter - 1][1], &buf, 10);
 		close(main->pipe[main->counter - 1][0]);
 		close(main->pipe[main->counter - 1][1]);
-		// if (check_built_in(main, cmd))
-		// 	exit(0);
+		if (check_built_in(main, cmd))
+			exit(0);
 		ft_execve(main, cmd);
 	}
 	close(main->pipe[main->counter - 1][0]);

@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/04 00:44:40 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:09:56 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_command
 
 	int		in_fd;
 	int		out_fd;
+	char	*temp_name;
 }	t_command;
 
 /**
@@ -190,10 +191,18 @@ void	first_process(t_main *main, t_command *cmd);
 void	middle_process(t_main *main, t_command *cmd);
 void	last_process(t_main *main, t_command *cmd);
 void	single_process(t_main *main, t_command *cmd);
+void	ft_get_values(t_main *main, t_command *cmd, int in_fd, int out_fd);
+void	ft_execute(t_main *main, t_command *cmd, int len);
 
 //Here_doc functions
+char	*ft_strcat(char *src, char *dst);
+void	heredoc_execute(t_command *cmd);
 void	here_doc(t_command *cmd, char *limiter);
+void	get_temp_name(t_command *cmd, int temp_id);
+int		compare(char *buf, char *limiter);
+int		check(char *buf, char *limit, int len);
 void	process(t_main *main, t_dlist **lst);
+void	get_here_doc(t_dlist **list);
 
 //Check built in 
 int		check_built_in(t_main *main, t_command *cmd);

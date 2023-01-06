@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/04 01:00:14 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:10:23 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,56 @@ int		check_built_in(t_main *main, t_command *cmd)
 	return (0);
 }
 
-void	ft_execute(t_main *main, t_command *cmd, int len)
+void	ft_get_values(t_main *main, t_command *cmd, int in_fd, int out_fd)
 {
-	if (len == 1)
-	{
-		single_process(main, cmd);
-		waitpid(main->pid[main->counter], NULL, 0);
-		return ;
-	}
-	if (main->counter == 0)
-	{
-		printf("1\n");
-		first_process(main, cmd);
-		waitpid(main->pid[main->counter], NULL, 0);
-	}
-	else if (main->counter == len - 1)
-	{
-		printf("3\n");
-		last_process(main, cmd);
-		waitpid(main->pid[main->counter], NULL, 0);
-	}
+	int	i;
+
+	i = -1;
+	(void)main;
+	if (cmd->infile[0]->file_name == NULL)
+		cmd->in_fd = in_fd;
 	else
 	{
-		printf("2\n");
-		middle_process(main, cmd);
-		waitpid(main->pid[main->counter], NULL, 0);
+		i = -1;
+		while (cmd->infile[++i] != NULL)
+		{
+			if (cmd->infile[i + 1] == NULL)
+			{
+				if (cmd->infile[i]->file_type == 'A')
+					cmd->in_fd = open(cmd->temp_name, O_RDONLY);
+				else
+					cmd->in_fd = open(cmd->infile[i]->file_name, O_RDONLY);
+				if (cmd->in_fd == -1)
+				{
+					print_error(cmd->infile[i]->file_name);
+					exit (0);
+				}
+				if (cmd->infile[i + 1] != NULL)
+					close(cmd->in_fd);
+			}
+		}
+	}
+	if (cmd->outfile[0]->file_name == NULL)
+		cmd->out_fd = out_fd;
+	else
+	{
+		i = -1;
+		while (cmd->outfile[++i] != NULL)
+		{
+			if (cmd->outfile[i]->file_type == 'A')
+				cmd->out_fd = open(cmd->outfile[i]->file_name,
+					O_WRONLY | O_APPEND | O_CREAT, 0644);
+			else
+				cmd->out_fd = open(cmd->outfile[i]->file_name,
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (cmd->out_fd == -1)
+				{
+					print_error(cmd->outfile[i]->file_name);
+					exit (0);
+				}
+			if (cmd->outfile[i + 1] != NULL)
+				close(cmd->out_fd);
+		}
 	}
 }
 
@@ -101,30 +126,26 @@ void	process(t_main *main, t_dlist **list)
 
 	main->pid = malloc(sizeof(pid_t) * lst_len(*list));
 	main->pipe = malloc(sizeof(int *) * (lst_len(*list) - 1));
-	while (main->counter < (lst_len(*list) - 1)&& main->counter <= (lst_len(*list) - 1))
+	lst = *list;
+	len = lst_len(lst);
+	while (main->counter < (lst_len(*list) - 1) && main->counter <= (lst_len(*list) - 1))
 	{
-		printf("PIpe %d\n", main->counter);
 		main->pipe[main->counter] = malloc(sizeof(int) * 2);
 		main->counter++;
 	}
 	main->counter = 0;
 	if (main->counter < (lst_len(*list) - 1) && pipe(main->pipe[0]) == -1)
 		exit(0);
-	lst = *list;
-	len = lst_len(lst);
+	get_here_doc(list);
 	while (lst)
 	{
 		ft_execute(main, (t_command *)lst->content, len);
 		lst = lst->next;
 		main->counter++;
 	}
-	// waitpid(main->pid[main->counter - 1], NULL, 0);
+	while (--main->counter >= 0)
+		waitpid(-1, NULL, 0);
 	main->counter = 0;
-	// while (main->counter < lst_len(*list))
-	// {
-	// 	waitpid(main->pid[main->counter], NULL, 0);
-	// 	main->counter++;
-	// }
 	free(main->pid);
 	free(main->pipe);
 }

@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2023/01/02 17:54:08 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2022/12/24 13:35:25 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 	int			length;
 
 	//Remove this line
-	(void) main;
 	if (!check_logic(token_list))
 		printf("parser error\n");
 	else

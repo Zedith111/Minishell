@@ -6,58 +6,97 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 13:14:34 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 17:05:24 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 01:25:55 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Create token first
+static t_token_type get_token_type(char *str);
+static t_dlist	*interpret_word(char *str);
+static int	tokenizer_advance(char *str);
 
 /**
  * @brief Return a token node or a list of token node when input a string.
  * First check for first character of the string, if is special character,
  * just create the respective type of token. If is other than that, create
- * a word token. 
- * First calculate the length to move forward. Then check for the 
- * first character in the string.
- * 1) If the first character is space, create a new node and add
- * 		behind the previous node
- * 2) If the first character is single or double quote, trim the 
- * 		first quote and join it back to previous result
- * 3) Other than this, just join the string with the previous result
- * When creating the node, check
+ * a node or a list of word token.
  */
 t_dlist	*ms_tokenized(char *str)
 {
-	int		i;
-	int		length;
-	char	*content;
-	char	*temp;
 	t_dlist	*rtn;
+	t_token	*token;
+
+	if (*str == '<' || *str == '>' || *str == '|' || *str == '\0')
+	{
+		token = (t_token *)malloc (sizeof(t_token));
+		token->type = get_token_type(str);
+		token->value = NULL;
+		rtn = ms_dlist_new(token);
+	}
+	else
+		rtn = interpret_word(str);
+	
+	return (rtn);
+}
+
+/**
+ * @brief Return the respective token type based on operator
+ */
+static t_token_type get_token_type(char *str)
+{
+	if (*str == '|')
+		return (TOKEN_PIPE);
+	if (*str == '<')
+	{
+		if (*(str + 1) == '<')
+			return (TOKEN_AIN);
+		return (TOKEN_IN);
+	}
+	if (*str == '>')
+	{
+		if (*(str + 1) == '>')
+			return (TOKEN_AOUT);
+		return (TOKEN_OUT);
+	}
+}
+
+/**
+ * @brief Return a single node or a list of word token based on
+ * the string. When encouter space outside quote, the current intepreted
+ * string is convert to one token, and the string after the space  
+ * is interpret as new token. When encounter a quote, the opening
+ * and closing quote is trimmed and is joined with previous result
+ */
+static t_dlist	*interpret_word(char *str)
+{
+	t_dlist	*rtn;
+	int		i;
+	char	*temp;
+	char	*result;
 
 	i = 0;
-	rtn = NULL;
-	content = malloc(1);
-	content[0] = '\0';
+	result = ms_create_empty_string();
 	while (str[i] != '\0')
 	{
-		//interpret
-		//advance
 		if (str[i] == ' ')
 		{
-			//convert current string to token first
-			//add the token to the list
+			ms_dlist_addback(&rtn, ms_create_word_token(result));
+			result = ms_create_empty_string();
 		}
 		else if (str[i] == '\"' || str[i] == '\'')
 		{
-
+			temp = ms_token_trim(str + i);
+			result = ms_strjoin_free(result, temp);
 		}
 		else
 		{
+			result = ms_strjoin_free(result ,ms_strdup_length(str + i, tokenizer_advance(str + i)));
 		}
+		i += tokenizer_advance(str);
 	}
-	// ms_dlist_addback(&rtn,)
+	ms_dlist_addback(&rtn, ms_create_word_token(result));
+	free (result);
 	return (rtn);
 }
 

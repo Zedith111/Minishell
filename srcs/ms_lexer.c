@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 16:37:11 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/07 22:05:07 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,8 @@ static void	interpret_split(char *current, int length,
 	}
 	base[i] = '\0';
 	expand = ms_expander(base, main);
-	printf("Expand: %s\n", expand);
-	// ms_dlist_addback(&token_list, ms_tokenized(expand));
-	// print_token_list(&token_list);
+	ms_dlist_addback(&token_list, ms_tokenized(expand));
+	print_token_list(&token_list);
 	free(expand);
 	free (base);
 }

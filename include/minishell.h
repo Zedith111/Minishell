@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 16:26:43 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 01:03:40 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,8 @@ char		*ms_intepret_quote(char *str, t_main *main);
 char		*ms_expand_string(char *str, int length, t_main *main);
 int			ms_is_env_character(char c);
 t_dlist		*ms_tokenized(char *str);
-t_dlist		*ms_create_token(char *str);
+t_dlist		*ms_create_word_token(char *content);
+char		*ms_token_trim(char *str);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);

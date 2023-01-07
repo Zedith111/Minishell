@@ -6,26 +6,38 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:22:27 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 16:51:14 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 01:23:22 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Create a node of token struct based on the input string
+ * @brief Create a word token based on the content
  */
-t_dlist	*ms_create_token(char *str)
+t_dlist	*ms_create_word_token(char *content)
 {
+	t_dlist	*rtn;
 	t_token	*token;
 
-	token = (t_token *)malloc (sizeof (t_token));
-
-	return (ms_dlist_new(token));
+	token = (t_token *)malloc (sizeof(t_token));
+	token->type = TOKEN_WORD;
+	token->value = ft_strdup(content);
+	rtn = ms_dlist_new(token);
+	return (rtn);
 }
 
-/**
- * @brief Return the token type based on the c
- * 
- */
-static t_token_type	
+char	*ms_token_trim(char *str)
+{
+	char	*quote;
+	char 	*temp;
+	char	*rtn;
+
+	quote = malloc(2);
+	quote[0] = *str;
+	quote[1] = '\0'; 
+	temp = ms_strdup_length(str, ms_check_enclosed_length(str));
+	rtn = ft_strtrim(temp, quote);
+	free (temp);
+	return (rtn);
+}

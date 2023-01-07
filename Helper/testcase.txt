@@ -4,6 +4,7 @@ echo $$
 echo >out 1 >out 2
 cd ~
 cd -
+export PATHS 
 export PWD, then echo PWD
 unset PWD, then ls
 ls -l -a
@@ -133,3 +134,10 @@ cd << END
 $HOME/$PWD
 END
 will cd to home directory
+
+
+A="ho     hi"
+ec$A
+
+e"c$A"
+echo hello "|" ls

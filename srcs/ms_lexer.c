@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2023/01/03 15:46:43 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/07 16:37:11 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <string.h>
 
 static t_lexer	*lexer_init(char *input);
-static void		interpret_split(char *current, int length, t_main *main);
+static void		interpret_split(char *current, int length,
+					t_dlist *token_list, t_main *main);
 
 /**
  * @brief Main function of lexer, turn the line into smaller token
@@ -29,9 +30,10 @@ static void		interpret_split(char *current, int length, t_main *main);
 void	ms_process_input(char *input, t_main *main)
 {
 	t_lexer	*lexer;
+	t_dlist	*token_list;
 
 	lexer = lexer_init(input);
-
+	token_list = NULL;
 	while (*lexer->current != '\0')
 	{
 		if (ms_get_split_length(lexer) == -1)
@@ -39,20 +41,21 @@ void	ms_process_input(char *input, t_main *main)
 			printf ("Quote not properly enclosed\n");
 			break ;
 		}
-		interpret_split(lexer->current, ms_get_split_length(lexer), main);
+		interpret_split(lexer->current, ms_get_split_length(lexer),
+			token_list, main);
 		lexer->current += ms_get_split_length(lexer);
 	}
 	free (lexer);
 }
 
 /**
- * @brief Intepret the splitted string. First, create a new string 
- * based on split length. Then, check whether the string contain $ sign
- * If contain, create a new string that store the expanded value.
- * Finally, create a new string that join both and convert this to token.
- * The quote is preserved throughout this process
+ * @brief Intepret the splitted string. First, duplicate the string
+ * based on split length. Then expand the string out. The quote is 
+ * still preserved in this stage. Lastly, convert the expanded string 
+ * to tokens. The quote is trimmed out in this stage.
  */
-static void	interpret_split(char *current, int length, t_main *main)
+static void	interpret_split(char *current, int length,
+					t_dlist *token_list, t_main *main)
 {
 	int		i;
 	char	*base;
@@ -68,9 +71,10 @@ static void	interpret_split(char *current, int length, t_main *main)
 		i ++;
 	}
 	base[i] = '\0';
-	printf("Original :%s\n", base);
 	expand = ms_expander(base, main);
-	printf("Expand :%s\n", expand);
+	printf("Expand: %s\n", expand);
+	// ms_dlist_addback(&token_list, ms_tokenized(expand));
+	// print_token_list(&token_list);
 	free(expand);
 	free (base);
 }

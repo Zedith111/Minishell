@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:30:35 by zah               #+#    #+#             */
-/*   Updated: 2023/01/03 15:19:30 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/07 12:18:18 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*ms_intepret_string(char *str, int length, t_main *main)
 	if (str[i] == '$')
 		rtn = ms_create_empty_string();
 	else if (str[i] == '?')
-		rtn = ft_itoa(0);
+		rtn = ft_itoa(g_error);
 	else if (!ms_is_env_character(str[i]))
 		rtn = ft_strdup("$");
 	else

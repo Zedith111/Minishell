@@ -6,15 +6,15 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 13:14:34 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 01:25:55 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 14:52:59 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token_type get_token_type(char *str);
-static t_dlist	*interpret_word(char *str);
-static int	tokenizer_advance(char *str);
+static t_token_type	get_token_type(char *str);
+static t_dlist		*interpret_word(char *str);
+static int			tokenizer_advance(char *str);
 
 /**
  * @brief Return a token node or a list of token node when input a string.
@@ -27,16 +27,17 @@ t_dlist	*ms_tokenized(char *str)
 	t_dlist	*rtn;
 	t_token	*token;
 
-	if (*str == '<' || *str == '>' || *str == '|' || *str == '\0')
+	if (*str == '<' || *str == '>' || *str == '|')
 	{
 		token = (t_token *)malloc (sizeof(t_token));
 		token->type = get_token_type(str);
 		token->value = NULL;
 		rtn = ms_dlist_new(token);
 	}
+	else if (*str == '\0')
+		rtn = ms_create_word_token("");
 	else
 		rtn = interpret_word(str);
-	
 	return (rtn);
 }
 
@@ -59,6 +60,7 @@ static t_token_type get_token_type(char *str)
 			return (TOKEN_AOUT);
 		return (TOKEN_OUT);
 	}
+	return (TOKEN_ERR);
 }
 
 /**
@@ -77,23 +79,20 @@ static t_dlist	*interpret_word(char *str)
 
 	i = 0;
 	result = ms_create_empty_string();
+	rtn = NULL;
 	while (str[i] != '\0')
 	{
 		if (str[i] == ' ')
-		{
-			ms_dlist_addback(&rtn, ms_create_word_token(result));
-			result = ms_create_empty_string();
-		}
+			result = ms_tokenize_space(result, &rtn);
 		else if (str[i] == '\"' || str[i] == '\'')
 		{
 			temp = ms_token_trim(str + i);
 			result = ms_strjoin_free(result, temp);
 		}
 		else
-		{
-			result = ms_strjoin_free(result ,ms_strdup_length(str + i, tokenizer_advance(str + i)));
-		}
-		i += tokenizer_advance(str);
+			result = ms_strjoin_free(result,
+					ms_strdup_length(str + i, tokenizer_advance(str + i)));
+		i += tokenizer_advance(str + i);
 	}
 	ms_dlist_addback(&rtn, ms_create_word_token(result));
 	free (result);
@@ -113,11 +112,12 @@ static int	tokenizer_advance(char *str)
 
 	i = 0;
 	if (str[i] == '\"' || str[i] == '\'')
-		return (check_enclosed(str, str[i]));
+		return (ms_check_enclosed_length(str));
 	if (str[i] == ' ' || str[i] == '\t')
 	{
 		while (str[i] == ' ' || str[i] == '\t')
 			i ++;
+		return (i);
 	}
 	while (str[i] != '\0')
 	{

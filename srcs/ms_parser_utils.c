@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 12:32:31 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 16:36:24 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 14:43:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ms_get_command_length(t_dlist *token_list)
 	while (current != NULL)
 	{
 		token = (t_token *)current->content;
-		if (token->type != TOKEN_WORD && token->type != TOKEN_QUOTE)
+		if (token->type != TOKEN_WORD)
 			break ;
 		size ++;
 		current = current->next;
@@ -128,7 +128,7 @@ void	create_command(t_dlist *command_list, t_dlist *token, int length)
 	{
 		last = ms_dlst_last(command_list);
 		current = (t_command *)last->content;
-		if (head->type == TOKEN_WORD || head->type == TOKEN_QUOTE)
+		if (head->type == TOKEN_WORD)
 			current->full_command = ms_get_command(current, token, length);
 		else if (head->type == TOKEN_AIN || head->type == TOKEN_IN)
 			current->infile = ms_get_file_info(current->infile, head);

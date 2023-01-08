@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 18:01:24 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 14:44:15 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	check_logic(t_dlist *token_list)
 			if (current->next == NULL)
 				return (0);
 			next = (t_token *)current->next->content;
-			if (next->type != TOKEN_QUOTE && next->type != TOKEN_WORD)
+			if (next->type != TOKEN_WORD)
 				return (0);
 			set_file_name(current, current->next);
 		}

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 22:05:07 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 15:01:45 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <string.h>
 
 static t_lexer	*lexer_init(char *input);
-static void		interpret_split(char *current, int length,
+static t_dlist	*interpret_split(char *current, int length,
 					t_dlist *token_list, t_main *main);
 
 /**
@@ -39,12 +39,13 @@ void	ms_process_input(char *input, t_main *main)
 		if (ms_get_split_length(lexer) == -1)
 		{
 			printf ("Quote not properly enclosed\n");
-			break ;
+			return ;
 		}
-		interpret_split(lexer->current, ms_get_split_length(lexer),
-			token_list, main);
+		token_list = interpret_split(lexer->current, ms_get_split_length(lexer),
+				token_list, main);
 		lexer->current += ms_get_split_length(lexer);
 	}
+	ms_parse_input(token_list, main);
 	free (lexer);
 }
 
@@ -54,7 +55,7 @@ void	ms_process_input(char *input, t_main *main)
  * still preserved in this stage. Lastly, convert the expanded string 
  * to tokens. The quote is trimmed out in this stage.
  */
-static void	interpret_split(char *current, int length,
+static t_dlist	*interpret_split(char *current, int length,
 					t_dlist *token_list, t_main *main)
 {
 	int		i;
@@ -63,7 +64,7 @@ static void	interpret_split(char *current, int length,
 
 	i = 0;
 	if (length == 0)
-		return ;
+		return (token_list);
 	base = malloc (length + 1);
 	while (i < length)
 	{
@@ -73,9 +74,9 @@ static void	interpret_split(char *current, int length,
 	base[i] = '\0';
 	expand = ms_expander(base, main);
 	ms_dlist_addback(&token_list, ms_tokenized(expand));
-	print_token_list(&token_list);
 	free(expand);
 	free (base);
+	return (token_list);
 }
 
 static t_lexer	*lexer_init(char *input)

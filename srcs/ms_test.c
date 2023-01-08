@@ -5,15 +5,14 @@ void	print_token_node(t_dlist *node)
 {
 	t_token *token;
 
+
 	if (node == NULL)
 	{
 		printf ("empty list\n");
 		return;
 	}
 	token = (t_token *)node->content;
-	if (token->type == TOKEN_QUOTE)
-		printf("Quote\n");
-	else if (token->type == TOKEN_WORD)
+	if (token->type == TOKEN_WORD)
 		printf("Word\n");
 	else if (token->type == TOKEN_AIN)
 		printf("Append Infile\n");
@@ -25,8 +24,8 @@ void	print_token_node(t_dlist *node)
 		printf("Outfile\n");
 	else if (token->type == TOKEN_PIPE)
 		printf("Pipe\n");
-	else if (token->type == TOKEN_END)
-		printf("end\n");
+	else
+		printf("nothing\n");
 	printf ("%s\n", token->value);
 }
 
@@ -36,6 +35,8 @@ void	print_token_list(t_dlist **list)
 	t_dlist *current;
 
 	current = *list;
+	if (current == NULL)
+		printf("empty list\n");
 	while (current != NULL)
 	{
 		print_token_node(current);

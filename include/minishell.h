@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 01:03:40 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 13:42:41 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,12 @@ int		g_error;
 
 typedef enum s_token_type
 {
-	TOKEN_QUOTE,
 	TOKEN_WORD,
 	TOKEN_IN,
 	TOKEN_OUT,
 	TOKEN_AIN,
 	TOKEN_AOUT,
 	TOKEN_PIPE,
-	TOKEN_END,
 	TOKEN_ERR
 }	t_token_type;
 
@@ -117,7 +115,7 @@ void		ms_error_exit(char *err_msg);
 int			ms_is_empty_string(char *str);
 int			ms_char_match(char *str, char c);
 int			ms_strcmp(char *s1, char *s2);
-int			check_enclosed(char *str, char open);
+int			ms_check_enclosed_length(char *str);
 char		*ms_strdup_length(char *str, int length);
 char		*ms_create_empty_string(void);
 char		*ms_strjoin_free(char *src, char *new);
@@ -156,6 +154,7 @@ int			ms_is_env_character(char c);
 t_dlist		*ms_tokenized(char *str);
 t_dlist		*ms_create_word_token(char *content);
 char		*ms_token_trim(char *str);
+char		*ms_tokenize_space(char *current, t_dlist **list);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);

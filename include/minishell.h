@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 13:42:41 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 16:00:00 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "../libft_comb/includes/libft.h"
 # include "../libft_comb/includes/ft_printf.h"
+# include "../libft_comb/includes/get_next_line_bonus.h"
 
 int		g_error;
 
@@ -81,30 +86,37 @@ typedef struct s_file
 {
 	char	file_type;
 	char	*file_name;
-	int		fd;
 }	t_file;
 
 /**
- * @brief The struct used to store info to allow program to be execute.
+* @brief The struct used to store info to allow program to be execute.
  * Have a double array storing all command including arguement. Two double
  * array of struct t_file storing infile and outfile information
  */
 typedef struct s_command
 {
-	char		**full_command;
-	t_file		**infile;
-	t_file		**outfile;
+	char	**full_command;
+	t_file	**infile;
+	t_file	**outfile;
+
+	int		in_fd;
+	int		out_fd;
 }	t_command;
 
 /**
  * @brief 
- * Store a linked list of environment struct which will be updata whenever
+ * Store a linked list of environment struct which will be updated whenever
  * a variable has been exported
  */
 typedef struct s_main
 {
 	t_dlist		*env_list;
 	char		**envp;
+
+	pid_t		*pid;
+	int			*pipe;
+	int			last_pipe;
+	int			counter;
 }	t_main;
 
 //Exit Function
@@ -143,7 +155,6 @@ void		ms_init_sig_handler(void);
 void		ms_process_input(char *input, t_main *main);
 int			ms_get_split_length(t_lexer *lexer);
 int			ms_check_enclosed_length(char *str);
-
 char		*ms_expander(char *str, t_main *main);
 int			expander_advanced(char *str);
 int			get_expand_length(char *str);
@@ -177,6 +188,20 @@ void		ms_cmd_exit(void);
 void		ms_free_token(void *token);
 void		ms_free_command(void *content);
 void		ms_free_tfile_array(t_file **files);
+
+//Execute functions
+char		*ft_pathsort(t_main	*main, t_command *cmd);
+void		ft_execve(t_main *main, t_command *cmd);
+
+//Processes
+void		print_error(char *str);
+void		first_process(t_main *main, t_command *cmd);
+void		middle_process(t_main *main, t_command *cmd);
+void		last_process(t_main *main, t_command *cmd);
+
+//Here_doc functions
+void		here_doc(t_command *cmd, char *limiter);
+void		process(t_main *main, t_dlist **lst);
 
 //Testing use Function, will be deleted
 void		print_token_node(t_dlist *node);

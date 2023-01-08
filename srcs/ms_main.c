@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2023/01/07 12:18:37 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 15:39:09 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static t_main	*init_main(char **envp)
 
 	rtn = malloc (sizeof(t_main));
 	rtn->env_list = ms_dup_env(envp);
+	rtn->counter = 0;
 	return (rtn);
 }
 

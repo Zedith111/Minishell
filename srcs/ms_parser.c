@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 14:44:15 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 15:45:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 	t_dlist		*command_list;
 	int			length;
 
-	//Remove this line
-	(void) main;
 	if (!check_logic(token_list))
 		printf("parser error\n");
 	else
@@ -45,9 +43,7 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 			create_command(command_list, current, length);
 			current = parser_advance(current, length);
 		}
-		print_command_list(&command_list);
-		//Execute at here
-		//execute(t_dlist *command_list, main)
+		process(main, &command_list);
 		//Call this in executor, use to free command list
 		ms_dlist_clear(&command_list, &ms_free_command);
 	}

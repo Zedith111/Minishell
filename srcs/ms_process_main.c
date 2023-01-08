@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/06 16:37:34 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/08 16:19:25 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_error(char *str)
 	write(2, "\n", 1);
 }
 
-int		check_built_in(t_main *main, t_command *cmd)
+int	check_built_in(t_main *main, t_command *cmd)
 {
 	(void)main;
 	if (cmd->full_command[0] == NULL)
@@ -33,7 +33,7 @@ int		check_built_in(t_main *main, t_command *cmd)
 	return (0);
 }
 
-int		lst_len(t_dlist *list)
+int	lst_len(t_dlist *list)
 {
 	int		count;
 	t_dlist	*lst;
@@ -62,7 +62,8 @@ void	process(t_main *main, t_dlist **list)
 	main->pipe = malloc(sizeof(int *) * (lst_len(*list) - 1));
 	lst = *list;
 	len = lst_len(lst);
-	while (main->counter < (lst_len(*list) - 1) && main->counter <= (lst_len(*list) - 1))
+	while (main->counter < (lst_len(*list) - 1)
+		&& main->counter <= (lst_len(*list) - 1))
 	{
 		main->pipe[main->counter] = malloc(sizeof(int) * 2);
 		main->counter++;

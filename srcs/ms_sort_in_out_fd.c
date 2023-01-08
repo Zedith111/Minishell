@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:37:03 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/06 16:41:12 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/08 16:18:31 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void	sort_out(t_command *cmd, int i)
 	{
 		if (cmd->outfile[i]->file_type == 'A')
 			cmd->out_fd = open(cmd->outfile[i]->file_name,
-				O_WRONLY | O_APPEND | O_CREAT, 0644);
+					O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else
 			cmd->out_fd = open(cmd->outfile[i]->file_name,
-				O_WRONLY | O_TRUNC | O_CREAT, 0644);
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (cmd->out_fd == -1)
-			{
-				print_error(cmd->outfile[i]->file_name);
-				exit (0);
-			}
+		{
+			print_error(cmd->outfile[i]->file_name);
+			exit (0);
+		}
 		if (cmd->outfile[i + 1] != NULL)
 			close(cmd->out_fd);
 	}

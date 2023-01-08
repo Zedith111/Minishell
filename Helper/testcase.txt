@@ -141,3 +141,8 @@ ec$A
 
 e"c$A"
 echo hello "|" ls
+
+
+cat << END
+$USER
+END

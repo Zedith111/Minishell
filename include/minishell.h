@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 16:00:00 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 16:23:47 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_command
 
 	int		in_fd;
 	int		out_fd;
+	char	*temp_name;
 }	t_command;
 
 /**
@@ -114,7 +115,7 @@ typedef struct s_main
 	char		**envp;
 
 	pid_t		*pid;
-	int			*pipe;
+	int			**pipe;
 	int			last_pipe;
 	int			counter;
 }	t_main;
@@ -189,24 +190,37 @@ void		ms_free_token(void *token);
 void		ms_free_command(void *content);
 void		ms_free_tfile_array(t_file **files);
 
-//Execute functions
-char		*ft_pathsort(t_main	*main, t_command *cmd);
-void		ft_execve(t_main *main, t_command *cmd);
-
-//Processes
-void		print_error(char *str);
-void		first_process(t_main *main, t_command *cmd);
-void		middle_process(t_main *main, t_command *cmd);
-void		last_process(t_main *main, t_command *cmd);
-
-//Here_doc functions
-void		here_doc(t_command *cmd, char *limiter);
-void		process(t_main *main, t_dlist **lst);
-
 //Testing use Function, will be deleted
 void		print_token_node(t_dlist *node);
 void		print_token_list(t_dlist **list);
 void		print_env_list(t_dlist **lst);
 void 		print_command_list(t_dlist **list);
+
+//Execute functions
+char	*ft_pathsort(t_main	*main, t_command *cmd);
+void	ft_execve(t_main *main, t_command *cmd);
+
+//Processes
+void	print_error(char *str);
+void	first_process(t_main *main, t_command *cmd);
+void	middle_process(t_main *main, t_command *cmd);
+void	last_process(t_main *main, t_command *cmd);
+void	single_process(t_main *main, t_command *cmd);
+void	sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
+void	ft_execute(t_main *main, t_command *cmd, int len);
+
+//Here_doc functions
+char	*ft_strcat(char *src, char *dst);
+void	heredoc_execute(t_command *cmd);
+void	here_doc(t_command *cmd, char *limiter);
+void	get_temp_name(t_command *cmd, int temp_id);
+int		compare(char *buf, char *limiter);
+int		check(char *buf, char *limit, int len);
+void	process(t_main *main, t_dlist **lst);
+void	get_here_doc(t_dlist **list);
+
+//Built in Commands
+int		check_built_in(t_main *main, t_command *cmd);
+void	ft_echo(t_main *main, t_command *cmd);
 
 #endif

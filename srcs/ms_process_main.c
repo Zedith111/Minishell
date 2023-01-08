@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/31 00:59:41 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:37:34 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,17 @@ void	print_error(char *str)
 	write(2, "\n", 1);
 }
 
-void	ft_execute(t_main *main, t_command *cmd, int len)
+int		check_built_in(t_main *main, t_command *cmd)
 {
-	(void)len;
-	if (len == 1)
+	(void)main;
+	if (cmd->full_command[0] == NULL)
+		return (0);
+	if (strncmp(cmd->full_command[0], "echo", 4) == 0)
 	{
-		last_process(main, cmd);
-		return ;
+		ft_echo(main, cmd);
+		return (1);
 	}
-	if (main->counter == 0)
-	{
-		first_process(main, cmd);
-		// printf("first process\n");
-	}
-	else if (main->counter == len - 1)
-	{
-		last_process(main, cmd);
-		// printf("last process\n");
-	}
-	else
-	{
-		middle_process(main, cmd);
-		// printf("middle process\n");
-	}
+	return (0);
 }
 
 int		lst_len(t_dlist *list)
@@ -60,32 +48,50 @@ int		lst_len(t_dlist *list)
 	return (count);
 }
 
+void	free_temp(t_command *cmd)
+{
+	free(cmd->temp_name);
+}
+
 void	process(t_main *main, t_dlist **list)
 {
 	t_dlist	*lst;
 	int		len;
 
 	main->pid = malloc(sizeof(pid_t) * lst_len(*list));
-	main->pipe = malloc(sizeof(int) * 2);
-	if (pipe(main->pipe) == -1)
-		exit(0);
+	main->pipe = malloc(sizeof(int *) * (lst_len(*list) - 1));
 	lst = *list;
 	len = lst_len(lst);
-	while (lst)
+	while (main->counter < (lst_len(*list) - 1) && main->counter <= (lst_len(*list) - 1))
 	{
-		ft_execute(main, (t_command *)lst->content, len);
-		waitpid(main->pid[main->counter], NULL, 0);
-		lst = lst->next;
+		main->pipe[main->counter] = malloc(sizeof(int) * 2);
 		main->counter++;
 	}
 	main->counter = 0;
-	close(main->pipe[0]);
-	close(main->pipe[1]);
-	// while (main->counter > 0)
-	// {
-	// 	waitpid(main->pid[main->counter - 1], NULL, 0);
-	// 	main->counter--;
-	// }
+	if (main->counter < (lst_len(*list) - 1) && pipe(main->pipe[0]) == -1)
+		exit(0);
+	get_here_doc(list);
+	while (lst)
+	{
+		ft_execute(main, (t_command *)lst->content, len);
+		lst = lst->next;
+		main->counter++;
+	}
+	lst = *list;
+	while (lst)
+	{
+		free_temp((t_command *)lst->content);
+		lst = lst->next;
+	}
+	while (--main->counter >= 0)
+		waitpid(-1, NULL, 0);
+	main->counter = 0;
+	while (main->counter < (lst_len(*list) - 1))
+	{
+		free(main->pipe[main->counter]);
+		main->counter++;
+	}
+	main->counter = 0;
 	free(main->pid);
 	free(main->pipe);
 }

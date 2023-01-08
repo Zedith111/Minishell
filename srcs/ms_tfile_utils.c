@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:55:47 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:37:59 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/08 16:24:05 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_file	*ms_init_tfile(void)
 	rtn = malloc (sizeof (t_file));
 	rtn->file_type = 'T';
 	rtn->file_name = NULL;
-	rtn->fd = 0;
 	return (rtn);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 18:00:56 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/09 21:10:10 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ void	ms_cmd_echo(t_main *main, t_command *cmd);
 void	ms_cmd_cd(t_main *main, t_command *cmd);
 void	ms_cmd_pwd(t_command *cmd);
 void	ms_cmd_export(t_main *main, t_command *cmd);
+void	ms_export_add(t_main *main, char **command);
 //unset
 //env
 //exit

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/09 17:38:03 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/09 18:00:48 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_built_in(t_main *main, t_command *cmd)
 	return (0);
 }
 
-int		lst_len(t_dlist *list)
+int	lst_len(t_dlist *list)
 {
 	int		count;
 	t_dlist	*lst;
@@ -68,7 +68,8 @@ void	process(t_main *main, t_dlist **list)
 	main->pipe = malloc(sizeof(int *) * (lst_len(*list) - 1));
 	lst = *list;
 	len = lst_len(lst);
-	while (main->counter < (lst_len(*list) - 1) && main->counter <= (lst_len(*list) - 1))
+	while (main->counter < (lst_len(*list) - 1)
+		&& main->counter <= (lst_len(*list) - 1))
 	{
 		main->pipe[main->counter] = malloc(sizeof(int) * 2);
 		main->counter++;

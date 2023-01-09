@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:43:56 by ojing-ha          #+#    #+#             */
-/*   Updated: 2022/12/28 13:38:14 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:59:53 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,6 @@ char	*ft_pathsort(t_main	*main, t_command *cmd)
 	cmd_path = ft_path_check(temp, cmd->full_command[0]);
 	free(temp);
 	return (cmd_path);
-	// if (cmd_path == NULL)
-	// {
-	// 	print_error(info->cmd);
-	// 	exit (0);
-	// }
 }
 
 void	ft_execve(t_main *main, t_command *cmd)
@@ -108,10 +103,16 @@ void	ft_execve(t_main *main, t_command *cmd)
 	char	*final_path;
 
 	final_path = ft_pathsort(main, cmd);
-	if (execve(final_path, cmd->full_command, NULL) < 0)
-		printf("error\n");
-	free(final_path);
+	if (access(final_path, F_OK) == 0)
+	{
+		execve(final_path, cmd->full_command, NULL);
+		free(final_path);
+		return ;
+	}
+	else
+	{
+		ft_printf("Error\n");
+		free(final_path);
+		exit (0);
+	}
 }
-
-// if (execve(final_path, cmd->full_command, NULL) < 0)
-// 		printf("error\n");

@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:35:47 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 16:13:58 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:13:40 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	ft_echo(t_main *main, t_command *cmd)
 		ft_printf("\n");
 		return ;
 	}
-	if (ft_strncmp(cmd->full_command[i], "-n", 2) == 0)
+	if (ft_strncmp(cmd->full_command[i], "-n", 2) == 0
+		&& ft_strlen(cmd->full_command[1]) == 2)
 		i++;
 	while (cmd->full_command[i] != NULL)
 	{
@@ -32,6 +33,7 @@ void	ft_echo(t_main *main, t_command *cmd)
 			ft_printf(" ");
 		i++;
 	}
-	if (ft_strncmp(cmd->full_command[1], "-n", 2) != 0)
+	if (!(ft_strncmp(cmd->full_command[1], "-n", 2) == 0
+			&& ft_strlen(cmd->full_command[1]) == 2))
 		ft_printf("\n");
 }

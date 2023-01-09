@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_echo.c                                          :+:      :+:    :+:   */
+/*   ms_cmd_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 16:35:47 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 16:21:19 by zah              ###   ########.fr       */
+/*   Created: 2023/01/09 13:14:47 by zah               #+#    #+#             */
+/*   Updated: 2023/01/09 13:55:43 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_main *main, t_command *cmd)
+void	ms_cmd_pwd(t_command *cmd)
 {
-	int	i;
+	char	*buf;
 
-	i = 1;
-	(void)main;
-	if (cmd->full_command[i] == NULL)
+	if (cmd->full_command[1] != NULL)
+		printf("pwd: too many arguements\n");
+	else
 	{
-		ft_printf("\n");
-		return ;
+		buf = getcwd(NULL, 0);
+		printf("%s\n", buf);
+		free (buf);
 	}
-	if ((ft_strncmp(cmd->full_command[i], "-n", 2)) == 0)
-		i++;
-	while (cmd->full_command[i] != NULL)
-	{
-		ft_printf("%s", cmd->full_command[i]);
-		if (cmd->full_command[i + 1] != NULL)
-			ft_printf(" ");
-		i++;
-	}
-	if ((ft_strncmp(cmd->full_command[1], "-n", 2)) != 0)
-		ft_printf("\n");
 }

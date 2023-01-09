@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 16:23:47 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/09 15:53:39 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_main
 {
 	t_dlist		*env_list;
 	char		**envp;
+	char 		**built_in;
 
 	pid_t		*pid;
 	int			**pipe;
@@ -148,6 +149,7 @@ void		ms_dlst_del_target(t_dlist **lst, t_dlist *target,
 				void (*del)(void *));
 int			ms_dlist_size(t_dlist *head);
 t_dlist		*ms_dlst_last(t_dlist *head);
+t_dlist		*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *));
 
 //Signal Function
 void		ms_init_sig_handler(void);
@@ -189,6 +191,7 @@ void		ms_cmd_exit(void);
 void		ms_free_token(void *token);
 void		ms_free_command(void *content);
 void		ms_free_tfile_array(t_file **files);
+void		ms_env_free(void *env);
 
 //Testing use Function, will be deleted
 void		print_token_node(t_dlist *node);
@@ -211,16 +214,23 @@ void	ft_execute(t_main *main, t_command *cmd, int len);
 
 //Here_doc functions
 char	*ft_strcat(char *src, char *dst);
-void	heredoc_execute(t_command *cmd);
-void	here_doc(t_command *cmd, char *limiter);
+void	heredoc_execute(t_command *cmd, t_main *main);
+void	here_doc(t_command *cmd, char *limiter, t_main *main);
 void	get_temp_name(t_command *cmd, int temp_id);
 int		compare(char *buf, char *limiter);
 int		check(char *buf, char *limit, int len);
 void	process(t_main *main, t_dlist **lst);
-void	get_here_doc(t_dlist **list);
+void	get_here_doc(t_dlist **list, t_main *main);
 
 //Built in Commands
+int		ms_get_built_in(char *command);
 int		check_built_in(t_main *main, t_command *cmd);
-void	ft_echo(t_main *main, t_command *cmd);
+void	ms_cmd_echo(t_main *main, t_command *cmd);
+void	ms_cmd_cd(t_main *main, t_command *cmd);
+void	ms_cmd_pwd(t_command *cmd);
+void	ms_cmd_export(t_main *main, t_command *cmd);
+//unset
+//env
+//exit
 
 #endif

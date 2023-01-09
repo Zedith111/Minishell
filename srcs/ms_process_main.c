@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_process_main.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/06 16:37:34 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:38:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,20 @@ void	print_error(char *str)
 	write(2, "\n", 1);
 }
 
-int		check_built_in(t_main *main, t_command *cmd)
+int	check_built_in(t_main *main, t_command *cmd)
 {
-	(void)main;
 	if (cmd->full_command[0] == NULL)
 		return (0);
-	if (strncmp(cmd->full_command[0], "echo", 4) == 0)
+	if (ms_get_built_in(cmd->full_command[0]) != 0)
 	{
-		ft_echo(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 1)
+			ms_cmd_echo(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 2)
+			ms_cmd_cd(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 3)
+			ms_cmd_pwd(cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 4)
+			ms_cmd_export(main, cmd);
 		return (1);
 	}
 	return (0);
@@ -70,7 +76,7 @@ void	process(t_main *main, t_dlist **list)
 	main->counter = 0;
 	if (main->counter < (lst_len(*list) - 1) && pipe(main->pipe[0]) == -1)
 		exit(0);
-	get_here_doc(list);
+	get_here_doc(list, main);
 	while (lst)
 	{
 		ft_execute(main, (t_command *)lst->content, len);

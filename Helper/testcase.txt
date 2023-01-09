@@ -146,3 +146,7 @@ echo hello "|" ls
 cat << END
 $USER
 END
+
+echo hello | >out
+
+cd $ABC

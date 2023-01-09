@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:44:43 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:39:09 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/09 13:46:14 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	g_error = 0;
 	main = init_main(envp);
-	// print_env_list(&main->env_list);
 	ms_init_sig_handler();
 	while (1)
 	{
@@ -59,11 +58,37 @@ static void	read_input(t_main *main)
 static t_main	*init_main(char **envp)
 {
 	t_main	*rtn;
+	char	**built_in;
 
 	rtn = malloc (sizeof(t_main));
+	built_in = ft_split("echo cd pwd export unset env exit", ' ');
 	rtn->env_list = ms_dup_env(envp);
 	rtn->counter = 0;
+	rtn->built_in = built_in;
 	return (rtn);
+}
+
+/**
+ * @brief Return a integer indicating which built in process will be used.
+ * 0 if is not a built in.
+ */
+int	ms_get_built_in(char *command)
+{
+	if (strcmp(command, "echo") == 0)
+		return (1);
+	if (strcmp(command, "cd") == 0)
+		return (2);
+	if (strcmp(command, "pwd") == 0)
+		return (3);
+	if (strcmp(command, "export") == 0)
+		return (4);
+	if (strcmp(command, "unset") == 0)
+		return (5);
+	if (strcmp(command, "env") == 0)
+		return (6);
+	if (strcmp(command, "exit") == 0)
+		return (7);
+	return (0);
 }
 
 // void	ms_free_main(t_main *main)

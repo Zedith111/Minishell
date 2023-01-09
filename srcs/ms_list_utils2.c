@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:38:50 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/09 15:35:16 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	ms_dlist_size(t_dlist *head)
 	}
 	return (size);
 }
+
 /**
  * @brief Delete a specific node in list
  */
@@ -63,4 +64,26 @@ t_dlist	*ms_dlst_last(t_dlist *head)
 	while (current->next != NULL)
 		current = current->next;
 	return (current);
+}
+
+t_dlist	*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *))
+{
+	t_dlist	*tmp;
+	void	*swap;
+
+	tmp = lst;
+	while(lst->next != NULL)
+	{
+		if (((*cmp)(lst->content, lst->next->content)) == 0)
+		{
+			swap = lst->content;
+			lst->content = lst->next->content;
+			lst->next->content = swap;
+			lst = tmp;
+		}
+		else
+			lst = lst->next;
+	}
+	lst = tmp;
+	return (lst);
 }

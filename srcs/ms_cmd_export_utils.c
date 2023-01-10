@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:08:47 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 15:47:18 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:33:51 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static int		has_value(char *str);
 static int		search_and_replace(t_dlist *env_list, t_env *new);
 static int		check_key_valid(char *str, int split);
 static t_env	*create_new_env(char *str);
-
 
 void	ms_export_add(t_main *main, char **command)
 {

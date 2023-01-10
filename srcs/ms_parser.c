@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 12:04:49 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:35:32 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 			current = parser_advance(current, length);
 		}
 		process(main, &command_list);
-		//Call this in executor, use to free command list
 		ms_dlist_clear(&command_list, &ms_free_command);
 	}
 	ms_dlist_clear(&token_list, &ms_free_token);

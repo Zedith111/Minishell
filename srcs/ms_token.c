@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:37:30 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:36:47 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_dlist	*ms_tokenized(char *str)
 /**
  * @brief Return the respective token type based on operator
  */
-static t_token_type get_token_type(char *str)
+static t_token_type	get_token_type(char *str)
 {
 	if (*str == '|')
 		return (TOKEN_PIPE);

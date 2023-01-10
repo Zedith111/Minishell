@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:57:44 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 11:23:03 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:33:19 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	sort_envp(void	*a, void *b)
 	return (result);
 }
 
-static void		export_print(t_main *main)
+static void	export_print(t_main *main)
 {
 	t_dlist	*dup;
 	t_dlist	*current;

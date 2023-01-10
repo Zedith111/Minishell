@@ -6,3 +6,4 @@ heredoc without command will promp error and exit
 not showing correct error message, and not changing g_error value
 cannot handle multiple -n for echo command
 clear command not working
+after cat ctrl+\ is ignore, should quit

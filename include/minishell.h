@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 16:10:00 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:37:53 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ typedef struct s_main
 {
 	t_dlist		*env_list;
 	char		**envp;
-	char 		**built_in;
+	char		**built_in;
 
 	pid_t		*pid;
 	int			**pipe;
@@ -196,41 +196,41 @@ void		ms_env_free(void *env);
 void		print_token_node(t_dlist *node);
 void		print_token_list(t_dlist **list);
 void		print_env_list(t_dlist **lst);
-void 		print_command_list(t_dlist **list);
+void		print_command_list(t_dlist **list);
 
 //Execute functions
-char	*ft_pathsort(t_main	*main, t_command *cmd);
-void	ft_execve(t_main *main, t_command *cmd);
+char		*ft_pathsort(t_main	*main, t_command *cmd);
+void		ft_execve(t_main *main, t_command *cmd);
 
 //Processes
-void	print_error(char *str);
-void	first_process(t_main *main, t_command *cmd);
-void	middle_process(t_main *main, t_command *cmd);
-void	last_process(t_main *main, t_command *cmd);
-void	single_process(t_main *main, t_command *cmd);
-void	sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
-void	ft_execute(t_main *main, t_command *cmd, int len);
+void		print_error(char *str);
+void		first_process(t_main *main, t_command *cmd);
+void		middle_process(t_main *main, t_command *cmd);
+void		last_process(t_main *main, t_command *cmd);
+void		single_process(t_main *main, t_command *cmd);
+void		sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
+void		ft_execute(t_main *main, t_command *cmd, int len);
 
 //Here_doc functions
-char	*ft_strcat(char *src, char *dst);
-void	heredoc_execute(t_command *cmd, t_main *main);
-void	here_doc(t_command *cmd, char *limiter, t_main *main);
-void	get_temp_name(t_command *cmd, int temp_id);
-int		compare(char *buf, char *limiter);
-int		check(char *buf, char *limit, int len);
-void	process(t_main *main, t_dlist **lst);
-void	get_here_doc(t_dlist **list, t_main *main);
+char		*ft_strcat(char *src, char *dst);
+void		heredoc_execute(t_command *cmd, t_main *main);
+void		here_doc(t_command *cmd, char *limiter, t_main *main);
+void		get_temp_name(t_command *cmd, int temp_id);
+int			compare(char *buf, char *limiter);
+int			check(char *buf, char *limit, int len);
+void		process(t_main *main, t_dlist **lst);
+void		get_here_doc(t_dlist **list, t_main *main);
 
 //Built in Commands
-int		ms_get_built_in(char *command);
-int		check_built_in(t_main *main, t_command *cmd);
-void	ms_cmd_echo(t_command *cmd);
-void	ms_cmd_cd(t_main *main, t_command *cmd);
-void	ms_cmd_pwd(t_command *cmd);
-void	ms_cmd_export(t_main *main, t_command *cmd);
-void	ms_export_add(t_main *main, char **command);
-void	ms_cmd_unset(t_main *main, t_command *cmd);
-void	ms_cmd_env(t_main *main, t_command *cmd);
-void	ms_cmd_exit(t_command *cmd);
+int			ms_get_built_in(char *command);
+int			check_built_in(t_main *main, t_command *cmd);
+void		ms_cmd_echo(t_command *cmd);
+void		ms_cmd_cd(t_main *main, t_command *cmd);
+void		ms_cmd_pwd(t_command *cmd);
+void		ms_cmd_export(t_main *main, t_command *cmd);
+void		ms_export_add(t_main *main, char **command);
+void		ms_cmd_unset(t_main *main, t_command *cmd);
+void		ms_cmd_env(t_main *main, t_command *cmd);
+void		ms_cmd_exit(t_command *cmd);
 
 #endif

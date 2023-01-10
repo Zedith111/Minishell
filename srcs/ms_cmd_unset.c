@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:40:17 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 15:59:30 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:34:10 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ms_cmd_unset(t_main *main, t_command *cmd)
 		if (!is_valid_variable(cmd->full_command[i]))
 			printf("unset : not a valid identifier\n");
 		else
-			search_and_delete(main->env_list, cmd->full_command[i]);		
+			search_and_delete(main->env_list, cmd->full_command[i]);
 		i ++;
 	}
 }
@@ -59,7 +59,10 @@ static void	search_and_delete(t_dlist *env_list, char *str)
 	{
 		env_node = (t_env *)current->content;
 		if (ms_strcmp(env_node->key, str) == 0)
+		{
 			ms_dlst_del_target(&env_list, current, ms_env_free);
+			return ;
+		}
 		current = current->next;
 	}
 }

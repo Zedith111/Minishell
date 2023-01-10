@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:07:21 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 14:32:16 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:33:12 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,22 @@ static void	exit_one_argument(char **command);
  */
 void	ms_cmd_exit(t_command *cmd)
 {
-	if (cmd->full_command[2] != NULL)
-	{
-		ft_putstr_fd("exit\nexit: too many argument\n", STDERR_FILENO);
-		g_error = 1;
-		return ;
-	}
 	if (cmd->full_command[1] == NULL)
 	{
 		printf("exit\n");
 		exit(0);
 	}
 	else if (cmd->full_command[1] != NULL)
-		exit_one_argument(cmd->full_command);
+	{
+		if (cmd->full_command[2] != NULL)
+		{
+			ft_putstr_fd("exit\nexit: too many argument\n", STDERR_FILENO);
+			g_error = 1;
+			return ;
+		}
+		else
+			exit_one_argument(cmd->full_command);
+	}
 }
 
 static void	exit_one_argument(char **command)

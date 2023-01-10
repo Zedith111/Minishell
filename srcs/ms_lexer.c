@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:35:40 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:37:04 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 12:02:42 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	ms_process_input(char *input, t_main *main)
 		if (ms_get_split_length(lexer) == -1)
 		{
 			printf ("Quote not properly enclosed\n");
+			ms_dlist_clear(&token_list, &ms_free_token);
+			free (lexer);
 			return ;
 		}
 		token_list = interpret_split(lexer->current, ms_get_split_length(lexer),

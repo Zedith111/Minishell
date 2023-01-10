@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_processes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 16:18:09 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/10 11:49:44 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	single_process(t_main *main, t_command *cmd)
 {
+	if (check_built_in(main, cmd))
+		return ;
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);

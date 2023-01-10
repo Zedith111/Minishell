@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:57:44 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 21:10:19 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 11:23:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 static t_dlist	*env_list_dup(t_dlist *env_list);
 static int		sort_envp(void	*a, void *b);
 static void		export_print(t_main *main);
-static void		export_add(t_main *main, char **command);
 
 void	ms_cmd_export(t_main *main, t_command *cmd)
 {
 	if (cmd->full_command[1] == NULL)
 		export_print(main);
 	else
-		export_add(main, cmd->full_command);
-
+		ms_export_add(main, cmd->full_command);
 }
 
 static t_dlist	*env_list_dup(t_dlist *env_list)
@@ -37,10 +35,12 @@ static t_dlist	*env_list_dup(t_dlist *env_list)
 	dup = NULL;
 	while (current != NULL)
 	{
-		current_node  = (t_env *)current->content;
+		current_node = (t_env *)current->content;
 		new_node = malloc (sizeof (t_env));
 		new_node->key = ft_strdup(current_node->key);
-		new_node->value = ft_strdup(current_node->value);
+		new_node->value = NULL;
+		if (current_node->value != NULL)
+			new_node->value = ft_strdup(current_node->value);
 		ms_dlist_addback(&dup, ms_dlist_new(new_node));
 		current = current->next;
 	}
@@ -79,9 +79,12 @@ static void		export_print(t_main *main)
 	current = dup;
 	while (current != NULL)
 	{
-		printf ("declare -x ");
 		env = (t_env *)current->content;
-		printf("%s=\"%s\"\n", env->key, env->value);
+		printf("declare -x %s", env->key);
+		if (env->value != NULL)
+			printf("=\"%s\"\n", env->value);
+		else
+			printf("\n");
 		current = current->next;
 	}
 	ms_dlist_clear(&dup, ms_env_free);

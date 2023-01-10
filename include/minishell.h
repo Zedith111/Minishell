@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 21:10:10 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 16:10:00 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,6 @@ t_file		**ms_get_file_info(t_file **current, t_token *token);
 //Built in command function
 t_dlist		*ms_dup_env(char **envp);
 void		ms_env_free(void *env);
-void		ms_cmd_exit(void);
 
 //Free function
 void		ms_free_token(void *token);
@@ -225,13 +224,13 @@ void	get_here_doc(t_dlist **list, t_main *main);
 //Built in Commands
 int		ms_get_built_in(char *command);
 int		check_built_in(t_main *main, t_command *cmd);
-void	ms_cmd_echo(t_main *main, t_command *cmd);
+void	ms_cmd_echo(t_command *cmd);
 void	ms_cmd_cd(t_main *main, t_command *cmd);
 void	ms_cmd_pwd(t_command *cmd);
 void	ms_cmd_export(t_main *main, t_command *cmd);
 void	ms_export_add(t_main *main, char **command);
-//unset
-//env
-//exit
+void	ms_cmd_unset(t_main *main, t_command *cmd);
+void	ms_cmd_env(t_main *main, t_command *cmd);
+void	ms_cmd_exit(t_command *cmd);
 
 #endif

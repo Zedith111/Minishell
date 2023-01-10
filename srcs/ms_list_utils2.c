@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 15:35:16 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 15:52:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_dlist	*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *))
 	void	*swap;
 
 	tmp = lst;
-	while(lst->next != NULL)
+	while (lst->next != NULL)
 	{
 		if (((*cmp)(lst->content, lst->next->content)) == 0)
 		{

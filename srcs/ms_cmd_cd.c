@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:43:36 by zah               #+#    #+#             */
-/*   Updated: 2023/01/09 17:53:47 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 11:06:55 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	ms_cmd_cd(t_main *main, t_command *cmd)
 	}
 	else if (chdir(cmd->full_command[1]) != 0)
 		perror(cmd->full_command[1]);
-
-	char cwd[1024];
-  	if (getcwd(cwd, sizeof(cwd)) == NULL)
-   		perror("Error getting current working directory");
-  	printf("Current working directory: %s\n", cwd);
 }
 
 /**

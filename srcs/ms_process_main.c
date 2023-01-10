@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/09 18:00:48 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 16:10:07 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,19 @@ int	check_built_in(t_main *main, t_command *cmd)
 	if (ms_get_built_in(cmd->full_command[0]) != 0)
 	{
 		if (ms_get_built_in(cmd->full_command[0]) == 1)
-			ms_cmd_echo(main, cmd);
+			ms_cmd_echo(cmd);
 		if (ms_get_built_in(cmd->full_command[0]) == 2)
 			ms_cmd_cd(main, cmd);
 		if (ms_get_built_in(cmd->full_command[0]) == 3)
 			ms_cmd_pwd(cmd);
 		if (ms_get_built_in(cmd->full_command[0]) == 4)
 			ms_cmd_export(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 5)
+			ms_cmd_unset(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 6)
+			ms_cmd_env(main, cmd);
+		if (ms_get_built_in(cmd->full_command[0]) == 7)
+			ms_cmd_exit(cmd);
 		return (1);
 	}
 	return (0);

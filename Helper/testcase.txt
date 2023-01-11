@@ -56,6 +56,8 @@ echo this$USER"$PWD"
 $USER-abc
 
 "'$USER'"
+echo "'''$'USER''"
+
 
 /bin/ls
 empty command
@@ -126,6 +128,7 @@ e"c"$B
 export A="     "
 echo a $A "$A" $C "$C" $D "$C" a
 
+export B="ho hi"
 export A=$B
 echo $A
 

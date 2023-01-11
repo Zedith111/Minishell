@@ -4,6 +4,19 @@ heredoc without command will promp error and exit
 	abc
 	should just move to next line
 not showing correct error message, and not changing g_error value
-cannot handle multiple -n for echo command
+cant run minishell in minishell
 clear command not working
+
+
 after cat ctrl+\ is ignore, should quit
+solve with
+	if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+		}
+
+
+if unset PATH, then ls, will cause sanitizer error
+
+

@@ -21,7 +21,14 @@ env will show envirenment variable only, but not local variabe
 when expand a variable that is not present in environment, will return empty string
 if  only $ is used, treat is as the character only. echo $ print out $
 
+"ls" & 'ls' will work, but "ls -a" & 'ls -a' will not, ls "-l -a" 
+
+in env, contain _=/usr/bin/env which is the path of program
+in export contain OLDPWD
+
 To do
-	expander 
 	parser
 	when expand, might need to add \ before special character
+	expander might need to append the result to previous string.
+	echo $PATH$USER produce
+		/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munkizah

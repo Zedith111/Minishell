@@ -6,73 +6,97 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 18:02:32 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/13 19:14:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	expand_token(void *content, t_main *main);
-static char	*expand_variable(char *value, t_main *main);
+static t_expander	*init_expander(char *input);
+static char			*expander_interpret(t_expander *expander, int length,
+						t_main *main);
 
 /**
- * @brief Go through the token list and expand any variable present.
- * First check that the token type is word, then check that '$' is the 
- * first character of word and there are other character besides '$'.
- * After that, check if the word match to any key in env struct. 
- * If match, change value of the token to be the value of env struct.
- * If no key matches, return empty string
- * @param head Linked list that store the token struct
+ * @brief Take a string as input, expand all variable inisde.
  */
-void	ms_expand_list(t_dlist *head, t_main *main)
+char	*ms_expander(char *str, t_main *main)
 {
-	t_dlist	*current;
+	t_expander	*expander;
+	char		*result;
+	char		*temp;
+	int			length;
 
-	current = head;
-	while (current != NULL)
+	expander = init_expander(str);
+	result = ms_create_empty_string();
+	while (expander->input[expander->current] != '\0')
 	{
-		expand_token(current->content, main);
-		current = current->next;
+		length = expander_advanced(expander->input + expander->current);
+		temp = expander_interpret(expander, length, main);
+		result = ms_strjoin_free(result, temp);
+		expander->current += length;
 	}
+	free (expander);
+	return (result);
 }
 
-static void	expand_token(void *content, t_main *main)
+/**
+ * @brief Calculate the length that the string need to move forward to intepret
+ * the next part of the string. For example, when the first character is not $,
+ * move until encounter $ or quote. There are 3 condition.
+ * 1) encounter a quote, move after the quote
+ * 2) encounter $ sign, refer to get_expand_length
+ * 3) other condition, move until end or encounter $ or quote
+ */
+int	expander_advanced(char *str)
 {
-	t_token	*token;
-	char	*temp;
+	int	i;
 
-	token = (t_token *)content;
-	if (token->type == TOKEN_WORD)
-	{
-		if (token->value[0] == '$' && token->value[1] == '?'
-			&& token->value[2] == '\0')
-		{
-			printf("exit status here\n");
-		}
-		else if (token->value[0] == '$' && token->value[1] != '\0')
-		{
-			temp = token->value;
-			token->value = expand_variable(token->value, main);
-			free(temp);
-		}
+	i = 0;
+	if (str[i] == '\'' || str[i] == '\"')
+		return (ms_check_enclosed_length(str));
+	if (str[i] == '$')
+		return (get_expand_length(str));
+	else
+	{	
+		while (str[i] != '$' && str[i] != '\0' && str[i] != '\''
+			&& str[i] != '\"')
+			i ++;
 	}
+	return (i);
 }
 
-static char	*expand_variable(char *value, t_main *main)
+/**
+ * @brief Intepret the string, either duplicate or expand the variable.
+ * There are 3 conditions
+ * 1) First character is not $ sign or double quote, duplicate till length
+ * 2) First character is $ sign, check for second character.
+ * 3) First character is double quote and string contain $ sign, 
+ * 		move until found $ sign, interpret like condition 2.
+ *  	The return string is inclusive of quote sign.
+ */
+static char	*expander_interpret(t_expander *expander, int length, t_main *main)
 {
-	t_dlist	*current_env;
-	t_env	*env;
 	char	*rtn;
+	char	*str;
 
-	current_env = main->env_list;
-	while (current_env != NULL)
-	{
-		env = (t_env *)current_env->content;
-		if (ms_strcmp(value + 1, env->key) == 0)
-			return (ft_strdup(env->value));
-		current_env = current_env->next;
-	}
-	rtn = malloc(1);
-	rtn[0] = '\0';
+	rtn = NULL;
+	str = expander->input + expander->current;
+	if (*str != '$' && *str != '\"')
+		rtn = ms_strdup_length(str, length);
+	else if (*str == '\"')
+		rtn = ms_intepret_quote(expander, str, length, main);
+	else
+		rtn = ms_intepret_string(expander, str, length, main);
+	// system ("leaks -q minishell");
+	return (rtn);
+}
+
+static t_expander	*init_expander(char *input)
+{
+	t_expander	*rtn;
+
+	rtn = malloc (sizeof(t_expander));
+	rtn->input = input;
+	rtn->current = 0;
 	return (rtn);
 }

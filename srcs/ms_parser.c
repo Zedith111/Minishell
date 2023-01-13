@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2022/12/24 13:35:25 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:35:32 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 	t_dlist		*command_list;
 	int			length;
 
-	//Remove this line
 	if (!check_logic(token_list))
 		printf("parser error\n");
 	else
@@ -44,10 +43,7 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 			create_command(command_list, current, length);
 			current = parser_advance(current, length);
 		}
-		// print_command_list(&command_list);
-		//Execute at here
 		process(main, &command_list);
-		//Call this in executor, use to free command list
 		ms_dlist_clear(&command_list, &ms_free_command);
 	}
 	ms_dlist_clear(&token_list, &ms_free_token);
@@ -78,7 +74,7 @@ static int	check_logic(t_dlist *token_list)
 			if (current->next == NULL)
 				return (0);
 			next = (t_token *)current->next->content;
-			if (next->type != TOKEN_QUOTE && next->type != TOKEN_WORD)
+			if (next->type != TOKEN_WORD)
 				return (0);
 			set_file_name(current, current->next);
 		}

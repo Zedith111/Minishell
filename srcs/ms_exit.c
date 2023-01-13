@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2022/12/28 14:24:10 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:02:30 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ms_success_exit(t_main *main)
 	
 	printf("exit\n");
 	// ms_free_main(main);
-	// system ("leaks minishell");
+	system ("leaks minishell");
 	exit (0);
 }
 

@@ -6,13 +6,12 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 15:53:13 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/10 17:35:11 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Not sure required
 int	ms_dlist_size(t_dlist *head)
 {
 	t_dlist	*current;
@@ -30,10 +29,12 @@ int	ms_dlist_size(t_dlist *head)
 	return (size);
 }
 
+/**
+ * @brief Delete a specific node in list
+ */
 void	ms_dlst_del_target(t_dlist **lst, t_dlist *target, void (*del)(void *))
 {
 	t_dlist	*current;
-
 
 	if ((*lst) == NULL || del == NULL)
 		return ;
@@ -63,4 +64,26 @@ t_dlist	*ms_dlst_last(t_dlist *head)
 	while (current->next != NULL)
 		current = current->next;
 	return (current);
+}
+
+t_dlist	*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *))
+{
+	t_dlist	*tmp;
+	void	*swap;
+
+	tmp = lst;
+	while (lst->next != NULL)
+	{
+		if (((*cmp)(lst->content, lst->next->content)) == 0)
+		{
+			swap = lst->content;
+			lst->content = lst->next->content;
+			lst->next->content = swap;
+			lst = tmp;
+		}
+		else
+			lst = lst->next;
+	}
+	lst = tmp;
+	return (lst);
 }

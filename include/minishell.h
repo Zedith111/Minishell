@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/08 15:38:55 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/14 00:24:18 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@
 # include "../libft_comb/includes/ft_printf.h"
 # include "../libft_comb/includes/get_next_line_bonus.h"
 
+int		g_error;
+
 typedef enum s_token_type
 {
-	TOKEN_QUOTE,
 	TOKEN_WORD,
 	TOKEN_IN,
 	TOKEN_OUT,
 	TOKEN_AIN,
 	TOKEN_AOUT,
 	TOKEN_PIPE,
-	TOKEN_END,
 	TOKEN_ERR
 }	t_token_type;
 
@@ -68,6 +68,16 @@ typedef struct s_lexer
 }	t_lexer;
 
 /**
+ * @brief The expander struct.
+ * Contain the original string and a int as tracker
+ */
+typedef struct s_expander
+{
+	char	*input;
+	int		current;
+}	t_expander;
+
+/**
  * @brief The struct used to store encironment variable.
  * Contain two string, key the variable name, and the variable value.
  */
@@ -77,7 +87,11 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-
+/**
+ * @brief The struct used to store file information. 
+ * File type is used to check ifthe file should be Append (A) or Trunc (T). 
+ * Default file name is set as STDIN and STDOUT for infile and outfile. 
+ */
 typedef struct s_file
 {
 	char	file_type;
@@ -85,8 +99,9 @@ typedef struct s_file
 }	t_file;
 
 /**
- * @brief The struct used to store commands after parsing.
- * Contain commands saved in **full_command, infile & outfile name, fopen type.
+* @brief The struct used to store info to allow program to be execute.
+ * Have a double array storing all command including arguement. Two double
+ * array of struct t_file storing infile and outfile information
  */
 typedef struct s_command
 {
@@ -108,6 +123,7 @@ typedef struct s_main
 {
 	t_dlist		*env_list;
 	char		**envp;
+	char		**built_in;
 
 	pid_t		*pid;
 	int			**pipe;
@@ -123,6 +139,10 @@ void		ms_error_exit(char *err_msg);
 int			ms_is_empty_string(char *str);
 int			ms_char_match(char *str, char c);
 int			ms_strcmp(char *s1, char *s2);
+int			ms_check_enclosed_length(char *str);
+char		*ms_strdup_length(char *str, int length);
+char		*ms_create_empty_string(void);
+char		*ms_strjoin_free(char *src, char *new);
 
 //Array Utility Function
 char		**ms_array_append(char **arr, char *new);
@@ -139,19 +159,27 @@ void		ms_dlst_del_target(t_dlist **lst, t_dlist *target,
 				void (*del)(void *));
 int			ms_dlist_size(t_dlist *head);
 t_dlist		*ms_dlst_last(t_dlist *head);
+t_dlist		*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *));
 
 //Signal Function
 void		ms_init_sig_handler(void);
 
 //Lexer and Expander
 void		ms_process_input(char *input, t_main *main);
-int			ms_is_sep(char c);
-t_token		*ms_create_token(t_token_type type, char *value);
-t_token		*ms_create_quote_token(t_lexer *lexer);
-t_token		*ms_create_word_token(t_lexer *lexer);
-t_token		*ms_create_operator_token(t_lexer *lexer);
-void		ms_trim_list(t_dlist *head);
-void		ms_expand_list(t_dlist *head, t_main *main);
+int			ms_get_split_length(t_lexer *lexer);
+int			ms_check_enclosed_length(char *str);
+char		*ms_expander(char *str, t_main *main);
+int			expander_advanced(char *str);
+int			get_expand_length(char *str);
+char		*ms_intepret_string(t_expander *expander, char *str, int length, t_main *main);
+char		*ms_intepret_quote(t_expander *expander, char *str, int length, t_main *main);
+char		*ms_expand_string(char *str, int length, t_main *main);
+char		*ms_append_quote(char *str);
+int			ms_is_env_character(char c);
+t_dlist		*ms_tokenized(char *str);
+t_dlist		*ms_create_word_token(char *content);
+char		*ms_token_trim(char *str);
+char		*ms_tokenize_space(char *current, t_dlist **list);
 
 //Parser
 void		ms_parse_input(t_dlist *token_list, t_main *main);
@@ -168,44 +196,52 @@ t_file		**ms_get_file_info(t_file **current, t_token *token);
 //Built in command function
 t_dlist		*ms_dup_env(char **envp);
 void		ms_env_free(void *env);
-void		ms_cmd_exit(void);
 
 //Free function
 void		ms_free_token(void *token);
 void		ms_free_command(void *content);
 void		ms_free_tfile_array(t_file **files);
+void		ms_env_free(void *env);
 
 //Testing use Function, will be deleted
 void		print_token_node(t_dlist *node);
 void		print_token_list(t_dlist **list);
 void		print_env_list(t_dlist **lst);
-void 		print_command_list(t_dlist **list);
+void		print_command_list(t_dlist **list);
 
 //Execute functions
-char	*ft_pathsort(t_main	*main, t_command *cmd);
-void	ft_execve(t_main *main, t_command *cmd);
+char		*ft_pathsort(t_main	*main, t_command *cmd);
+void		ft_execve(t_main *main, t_command *cmd);
 
 //Processes
-void	print_error(char *str);
-void	first_process(t_main *main, t_command *cmd);
-void	middle_process(t_main *main, t_command *cmd);
-void	last_process(t_main *main, t_command *cmd);
-void	single_process(t_main *main, t_command *cmd);
-void	sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
-void	ft_execute(t_main *main, t_command *cmd, int len);
+void		print_error(char *str);
+void		first_process(t_main *main, t_command *cmd);
+void		middle_process(t_main *main, t_command *cmd);
+void		last_process(t_main *main, t_command *cmd);
+void		single_process(t_main *main, t_command *cmd);
+void		sort_in_out(t_main *main, t_command *cmd, int in_fd, int out_fd);
+void		ft_execute(t_main *main, t_command *cmd, int len);
 
 //Here_doc functions
-char	*ft_strcat(char *src, char *dst);
-void	heredoc_execute(t_command *cmd);
-void	here_doc(t_command *cmd, char *limiter);
-void	get_temp_name(t_command *cmd, int temp_id);
-int		compare(char *buf, char *limiter);
-int		check(char *buf, char *limit, int len);
-void	process(t_main *main, t_dlist **lst);
-void	get_here_doc(t_dlist **list);
+char		*ft_strcat(char *src, char *dst);
+void		heredoc_execute(t_command *cmd, t_main *main);
+void		here_doc(t_command *cmd, char *limiter, t_main *main);
+void		get_temp_name(t_command *cmd, int temp_id);
+int			compare(char *buf, char *limiter);
+int			check(char *buf, char *limit, int len);
+void		process(t_main *main, t_dlist **lst);
+void		get_here_doc(t_dlist **list, t_main *main);
 
 //Built in Commands
-int		check_built_in(t_main *main, t_command *cmd);
-void	ft_echo(t_main *main, t_command *cmd);
+int			ms_get_built_in(char *command);
+int			check_built_in(t_main *main, t_command *cmd);
+void		ms_cmd_echo(t_command *cmd);
+void		ms_cmd_cd(t_main *main, t_command *cmd);
+void		ms_cmd_pwd(t_command *cmd);
+void		ms_cmd_export(t_main *main, t_command *cmd);
+void		ms_export_add(t_main *main, char **command);
+void		ms_cmd_unset(t_main *main, t_command *cmd);
+void		ms_cmd_env(t_main *main, t_command *cmd);
+void		ms_cmd_exit(t_command *cmd);
 
 #endif

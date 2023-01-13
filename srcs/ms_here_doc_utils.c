@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_here_doc_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:04:30 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 15:39:53 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:01:24 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	get_temp_name(t_command *cmd, int temp_id)
 	free(id);
 }
 
-void	heredoc_execute(t_command *cmd)
+void	heredoc_execute(t_command *cmd, t_main *main)
 {
 	int	i;
 
@@ -60,7 +60,7 @@ void	heredoc_execute(t_command *cmd)
 	{
 		if (cmd->infile[i]->file_type == 'A')
 		{
-			here_doc(cmd, cmd->infile[i]->file_name);
+			here_doc(cmd, cmd->infile[i]->file_name, main);
 		}
 	}
 }

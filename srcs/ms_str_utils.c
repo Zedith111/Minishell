@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 13:55:38 by zah               #+#    #+#             */
-/*   Updated: 2022/12/13 16:05:20 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/02 20:51:21 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,34 @@ int	ms_strcmp(char *s1, char *s2)
 		i ++;
 	}
 	return (s1[i] - s2[i]);
+}
+
+/**
+ * @brief Duplicate a string until given length 
+ */
+char	*ms_strdup_length(char *str, int length)
+{
+	int		i;
+	char	*result;
+
+	i = 0;
+	result = malloc(length + 1);
+	if (result == NULL)
+		return (NULL);
+	while (i < length)
+	{
+		result[i] = str[i];
+		i ++;
+	}
+	result[i] = '\0';
+	return (result);
+}
+
+char	*ms_create_empty_string(void)
+{
+	char	*rtn;
+
+	rtn = malloc(1);
+	rtn[0] = '\0';
+	return (rtn);
 }

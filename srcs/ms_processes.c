@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 16:18:09 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/14 01:05:03 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 void	single_process(t_main *main, t_command *cmd)
 {
+	if (check_built_in(main, cmd))
+		return ;
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		sort_in_out(main, cmd, STDIN_FILENO, STDOUT_FILENO);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
@@ -37,6 +41,8 @@ void	first_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[0] == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		sort_in_out(main, cmd, STDIN_FILENO, main->pipe[main->counter][1]);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
@@ -61,6 +67,8 @@ void	middle_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		sort_in_out(main, cmd, main->pipe[main->counter - 1][0],
 			main->pipe[main->counter][1]);
 		dup2(cmd->in_fd, STDIN_FILENO);
@@ -86,6 +94,8 @@ void	last_process(t_main *main, t_command *cmd)
 		exit(0);
 	if (main->pid[main->counter] == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		sort_in_out(main, cmd, main->pipe[main->counter - 1][0], STDOUT_FILENO);
 		dup2(cmd->in_fd, STDIN_FILENO);
 		dup2(cmd->out_fd, STDOUT_FILENO);
@@ -107,7 +117,6 @@ void	ft_execute(t_main *main, t_command *cmd, int len)
 	if (len == 1)
 	{
 		single_process(main, cmd);
-		waitpid(main->pid[main->counter], NULL, 0);
 		return ;
 	}
 	if (main->counter == 0)

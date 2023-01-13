@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:43:56 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/09 15:59:53 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/14 00:58:04 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,20 @@ char	*ft_path_check(char **paths, char *cmd)
 	int		i;
 
 	i = 0;
+	if (paths == NULL)
+		return (NULL);
+	if (access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
-		free(paths[i]);
 		if (access(cmd_path, F_OK | X_OK) == 0)
 		{
 			while (paths[++i])
 				free(paths[i]);
 			return (cmd_path);
 		}
+		free(paths[i]);
 		free(cmd_path);
 		i++;
 	}
@@ -70,6 +74,8 @@ char	**ft_pathcat(char **paths)
 
 	x = 0;
 	count = 0;
+	if (paths == NULL)
+		return (NULL);
 	while (paths[count])
 		count++;
 	temp = malloc(sizeof(char *) * (count + 1));
@@ -94,7 +100,6 @@ char	*ft_pathsort(t_main	*main, t_command *cmd)
 	paths = ft_path_extract(main);
 	temp = ft_pathcat(paths);
 	cmd_path = ft_path_check(temp, cmd->full_command[0]);
-	free(temp);
 	return (cmd_path);
 }
 
@@ -102,6 +107,8 @@ void	ft_execve(t_main *main, t_command *cmd)
 {
 	char	*final_path;
 
+	if (cmd->full_command[0] == NULL)
+		exit (0) ;
 	final_path = ft_pathsort(main, cmd);
 	if (access(final_path, F_OK) == 0)
 	{
@@ -111,7 +118,7 @@ void	ft_execve(t_main *main, t_command *cmd)
 	}
 	else
 	{
-		ft_printf("Error\n");
+		print_error(cmd->full_command[0]);
 		free(final_path);
 		exit (0);
 	}

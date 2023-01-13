@@ -6,106 +6,125 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2022/12/20 18:04:10 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/11 13:49:40 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Check whether a string start with quote is properly end
- * @param str The string to check for
- * @param open The quote character
- * @return The length of enclosed string, -1 if not enclosed properly
- */
-static int	check_enclosed(char *str, char open)
-{
-	int	i;
+static t_token_type	get_token_type(char *str);
+static t_dlist		*interpret_word(char *str);
+static int			tokenizer_advance(char *str);
 
-	i = 1;
-	while (str[i] != '\0')
+/**
+ * @brief Return a token node or a list of token node when input a string.
+ * First check for first character of the string, if is special character,
+ * just create the respective type of token. If is other than that, create
+ * a single node or a list of word token.
+ */
+t_dlist	*ms_tokenized(char *str)
+{
+	t_dlist	*rtn;
+	t_token	*token;
+
+	if (*str == '<' || *str == '>' || *str == '|')
 	{
-		if (str[i] == open)
-			return (i + 1);
-		i ++;
+		token = (t_token *)malloc (sizeof(t_token));
+		token->type = get_token_type(str);
+		token->value = NULL;
+		rtn = ms_dlist_new(token);
 	}
-	return (-1);
-}
-
-/**
- * @brief Create and return a token based on type and value
- */
-t_token	*ms_create_token(t_token_type type, char *value)
-{
-	t_token	*rtn;
-
-	rtn = malloc(sizeof(t_token));
-	rtn->type = type;
-	rtn->value = value;
+	else if (*str == '\0')
+		rtn = ms_create_word_token("");
+	else
+		rtn = interpret_word(str);
 	return (rtn);
 }
 
-t_token	*ms_create_quote_token(t_lexer *lexer)
+/**
+ * @brief Return the respective token type based on operator
+ */
+static t_token_type	get_token_type(char *str)
 {
-	char	sep;
-	char	*value;
-	int		i;
-
-	sep = *lexer->current;
-	i = check_enclosed(lexer->current, sep);
-	if (i == -1)
+	if (*str == '|')
+		return (TOKEN_PIPE);
+	if (*str == '<')
 	{
-		printf("Unclosed quote detected\n");
-		return (ms_create_token(TOKEN_ERR, NULL));
+		if (*(str + 1) == '<')
+			return (TOKEN_AIN);
+		return (TOKEN_IN);
 	}
-	value = ft_substr(lexer->current, 0, i);
-	lexer->current += i;
-	return (ms_create_token(TOKEN_QUOTE, value));
+	if (*str == '>')
+	{
+		if (*(str + 1) == '>')
+			return (TOKEN_AOUT);
+		return (TOKEN_OUT);
+	}
+	return (TOKEN_ERR);
 }
 
-t_token	*ms_create_word_token(t_lexer *lexer)
+/**
+ * @brief Return a single node or a list of word token based on
+ * the string. When encouter space outside quote, the current intepreted
+ * string is convert to one token, and the string after the space  
+ * is interpret as new token. When encounter a quote, the opening
+ * and closing quote is trimmed and is joined with previous result
+ */
+static t_dlist	*interpret_word(char *str)
 {
+	t_dlist	*rtn;
 	int		i;
-	char	*value;
+	char	*temp;
+	char	*result;
 
 	i = 0;
-	while (lexer->current[i] != '\0' && ms_is_sep(lexer->current[i]) == 0)
-		i++;
-	value = ft_substr(lexer->current, 0, i);
-	if (ms_is_empty_string(value))
+	result = ms_create_empty_string();
+	rtn = NULL;
+	while (str[i] != '\0')
 	{
-		value = malloc(1);
-		return (ms_create_token(TOKEN_END, value));
+		if (str[i] == ' ')
+			result = ms_tokenize_space(result, &rtn);
+		else if (str[i] == '\"' || str[i] == '\'')
+		{
+			temp = ms_token_trim(str + i);
+			result = ms_strjoin_free(result, temp);
+		}
+		else
+			result = ms_strjoin_free(result,
+					ms_strdup_length(str + i, tokenizer_advance(str + i)));
+		i += tokenizer_advance(str + i);
 	}
-	lexer->current += i;
-	return (ms_create_token(TOKEN_WORD, value));
+	ms_dlist_addback(&rtn, ms_create_word_token(result));
+	free (result);
+	return (rtn);
 }
 
-t_token	*ms_create_operator_token(t_lexer *lexer)
+/**
+ * @brief Return the length that the tokenizer need to advance.
+ * Check for the first character in the string, If is quote, then
+ * return the enclosed length. If is space, move until it meet the 
+ * next space. Or else, breaks when it meet a space or quote
+ * and return the length.
+ */
+static int	tokenizer_advance(char *str)
 {
-	if (*lexer->current == '|')
+	int	i;
+
+	i = 0;
+	if (str[i] == '\"' || str[i] == '\'')
+		return (ms_check_enclosed_length(str));
+	if (str[i] == ' ' || str[i] == '\t')
 	{
-		lexer->current += 1;
-		return (ms_create_token(TOKEN_PIPE, NULL));
+		while (str[i] == ' ' || str[i] == '\t')
+			i ++;
+		return (i);
 	}
-	else if (*lexer->current == '>')
+	while (str[i] != '\0')
 	{
-		lexer->current += 1;
-		if (*lexer->current == '>')
-		{
-			lexer->current += 1;
-			return (ms_create_token(TOKEN_AOUT, NULL));
-		}
-		return (ms_create_token(TOKEN_OUT, NULL));
+		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\"' || str[i] == '\'')
+			break ;
+		else
+			i ++;
 	}
-	else
-	{
-		lexer->current += 1;
-		if (*lexer->current == '<')
-		{
-			lexer->current += 1;
-			return (ms_create_token(TOKEN_AIN, NULL));
-		}
-		return (ms_create_token(TOKEN_IN, NULL));
-	}
+	return (i);
 }

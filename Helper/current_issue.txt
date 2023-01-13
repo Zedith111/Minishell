@@ -1,0 +1,19 @@
+1) not showing correct error message, and not changing g_error value
+
+2) cant run minishell in minishell
+
+3) clear command not working
+
+4) after cat ctrl+\ is ignore, should quit
+
+solve with
+	if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+		}
+
+
+
+
+

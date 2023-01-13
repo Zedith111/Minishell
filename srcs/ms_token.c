@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:44:54 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 17:36:47 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/11 13:49:40 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int			tokenizer_advance(char *str);
  * @brief Return a token node or a list of token node when input a string.
  * First check for first character of the string, if is special character,
  * just create the respective type of token. If is other than that, create
- * a node or a list of word token.
+ * a single node or a list of word token.
  */
 t_dlist	*ms_tokenized(char *str)
 {

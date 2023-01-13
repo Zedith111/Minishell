@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:21:49 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 17:23:39 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/13 19:02:30 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ms_success_exit(t_main *main)
 	
 	printf("exit\n");
 	// ms_free_main(main);
-	// system ("leaks minishell");
+	system ("leaks minishell");
 	exit (0);
 }
 

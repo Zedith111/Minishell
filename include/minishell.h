@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 17:37:53 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/11 21:23:29 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ typedef struct s_lexer
 	char	*input;
 	char	*current;
 }	t_lexer;
+
+/**
+ * @brief The expander struct.
+ * Contain the original string and a int as tracker
+ */
+typedef struct s_expander
+{
+	char	*input;
+	int		current;
+}	t_expander;
 
 /**
  * @brief The struct used to store encironment variable.
@@ -161,9 +171,10 @@ int			ms_check_enclosed_length(char *str);
 char		*ms_expander(char *str, t_main *main);
 int			expander_advanced(char *str);
 int			get_expand_length(char *str);
-char		*ms_intepret_string(char *str, int length, t_main *main);
-char		*ms_intepret_quote(char *str, t_main *main);
+char		*ms_intepret_string(t_expander *expander, char *str, int length, t_main *main);
+char		*ms_intepret_quote(t_expander *expander, char *str, int length, t_main *main);
 char		*ms_expand_string(char *str, int length, t_main *main);
+char		*ms_append_quote(char *str);
 int			ms_is_env_character(char c);
 t_dlist		*ms_tokenized(char *str);
 t_dlist		*ms_create_word_token(char *content);

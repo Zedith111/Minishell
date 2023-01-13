@@ -6,34 +6,36 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 17:34:41 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/13 19:14:03 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expander_interpret(char *str, int length, t_main *main);
+static t_expander	*init_expander(char *input);
+static char			*expander_interpret(t_expander *expander, int length,
+						t_main *main);
 
 /**
  * @brief Take a string as input, expand all variable inisde.
  */
 char	*ms_expander(char *str, t_main *main)
 {
-	int		i;
-	int		length;
-	char	*result;
-	char	*temp;
+	t_expander	*expander;
+	char		*result;
+	char		*temp;
+	int			length;
 
-	i = 0;
-	result = malloc(1);
-	result[0] = '\0';
-	while (str[i] != '\0')
+	expander = init_expander(str);
+	result = ms_create_empty_string();
+	while (expander->input[expander->current] != '\0')
 	{
-		length = expander_advanced(str + i);
-		temp = expander_interpret(str + i, length, main);
+		length = expander_advanced(expander->input + expander->current);
+		temp = expander_interpret(expander, length, main);
 		result = ms_strjoin_free(result, temp);
-		i += length;
+		expander->current += length;
 	}
+	free (expander);
 	return (result);
 }
 
@@ -72,39 +74,29 @@ int	expander_advanced(char *str)
  * 		move until found $ sign, interpret like condition 2.
  *  	The return string is inclusive of quote sign.
  */
-static char	*expander_interpret(char *str, int length, t_main *main)
+static char	*expander_interpret(t_expander *expander, int length, t_main *main)
 {
 	char	*rtn;
+	char	*str;
 
+	rtn = NULL;
+	str = expander->input + expander->current;
 	if (*str != '$' && *str != '\"')
 		rtn = ms_strdup_length(str, length);
 	else if (*str == '\"')
-		rtn = ms_intepret_quote(str, main);
+		rtn = ms_intepret_quote(expander, str, length, main);
 	else
-		rtn = ms_intepret_string(str, length, main);
+		rtn = ms_intepret_string(expander, str, length, main);
+	// system ("leaks -q minishell");
 	return (rtn);
 }
 
-/**
- * @brief Intepret a string that start with $ sign. Have 4 conditions
- * 1) Second character is also $, return empty string.
- * 2) Second character is ?, return global error
- * 3) Second character is not a valid env character, return "$"
- * 4) Second character is valid env character, expand the variable
- */
-char	*ms_intepret_string(char *str, int length, t_main *main)
+static t_expander	*init_expander(char *input)
 {
-	int		i;
-	char	*rtn;
+	t_expander	*rtn;
 
-	i = 1;
-	if (str[i] == '$')
-		rtn = ms_create_empty_string();
-	else if (str[i] == '?')
-		rtn = ft_itoa(g_error);
-	else if (!ms_is_env_character(str[i]))
-		rtn = ft_strdup("$");
-	else
-		rtn = ms_expand_string(str, length, main);
+	rtn = malloc (sizeof(t_expander));
+	rtn->input = input;
+	rtn->current = 0;
 	return (rtn);
 }

@@ -56,7 +56,10 @@ echo this$USER"$PWD"
 $USER-abc
 
 "'$USER'"
+
+
 echo "'''$'USER''"
+echo $$$$$$$$
 
 
 /bin/ls
@@ -132,6 +135,8 @@ export B="ho hi"
 export A=$B
 echo $A
 
+
+echo"'$USER''abc'"
 
 cd << END
 $HOME/$PWD

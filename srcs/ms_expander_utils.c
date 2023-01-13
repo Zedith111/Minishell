@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:46:07 by zah               #+#    #+#             */
-/*   Updated: 2023/01/03 13:55:38 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/12 14:34:46 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,30 @@ char	*ms_expand_string(char *str, int length, t_main *main)
 		rtn[0] = '\0';
 	}
 	free (cmp);
+	return (rtn);
+}
+
+/**
+ * @brief Add double quote in the front and back of string.
+ * Also free the orginal string.
+ */
+char	*ms_append_quote(char *str)
+{
+	int		size;
+	char	*rtn;
+	int		i;
+
+	size = ft_strlen(str);
+	rtn = malloc (size + 3);
+	i = 0;
+	rtn[i] = '\"';
+	while (i < size)
+	{
+		rtn[i + 1] = str[i];
+		i ++;
+	}
+	rtn[i + 1] = '\"';
+	rtn[i + 2] = '\0';
+	free (str);
 	return (rtn);
 }

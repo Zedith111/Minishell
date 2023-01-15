@@ -6,16 +6,17 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 20:44:43 by zah               #+#    #+#             */
-/*   Updated: 2023/01/12 14:35:27 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/15 10:39:42 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static char	*add_quote_front(int quote_count);
-// static char	*add_quote_back(char *str, int quote_count);
-// static int	get_normal_length(char *str);
-// static int	get_quote_count(char *str);
+static char	*pre_process(char *str, int length);
+static char	*process_quote(char *input, char *prev, t_expander *expander,
+				t_main *main);
+static int	get_normal_length(char	*input);
+
 
 /**
  * @brief Intepret a string that start with double quote.
@@ -23,105 +24,87 @@
  * string. duplicate until encouter $ or is end of string.
  * If encounter $ sign, expand it like normal string.
  * Finally, add the double quote back
- * 
- * 1) Count the number of single quote present in string
- * 2) Loop through the string and intepret like normal string
- * 		until it reach quote.
- * The return string is inclusive of all quote
  */
-// char	*ms_intepret_quote(t_expander *expander, char *str, int length, t_main *main)
-// {
-	// int		i;
-	// int		quote_count;
-	// char	*rtn = NULL;
-	// (void) main;
-	// (void) expander;
+char	*ms_intepret_quote(t_expander *expander, char *str, int length,
+				t_main *main)
+{
+	char	*input;
+	char	*rtn;
+	int		i;
 
-	// char *input = ms_strdup_length(str, length);
-	// printf("input is %s\n", input);
-	// char *test = ft_strtrim(str, "\"");
-
-	// i = get_quote_count(str);
-	// quote_count = i;
-	// rtn = add_quote_front(quote_count);
-	// while (str[i] != '\'' && str[i] != '\"')
-	// {
-	// 	if (str[i] == '$')
-	// 	{
-	// 		rtn = ms_strjoin_free(rtn, ms_intepret_string(expander, str + i,
-	// 					get_expand_length(str + i), main));
-	// 		i += get_expand_length(str + i);
-	// 	}
-	// 	else
-	// 	{
-	// 		rtn = ms_strjoin_free(rtn, ms_strdup_length(str + i,
-	// 					get_normal_length(str + i)));
-	// 		i += get_normal_length(str + i);
-	// 	}		
-	// }
-	// rtn = add_quote_back(rtn, quote_count);
-	// return (rtn);
-// }
+	input = pre_process(str, length);
+	i = 0;
+	while (input[i] != '\0' && input[i] != '$')
+		i++;
+	rtn = ms_strdup_length(input, i);
+	if (input[i] != '\0')
+		rtn = process_quote(input + i, rtn, expander, main);
+	rtn = ms_append_quote(rtn);
+	free (input);
+	printf("return is %s\n", rtn);
+	return (rtn);
+}
 
 /**
- * @brief Add the quote back to string based on number of quote.
+ * @brief Receive a string start with double quote, duplicate it and
+ * trim out the double quote
  */
-// static char	*add_quote_front(int quote_count)
-// {
-// 	char	*rtn;
-// 	int		i;
+static char	*pre_process(char *str, int length)
+{
+	char	*temp;
+	char	*rtn;
+	char	*quote;
 
-// 	i = 1;
-// 	rtn = malloc(quote_count + 1);
-// 	rtn[0] = '\"';
-// 	while (i < quote_count)
-// 	{
-// 		rtn[i] = '\'';
-// 		i ++;
-// 	}
-// 	rtn[i] = '\0';
-// 	return (rtn);
-// }
+	temp = ms_strdup_length(str, length);
+	quote = malloc (2);
+	quote[0] = '\"';
+	quote[1] = '\0';
+	rtn = ft_strtrim(temp, quote);
+	free (temp);
+	free (quote);
+	return (rtn);
+}
 
-// static char	*add_quote_back(char *str, int quote_count)
-// {
-// 	char	*rtn;
-// 	char	*temp;
-// 	int		i;
+static char	*process_quote(char *input, char *prev, t_expander *expander,
+			t_main *main)
+{
+	int		i;
+	char	*temp;
+	char	*rtn ;
+	int		length;
 
-// 	temp = malloc (quote_count + 1);
-// 	i = 0;
-// 	while (i < quote_count - 1)
-// 	{
-// 		temp[i] = '\'';
-// 		i ++;
-// 	}
-// 	temp[i] = '\"';
-// 	temp[i + 1] = '\0';
-// 	rtn = ms_strjoin_free(str, temp);
-// 	return (rtn);
-// }
+	i = 0;
+	rtn = prev;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '$')
+		{
+			temp = ms_intepret_string(expander, input + i,
+					get_expand_length(input + i), main);
+			rtn = ms_strjoin_free(rtn, temp);
+			i += get_expand_length(input + i);
+		}
+		else
+		{
+			length = get_normal_length(input + i);
+			temp = ms_strdup_length(input + i, length);
+			rtn = ms_strjoin_free(rtn, temp);
+			i += length;
+		}
+	}
+	return (rtn);
+}
 
-/**
- * @brief Return the length when not encounter $ or quote.
- * Use to find the length when not needed to expand
- */
-// static int	get_normal_length(char *str)
-// {
-// 	int	i;
+static int	get_normal_length(char	*input)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (str[i] != '$' && str[i] != '\"' && str[i] != '\'')
-// 		i ++;
-// 	return (i);
-// }
-
-// static int	get_quote_count(char *str)
-// {
-// 	int	i;
-
-// 	i = 1;
-// 	while (str[i] == '\'')
-// 		i ++;
-// 	return (i);
-// }
+	i = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '$')
+			break ;
+		i ++;
+	}
+	return (i);
+}

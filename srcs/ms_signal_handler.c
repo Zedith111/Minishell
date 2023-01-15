@@ -40,6 +40,7 @@ void	ms_init_sig_handler(void)
 	struct sigaction	ignore;
 	struct termios		current_termios;
 
+	(void)ignore;
 	if (tcgetattr(STDIN_FILENO, &current_termios) != 0)
 	{
 		perror ("tcgetatter failed\n");

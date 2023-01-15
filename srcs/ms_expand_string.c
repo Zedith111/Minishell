@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:37:04 by zah               #+#    #+#             */
-/*   Updated: 2023/01/12 20:13:20 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/15 10:48:27 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ms_intepret_string(t_expander *expander, char *str, int length, t_main *ma
 		rtn = ms_expand_string(str, length, main);
 		if (expander->current != 0)
 		{
-			if (expander->input[expander->current - 1] == '=')
+			if (expander->input[expander->current - 1] == '=' && expander->input[expander->current] != '\"')
 				rtn = ms_append_quote(rtn);
 		}
 	}

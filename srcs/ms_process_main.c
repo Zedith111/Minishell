@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/10 16:10:07 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/15 07:54:20 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	print_error(char *str)
 {
-	write (2, str, ft_strlen(str));
-	write(2, " :", 2);
+	write(2, "minishell: ", ft_strlen("minishell: "));
+	write(2, str, ft_strlen(str));
+	write(2, ": ", 2);
 	write(2, strerror(errno), ft_strlen(strerror(errno)));
 	write(2, "\n", 1);
 }

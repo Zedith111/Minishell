@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/11 21:23:29 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/15 09:32:34 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ void		print_command_list(t_dlist **list);
 
 //Execute functions
 char		*ft_pathsort(t_main	*main, t_command *cmd);
+char		**ms_lst_to_env(t_main *main);
 void		ft_execve(t_main *main, t_command *cmd);
 
 //Processes

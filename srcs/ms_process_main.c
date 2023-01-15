@@ -6,18 +6,18 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/14 00:59:11 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/16 01:11:38 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error(char *str)
+void	print_error(char *str, char *error_msg)
 {
 	write(2, "minishell: ", ft_strlen("minishell: "));
 	write(2, str, ft_strlen(str));
 	write(2, ": ", 2);
-	write(2, strerror(errno), ft_strlen(strerror(errno)));
+	write(2, error_msg, ft_strlen(error_msg));
 	write(2, "\n", 1);
 }
 

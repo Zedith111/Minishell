@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/14 00:24:18 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/16 01:15:07 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ char		*ft_pathsort(t_main	*main, t_command *cmd);
 void		ft_execve(t_main *main, t_command *cmd);
 
 //Processes
-void		print_error(char *str);
+void		print_error(char *str, char *error_msg);
 void		first_process(t_main *main, t_command *cmd);
 void		middle_process(t_main *main, t_command *cmd);
 void		last_process(t_main *main, t_command *cmd);

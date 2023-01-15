@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:37:03 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/08 16:18:31 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/16 01:17:45 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	sort_in(t_command *cmd, int i)
 				cmd->in_fd = open(cmd->infile[i]->file_name, O_RDONLY);
 			if (cmd->in_fd == -1)
 			{
-				print_error(cmd->infile[i]->file_name);
+				print_error(cmd->infile[i]->file_name, "Permission denied");
 				exit (0);
 			}
 			if (cmd->infile[i + 1] != NULL)
@@ -43,9 +43,10 @@ void	sort_out(t_command *cmd, int i)
 		else
 			cmd->out_fd = open(cmd->outfile[i]->file_name,
 					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		printf("%d\n", cmd->out_fd);
 		if (cmd->out_fd == -1)
 		{
-			print_error(cmd->outfile[i]->file_name);
+			print_error(cmd->outfile[i]->file_name, "Permission denied");
 			exit (0);
 		}
 		if (cmd->outfile[i + 1] != NULL)

@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/14 01:05:03 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/22 13:04:03 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	first_process(t_main *main, t_command *cmd)
 
 void	middle_process(t_main *main, t_command *cmd)
 {
-	printf("middle\n");
 	close(main->pipe[main->counter - 1][1]);
 	if (pipe(main->pipe[main->counter]) == -1)
 		exit(0);

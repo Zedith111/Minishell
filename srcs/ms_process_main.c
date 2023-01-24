@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/16 01:11:38 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/24 18:44:06 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	check_built_in(t_main *main, t_command *cmd)
 		if (ms_get_built_in(cmd->full_command[0]) == 6)
 			ms_cmd_env(main, cmd);
 		if (ms_get_built_in(cmd->full_command[0]) == 7)
-			ms_cmd_exit(cmd);
+			exit (0);
 		return (1);
 	}
 	return (0);

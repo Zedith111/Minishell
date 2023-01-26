@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/15 09:32:34 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/26 15:45:39 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ char		**ms_lst_to_env(t_main *main);
 void		ft_execve(t_main *main, t_command *cmd);
 
 //Processes
-void		print_error(char *str);
+void		print_error(char *str, char *error_msg);
 void		first_process(t_main *main, t_command *cmd);
 void		middle_process(t_main *main, t_command *cmd);
 void		last_process(t_main *main, t_command *cmd);

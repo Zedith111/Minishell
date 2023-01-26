@@ -6,15 +6,28 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/15 07:54:35 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/26 15:47:17 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	check_exit(t_main *main, t_command *cmd)
+{
+	(void) main;
+	if (cmd->full_command[0] == NULL)
+		return (0);
+	if (ms_get_built_in(cmd->full_command[0]) == 7)
+	{
+		ms_cmd_exit(cmd);
+		return (1);
+	}
+	return (0);
+}
+
 void	single_process(t_main *main, t_command *cmd)
 {
-	if (check_built_in(main, cmd))
+	if (check_exit(main, cmd))
 		return ;
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
@@ -58,7 +71,6 @@ void	first_process(t_main *main, t_command *cmd)
 
 void	middle_process(t_main *main, t_command *cmd)
 {
-	printf("middle\n");
 	close(main->pipe[main->counter - 1][1]);
 	if (pipe(main->pipe[main->counter]) == -1)
 		exit(0);

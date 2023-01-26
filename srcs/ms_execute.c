@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:43:56 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/15 09:33:18 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/26 15:46:58 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,18 @@ char	*ft_path_check(char **paths, char *cmd)
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
+		free(paths[i]);
 		if (access(cmd_path, F_OK | X_OK) == 0)
 		{
 			while (paths[++i])
 				free(paths[i]);
+			free(paths);
 			return (cmd_path);
 		}
-		free(paths[i]);
 		free(cmd_path);
 		i++;
 	}
+	free(paths);
 	return (NULL);
 }
 
@@ -103,26 +105,39 @@ char	*ft_pathsort(t_main	*main, t_command *cmd)
 	return (cmd_path);
 }
 
+char	*check_path(t_dlist *list)
+{
+	t_dlist *lst;
+	t_env	*content;
+
+	lst = list;
+	content = (t_env *)lst->content;
+	while (lst)
+	{
+		if (ft_strncmp(content->key, "PATH", 4) == 0)
+			return ("PATH");
+		lst = lst->next;
+		if (lst != NULL)
+			content = (t_env *)lst->content;;
+	}
+	return (NULL);
+}
+
 void	ft_execve(t_main *main, t_command *cmd)
 {
 	char	*final_path;
-	char	**current_envp;
+	char	*value;
 
 	if (cmd->full_command[0] == NULL)
 		exit (0) ;
 	final_path = ft_pathsort(main, cmd);
 	current_envp = ms_lst_to_env(main);
 	if (access(final_path, F_OK) == 0)
-	{
-		execve(final_path, cmd->full_command, current_envp);
-		free(final_path);
-		ms_del_array(current_envp);
-		return ;
-	}
+		execve(final_path, cmd->full_command, NULL);
+	value = check_path(main->env_list);
+	if (value == NULL)
+		print_error(cmd->full_command[0], "No Such file or directory");
 	else
-	{
-		print_error(cmd->full_command[0]);
-		free(final_path);
-		exit (0);
-	}
+		print_error(cmd->full_command[0], "Command not found");
+	free(final_path);
 }

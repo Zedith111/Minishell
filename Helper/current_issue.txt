@@ -16,6 +16,12 @@ solve with
 			signal(SIGQUIT, SIG_DFL);
 		}
 
+New problem
+
+1) when we chmod note.txt
+	call : echo hello > note.txt
+	it wont prompt permission denied
+
 
 if unset PATH, then ls, will cause sanitizer error
 

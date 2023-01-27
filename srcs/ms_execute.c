@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:43:56 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/26 15:46:58 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/27 15:05:47 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,14 @@ void	ft_execve(t_main *main, t_command *cmd)
 {
 	char	*final_path;
 	char	*value;
+	char	**current_envp;
 
 	if (cmd->full_command[0] == NULL)
-		exit (0) ;
+		exit (0);
 	final_path = ft_pathsort(main, cmd);
 	current_envp = ms_lst_to_env(main);
 	if (access(final_path, F_OK) == 0)
-		execve(final_path, cmd->full_command, NULL);
+		execve(final_path, cmd->full_command, current_envp);
 	value = check_path(main->env_list);
 	if (value == NULL)
 		print_error(cmd->full_command[0], "No Such file or directory");

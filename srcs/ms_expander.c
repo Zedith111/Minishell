@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:36:09 by zah               #+#    #+#             */
-/*   Updated: 2023/01/13 19:14:03 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/27 12:08:33 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static char	*expander_interpret(t_expander *expander, int length, t_main *main)
 		rtn = ms_intepret_quote(expander, str, length, main);
 	else
 		rtn = ms_intepret_string(expander, str, length, main);
-	// system ("leaks -q minishell");
 	return (rtn);
 }
 

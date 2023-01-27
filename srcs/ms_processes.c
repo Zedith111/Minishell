@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/26 15:47:17 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/27 12:28:04 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	single_process(t_main *main, t_command *cmd)
 {
 	if (check_exit(main, cmd))
 		return ;
+	signal(SIGINT, SIG_IGN);
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);

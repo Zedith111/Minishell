@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 20:44:43 by zah               #+#    #+#             */
-/*   Updated: 2023/01/15 10:39:42 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/27 12:16:41 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*ms_intepret_quote(t_expander *expander, char *str, int length,
 		rtn = process_quote(input + i, rtn, expander, main);
 	rtn = ms_append_quote(rtn);
 	free (input);
-	printf("return is %s\n", rtn);
 	return (rtn);
 }
 

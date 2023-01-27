@@ -1,28 +1,11 @@
-cannot use absolute path
-heredoc without command will promp error and exit
-	<< end
-	abc
-	should just move to next line
-not showing correct error message, and not changing g_error value
-cant run minishell in minishell
-clear command not working
+Current Issue
 
 
-after cat ctrl+\ is ignore, should quit
-solve with
-	if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-		}
+1) When in cat command, signal not working. ctrl + \ should quit cat only,
+	but now quit whole minishell
 
-New problem
+2) Some built in (export, unset, cd) not working, due to execute in child process
 
-1) when we chmod note.txt
-	call : echo hello > note.txt
-	it wont prompt permission denied
+3) unset PATH, then ls, still need to check, due to unset not working now
 
-
-if unset PATH, then ls, will cause sanitizer error
-
-
+4) When prompt error message, now need to exit twice

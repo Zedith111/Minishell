@@ -1,7 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_env_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 14:44:03 by zah               #+#    #+#             */
+/*   Updated: 2023/01/27 14:47:01 by zah              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*get_env_val(t_dlist *node);
 
+/**
+ * @brief Convert the current list of environment value to double array,
+ * used as variable for execve
+ */
 char	**ms_lst_to_env(t_main *main)
 {
 	int	size;
@@ -33,7 +49,8 @@ static char	*get_env_val(t_dlist *node)
 	set = malloc(2);
 	set[0] = '=';
 	set[1] = '\0';
-	rtn = ms_strjoin_free(env->key, set);
-	rtn = ms_strjoin_free(rtn, env->value);
+	rtn = ft_strjoin(env->key, set);
+	rtn = ft_strjoin(rtn, env->value);
+	free (set);
 	return (rtn);
 }

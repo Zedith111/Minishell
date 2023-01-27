@@ -6,11 +6,13 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/26 15:47:07 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/27 15:11:01 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	get_error_value(void);
 
 void	print_error(char *str, char *error_msg)
 {
@@ -19,6 +21,7 @@ void	print_error(char *str, char *error_msg)
 	write(2, ": ", 2);
 	write(2, error_msg, ft_strlen(error_msg));
 	write(2, "\n", 1);
+	exit (127);
 }
 
 int	check_built_in(t_main *main, t_command *cmd)
@@ -98,7 +101,7 @@ void	process(t_main *main, t_dlist **list)
 		lst = lst->next;
 	}
 	while (--main->counter >= 0)
-		waitpid(-1, NULL, 0);
+		get_error_value();
 	main->counter = 0;
 	while (main->counter < (lst_len(*list) - 1))
 	{
@@ -108,4 +111,16 @@ void	process(t_main *main, t_dlist **list)
 	main->counter = 0;
 	free(main->pid);
 	free(main->pipe);
+}
+
+void	get_error_value(void)
+{
+	int	child_pid;
+	int	status;
+
+	child_pid = 1;
+	while (child_pid > 0)
+		child_pid = waitpid(-1, &status, WUNTRACED);
+	if (WIFEXITED(status))
+		g_error = (WEXITSTATUS(status));
 }

@@ -6,7 +6,7 @@
 /*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:04:30 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/09 13:12:58 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 13:59:07 by zah              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	here_doc(t_command *cmd, char *limiter, t_main *main)
 	while (buf != NULL && compare(buf, limiter))
 	{
 		expand = ms_expander(buf, main);
-		write(cmd->in_fd, expand, ft_strlen(buf));
+		write(cmd->in_fd, expand, ft_strlen(expand));
 		free (expand);
 		free(buf);
 		ft_printf(">");

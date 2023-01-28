@@ -6,7 +6,7 @@
 /*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/28 12:58:34 by ojing-ha         ###   ########.fr       */
+/*   Updated: 2023/01/28 13:10:54 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	single_process(t_main *main, t_command *cmd)
 {
 	if (execve_builtin(main, cmd))
 		return ;
-	signal(SIGINT, SIG_IGN);
 	main->pid[main->counter] = fork();
 	if (main->pid[main->counter] == -1)
 		exit(0);

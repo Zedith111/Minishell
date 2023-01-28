@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 13:58:58 by zah               #+#    #+#             */
-/*   Updated: 2023/01/10 17:35:32 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 12:48:27 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void	ms_parse_input(t_dlist *token_list, t_main *main)
 	int			length;
 
 	if (!check_logic(token_list))
+	{
 		printf("parser error\n");
+		g_error = 1;
+	}
 	else
 	{
 		current = token_list;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expand_quote.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 20:44:43 by zah               #+#    #+#             */
-/*   Updated: 2023/01/27 12:16:41 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 12:51:25 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static char	*pre_process(char *str, int length);
 static char	*process_quote(char *input, char *prev, t_expander *expander,
 				t_main *main);
 static int	get_normal_length(char	*input);
-
 
 /**
  * @brief Intepret a string that start with double quote.

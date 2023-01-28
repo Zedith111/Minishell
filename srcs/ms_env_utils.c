@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 14:44:03 by zah               #+#    #+#             */
-/*   Updated: 2023/01/27 14:47:01 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 12:48:57 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static char	*get_env_val(t_dlist *node);
  */
 char	**ms_lst_to_env(t_main *main)
 {
-	int	size;
-	int	i;
+	int		size;
+	int		i;
 	char	**rtn;
 	t_dlist	*current;
 

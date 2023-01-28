@@ -3,31 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ms_processes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:35:16 by ojing-ha          #+#    #+#             */
-/*   Updated: 2023/01/27 12:28:04 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 12:58:34 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_exit(t_main *main, t_command *cmd)
-{
-	(void) main;
-	if (cmd->full_command[0] == NULL)
-		return (0);
-	if (ms_get_built_in(cmd->full_command[0]) == 7)
-	{
-		ms_cmd_exit(cmd);
-		return (1);
-	}
-	return (0);
-}
-
 void	single_process(t_main *main, t_command *cmd)
 {
-	if (check_exit(main, cmd))
+	if (execve_builtin(main, cmd))
 		return ;
 	signal(SIGINT, SIG_IGN);
 	main->pid[main->counter] = fork();

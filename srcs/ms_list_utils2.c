@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_list_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:36:30 by zah               #+#    #+#             */
-/*   Updated: 2023/01/15 08:48:13 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 12:52:03 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,3 @@ t_dlist	*ms_sort_list(t_dlist *lst, int (*cmp)(void *, void *))
 	lst = tmp;
 	return (lst);
 }
-

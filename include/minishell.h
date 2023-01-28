@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zah <zah@student.42kl.edu.my>              +#+  +:+       +#+        */
+/*   By: ojing-ha <ojing-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:37:05 by zah               #+#    #+#             */
-/*   Updated: 2023/01/27 15:06:52 by zah              ###   ########.fr       */
+/*   Updated: 2023/01/28 13:06:50 by ojing-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,10 @@ int			ms_check_enclosed_length(char *str);
 char		*ms_expander(char *str, t_main *main);
 int			expander_advanced(char *str);
 int			get_expand_length(char *str);
-char		*ms_intepret_string(t_expander *expander, char *str, int length, t_main *main);
-char		*ms_intepret_quote(t_expander *expander, char *str, int length, t_main *main);
+char		*ms_intepret_string(t_expander *expander, char *str,
+				int length, t_main *main);
+char		*ms_intepret_quote(t_expander *expander, char *str,
+				int length, t_main *main);
 char		*ms_expand_string(char *str, int length, t_main *main);
 char		*ms_append_quote(char *str);
 int			ms_is_env_character(char c);
@@ -209,12 +211,23 @@ void		print_token_list(t_dlist **list);
 void		print_env_list(t_dlist **lst);
 void		print_command_list(t_dlist **list);
 
+//Path sort functions
+char		**ft_path_extract(t_main *main);
+char		*ft_path_check(char **paths, char *cmd);
+char		**ft_pathcat(char **paths);
+char		*ft_pathsort(t_main	*main, t_command *cmd);
+char		*check_path(t_dlist *list);
+
 //Execute functions
 char		*ft_pathsort(t_main	*main, t_command *cmd);
 char		**ms_lst_to_env(t_main *main);
 void		ft_execve(t_main *main, t_command *cmd);
+int			execve_builtin(t_main *main, t_command *cmd);
 
 //Processes
+void		free_temp(t_command *cmd);
+int			lst_len(t_dlist *list);
+void		get_error_value(void);
 void		print_error(char *str, char *error_msg);
 void		first_process(t_main *main, t_command *cmd);
 void		middle_process(t_main *main, t_command *cmd);
